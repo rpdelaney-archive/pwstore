@@ -8,5 +8,14 @@
 # See the README file for additional terms and conditions on your use of this
 # software.
 #
-pass
+
+def get_edata(filepath):
+    """
+    Retrieve data (presumed to be gpg encrypted) from a file and return it raw
+    """
+    with open(filepath, 'rb') as myfile:
+        edata=myfile.read()
+    return edata
+
+
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
