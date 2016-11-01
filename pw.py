@@ -8,6 +8,7 @@
 # See the README file for additional terms and conditions on your use of this
 # software.
 #
+import gnupg
 
 def get_edata(filepath):
     """
@@ -16,6 +17,13 @@ def get_edata(filepath):
     with open(filepath, 'rb') as myfile:
         edata=myfile.read()
     return edata
+
+
+def decrypt(gpg, edata):
+    """
+    Take a gpg handler and some data (presumed to be gpg encrypted) and return the decrypted data
+    """
+    return gpg.decrypt(edata)
 
 
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
