@@ -32,8 +32,11 @@ def get_gpghome():
     Try to figure out where the gnupg homedir is
     """
 
-    if os.environ['GNUPGHOME']:
-        return os.environ['GNUPGHOME']
+    try:
+        if os.environ['GNUPGHOME']:
+            return os.environ['GNUPGHOME']
+    except KeyError:
+        pass
 
     homedir = os.environ['HOME'] + '/.gnupg/'
     tryfile = homedir + 'gpg.conf'
@@ -50,7 +53,7 @@ def get_pwstore():
 
     homedir = os.environ['HOME']
     trydir = homedir + '/.pw-store'
-    if trydir.is_dir():
+    if os.path.isdir(trydir):
         return trydir
 
 
