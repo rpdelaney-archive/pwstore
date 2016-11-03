@@ -41,4 +41,17 @@ def get_gpghome():
         return homedir
 
 
+def get_pwstore():
+    try:
+        if os.environ['PWSTORE_DIR']:
+            return os.environ['PWSTORE_DIR']
+    except KeyError:
+        pass
+
+    homedir = os.environ['HOME']
+    trydir = homedir + '/.pw-store'
+    if trydir.is_dir():
+        return trydir
+
+
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
