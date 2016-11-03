@@ -54,4 +54,22 @@ def get_pwstore():
         return trydir
 
 
+def main():
+    gpghome = get_gpghome()
+    assert gpghome is not None
+
+    gpg = gnupg.GPG(gnupghome=gpghome, verbose=False)
+
+    pwstore = get_pwstore()
+    assert pwstore is not None
+    datafile = pwstore + '/xsplit.com.gpg'
+
+    edata = get_edata(datafile)
+    data = decrypt(gpg, edata)
+    print(data)
+
+if __name__ == '__main__':
+    main()
+
+
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
