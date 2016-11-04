@@ -40,7 +40,7 @@ def get_gpghome():
 
     homedir = os.environ['HOME'] + '/.gnupg/'
     tryfile = homedir + 'gpg.conf'
-    if tryfile.is_file():
+    if os.path.isfile(tryfile):
         return homedir
 
 
