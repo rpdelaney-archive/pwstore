@@ -11,12 +11,13 @@
 import os
 import gnupg
 
+
 def get_edata(filepath):
     """
     Retrieve data (presumed to be gpg encrypted) from a file and return it raw
     """
     with open(filepath, 'rb') as myfile:
-        edata=myfile.read()
+        edata = myfile.read()
     return edata
 
 
