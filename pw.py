@@ -28,7 +28,7 @@ def decrypt(gpg, edata):
     return gpg.decrypt(edata)
 
 
-def get_gpghome():
+def find_gpghome():
     """
     Try to figure out where the gnupg homedir is
     """
@@ -45,7 +45,7 @@ def get_gpghome():
         return homedir
 
 
-def get_pwstore():
+def find_pwstore():
     try:
         if os.environ['PWSTORE_DIR']:
             return os.environ['PWSTORE_DIR']
@@ -59,18 +59,19 @@ def get_pwstore():
 
 
 def main():
-    gpghome = get_gpghome()
+    gpghome = find_gpghome()
     assert gpghome is not None
 
     gpg = gnupg.GPG(gnupghome=gpghome, verbose=False)
 
-    pwstore = get_pwstore()
+    pwstore = find_pwstore()
     assert pwstore is not None
     datafile = pwstore + '/xsplit.com.gpg'
 
     edata = get_edata(datafile)
     data = decrypt(gpg, edata)
     print(data)
+
 
 if __name__ == '__main__':
     main()
