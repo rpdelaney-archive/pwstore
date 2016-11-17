@@ -66,6 +66,14 @@ def get_key(jsondata, key):
     return parsed_json[key]
 
 
+def update_key(jsondata, key, value):
+    """ Take a JSON array and update the value of a given key, returning the updated array """
+    parsed_json = json.loads(str(jsondata))
+    parsed_json[key] = value
+
+    return json.dumps(parsed_json)
+
+
 def main():
     gpghome = find_gpghome()
     assert gpghome is not None
@@ -79,7 +87,7 @@ def main():
     edata = get_edata(datafile)
     data = decrypt(gpg, edata)
     print(data)
-    print(get_key(data, "url"))
+    print(update_key(data, "url", "foo"))
 
 
 if __name__ == '__main__':
