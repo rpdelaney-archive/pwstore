@@ -10,6 +10,7 @@
 #
 import os
 import gnupg
+import json
 
 
 def get_edata(filepath):
@@ -58,6 +59,13 @@ def find_pwstore():
         return trydir
 
 
+def get_key(jsondata, key):
+    """ Take a JSON array and return the value corresponding to a given key """
+    parsed_json = json.loads(str(jsondata))
+
+    return parsed_json[key]
+
+
 def main():
     gpghome = find_gpghome()
     assert gpghome is not None
@@ -71,6 +79,7 @@ def main():
     edata = get_edata(datafile)
     data = decrypt(gpg, edata)
     print(data)
+    print(get_key(data, "url"))
 
 
 if __name__ == '__main__':
