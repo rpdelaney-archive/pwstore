@@ -59,6 +59,11 @@ def find_pwstore():
         return trydir
 
 
+def print_friendly(jsondata):
+    """ Take a JSON array and return a string fit for printing to screen or file """
+    return json.dumps(json.loads(jsondata), sort_keys=False, indent=4)
+
+
 def get_key(jsondata, key):
     """ Take a JSON array and return the value corresponding to a given key """
     parsed_json = json.loads(str(jsondata))
@@ -87,7 +92,7 @@ def main():
     edata = get_edata(datafile)
     data = decrypt(gpg, edata)
     print(data)
-    print(update_key(data, "url", "foo"))
+    print(print_friendly(update_key(data, "url", "foo")))
 
 
 if __name__ == '__main__':
