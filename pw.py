@@ -8,6 +8,7 @@
 # See the README file for additional terms and conditions on your use of this
 # software.
 #
+import click
 import os
 import gnupg
 import json
@@ -79,7 +80,9 @@ def update_key(jsondata, key, value):
     return json.dumps(parsed_json)
 
 
-def main():
+@click.command()
+@click.argument('record')
+def main(record):
     gpghome = find_gpghome()
     assert gpghome is not None
 
@@ -87,7 +90,7 @@ def main():
 
     pwstore = find_pwstore()
     assert pwstore is not None
-    datafile = pwstore + '/xsplit.com.gpg'
+    datafile = pwstore + '/' + record + '.gpg'
 
     edata = get_edata(datafile)
     data = decrypt(gpg, edata)
