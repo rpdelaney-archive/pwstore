@@ -10,6 +10,7 @@
 #
 import click
 import os
+import sys
 import gnupg
 import json
 
@@ -81,7 +82,7 @@ def update_key(jsondata, key, value):
 
 
 @click.command()
-@click.argument('record')
+@click.argument('record', help)
 def main(record):
     gpghome = find_gpghome()
     assert gpghome is not None
@@ -97,9 +98,11 @@ def main(record):
     print(data)
     print(print_friendly(update_key(data, "url", "foo")))
 
+    return 0
+
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
 
 
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
