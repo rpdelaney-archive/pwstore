@@ -134,6 +134,9 @@ def select(ctx):
 
 @main.command()
 def drop(record):
+    """
+    Delete an entire record from the disk
+    """
     pass
 
 
