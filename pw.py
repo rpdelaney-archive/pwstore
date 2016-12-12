@@ -81,7 +81,8 @@ def update_key(jsondata, key, value):
     return json.dumps(parsed_json)
 
 
-@click.group()
+CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
+@click.group(context_settings=CONTEXT_SETTINGS)
 @click.argument('record')
 @click.pass_context
 def main(ctx, record):
@@ -121,8 +122,14 @@ def update(key, value):
 
 
 @main.command()
-def select(record):
-    pass
+@click.pass_context
+def select(ctx):
+    """
+    Decrypt a record and print it raw
+    """
+    edata = get_edata(ctx.obj['datafile'])
+    data = decrypt(ctx.obj['gpg'], edata)
+    print(data)
 
 
 @main.command()
