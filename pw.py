@@ -109,7 +109,7 @@ def main(ctx, record):
 @click.pass_context
 def get(ctx, key):
     """
-    Retrieve a specific key value from an encrypted record
+    Retrieve a key value from a record
     """
     edata = get_edata(ctx.obj['datafile'])
     data = decrypt(ctx.obj['gpg'], edata)
