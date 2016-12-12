@@ -81,24 +81,53 @@ def update_key(jsondata, key, value):
     return json.dumps(parsed_json)
 
 
-@click.command()
-@click.argument('record', help)
-def main(record):
+@click.group()
+@click.argument('record')
+@click.pass_context
+def main(ctx, record):
     gpghome = find_gpghome()
     assert gpghome is not None
-
     gpg = gnupg.GPG(gnupghome=gpghome, verbose=False)
-
     pwstore = find_pwstore()
     assert pwstore is not None
+
     datafile = pwstore + '/' + record + '.gpg'
 
-    edata = get_edata(datafile)
-    data = decrypt(gpg, edata)
-    print(data)
-    print(print_friendly(update_key(data, "url", "foo")))
-
+    # Define the context object to be passed
+    ctx.obj = {
+        'record': record,
+        'gpg': gpg,
+        'pwstore': pwstore,
+        'datafile': datafile
+    }
     return 0
+
+
+@main.command()
+@click.argument('key')
+@click.pass_context
+def get(ctx, key):
+    """
+    Retrieve a specific key value from an encrypted record
+    """
+    edata = get_edata(ctx.obj['datafile'])
+    data = decrypt(ctx.obj['gpg'], edata)
+    print(get_key(data, key))
+
+
+@main.command()
+def update(key, value):
+    pass
+
+
+@main.command()
+def select(record):
+    pass
+
+
+@main.command()
+def drop(record):
+    pass
 
 
 if __name__ == '__main__':
