@@ -117,7 +117,11 @@ def get(ctx, key):
 
 
 @main.command()
+@click.pass_context
 def update(key, value):
+    """
+    Update a record's KEY with VALUE
+    """
     pass
 
 
@@ -133,7 +137,8 @@ def select(ctx):
 
 
 @main.command()
-def drop(record):
+@click.pass_context
+def drop(ctx):
     """
     Delete an entire record from the disk
     """
