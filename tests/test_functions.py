@@ -22,6 +22,12 @@ class test_update_key(unittest.TestCase):
         result = pw.update_key(inputjson, "6", "8")
         self.assertEqual(result, targetjson)
 
+    def test_update_nonextant_key(self):
+        inputjson = '{"4": "5"}'
+        targetjson = '{"6": "8", "4": "5"}'
+        result = pw.update_key(inputjson, "6", "8")
+        self.assertEqual(result, targetjson)
+
 
 class test_delete_key(unittest.TestCase):
 
