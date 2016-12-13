@@ -105,6 +105,25 @@ def main(ctx, record):
 
 
 @main.command()
+@click.pass_context
+def add(ctx):
+    """
+    Create a new record
+    """
+    pass
+
+
+@main.command()
+@click.argument('key')
+@click.pass_context
+def delete(ctx, key):
+    """
+    Delete KEY from a record
+    """
+    pass
+
+
+@main.command()
 @click.argument('key')
 @click.pass_context
 def get(ctx, key):
