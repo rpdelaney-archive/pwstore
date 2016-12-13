@@ -84,7 +84,7 @@ def update_key(jsondata, key, value):
     return json.dumps(parsed_json)
 
 
-CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
+CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.argument('record')
 @click.pass_context
