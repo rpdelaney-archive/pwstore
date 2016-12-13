@@ -49,6 +49,9 @@ def find_gpghome():
 
 
 def find_pwstore():
+    """
+    Try to find out where the password store directory is
+    """
     try:
         if os.environ['PWSTORE_DIR']:
             return os.environ['PWSTORE_DIR']
