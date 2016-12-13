@@ -23,6 +23,15 @@ class test_update_key(unittest.TestCase):
         self.assertEqual(result, targetjson)
 
 
+class test_delete_key(unittest.TestCase):
+
+    def test_delete_key(self):
+        inputjson = '{"4": "5", "6": "7"}'
+        targetjson = '{"4": "5"}'
+        result = pw.delete_key(inputjson, "6")
+        self.assertEqual(result, targetjson)
+
+
 class test_print_friendly(unittest.TestCase):
 
     def test_print_friendly(self):

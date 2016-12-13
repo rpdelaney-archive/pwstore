@@ -84,6 +84,14 @@ def update_key(jsondata, key, value):
     return json.dumps(parsed_json)
 
 
+def delete_key(jsondata, key):
+    """ Take a JSON array and remove a key, returning the updated array """
+    parsed_json = json.loads(str(jsondata))
+    parsed_json.pop(key)
+
+    return json.dumps(parsed_json)
+
+
 CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.argument('record')
