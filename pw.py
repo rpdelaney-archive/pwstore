@@ -131,7 +131,9 @@ def delete(ctx, key):
     """
     Delete KEY from a record
     """
-    pass
+    edata = get_edata(ctx.obj['datafile'])
+    data = decrypt(ctx.obj['gpg'], edata)
+    print(print_friendly(delete_key(data, key)))
 
 
 @main.command()
