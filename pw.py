@@ -74,7 +74,6 @@ def print_friendly(jsondata):
 def get_key(jsondata, key):
     """ Take a JSON array and return the value corresponding to a given key """
     parsed_json = json.loads(str(jsondata))
-
     return parsed_json[key]
 
 
@@ -82,7 +81,6 @@ def update_key(jsondata, key, value):
     """ Take a JSON array and update the value of a given key, returning the updated array """
     parsed_json = json.loads(str(jsondata))
     parsed_json[key] = value
-
     return json.dumps(parsed_json)
 
 
@@ -90,7 +88,6 @@ def delete_key(jsondata, key):
     """ Take a JSON array and remove a key, returning the updated array """
     parsed_json = json.loads(str(jsondata))
     parsed_json.pop(key)
-
     return json.dumps(parsed_json)
 
 
