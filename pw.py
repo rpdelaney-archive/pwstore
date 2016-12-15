@@ -65,8 +65,10 @@ def find_pwstore():
 
 
 def print_friendly(jsondata):
-    """ Take a JSON array and return a string fit for printing to screen or file """
-    return json.dumps(json.loads(jsondata), sort_keys=False, indent=4)
+    """ Take a JSON array and pretty-print a string representation """
+    pretty_string = json.dumps(json.loads(jsondata), sort_keys=False, indent=4)
+    print(pretty_string)
+    return pretty_string
 
 
 def get_key(jsondata, key):
@@ -133,7 +135,7 @@ def delete(ctx, key):
     """
     edata = get_edata(ctx.obj['datafile'])
     data = decrypt(ctx.obj['gpg'], edata)
-    print(print_friendly(delete_key(data, key)))
+    print_friendly(delete_key(data, key))
 
 
 @main.command()
