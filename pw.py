@@ -148,12 +148,16 @@ def get(ctx, key):
 
 
 @main.command()
+@click.argument('key')
+@click.argument('value')
 @click.pass_context
-def update(key, value):
+def update(ctx, key, value):
     """
     Update a record's KEY with VALUE
     """
-    pass
+    edata = get_edata(ctx.obj['datafile'])
+    data = decrypt(ctx.obj['gpg'], edata)
+    print_friendly(update_key(data, key, value))
 
 
 @main.command()
