@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import unittest
 import pw
 from unittest.mock import patch
@@ -35,14 +36,14 @@ class test_update_key(unittest.TestCase):
 
     def test_update_key(self):
         inputjson = '{"4": "5", "6": "7"}'
-        targetjson = '{"6": "8", "4": "5"}'
-        result = pw.update_key(inputjson, "6", "8")
+        targetjson = json.loads('{"4": "5", "6": "8"}')
+        result = json.loads(pw.update_key(inputjson, "6", "8"))
         self.assertEqual(result, targetjson)
 
     def test_update_nonextant_key(self):
         inputjson = '{"4": "5"}'
-        targetjson = '{"6": "8", "4": "5"}'
-        result = pw.update_key(inputjson, "6", "8")
+        targetjson = json.loads('{"4": "5", "6": "8"}')
+        result = json.loads(pw.update_key(inputjson, "6", "8"))
         self.assertEqual(result, targetjson)
 
 
@@ -50,8 +51,8 @@ class test_delete_key(unittest.TestCase):
 
     def test_delete_key(self):
         inputjson = '{"4": "5", "6": "7"}'
-        targetjson = '{"4": "5"}'
-        result = pw.delete_key(inputjson, "6")
+        targetjson = json.loads('{"4": "5"}')
+        result = json.loads(pw.delete_key(inputjson, "6"))
         self.assertEqual(result, targetjson)
 
 
