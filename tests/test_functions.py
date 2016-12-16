@@ -59,7 +59,7 @@ class test_print_friendly(unittest.TestCase):
 
     def test_print_friendly(self):
         inputjson = '{"4": "5", "6": "7"}'
-        targetjson = '{\n    "6": "7",\n    "4": "5"\n}'
+        targetjson = '{\n    "4": "5",\n    "6": "7"\n}'
         result = pw.print_friendly(inputjson)
         self.assertEqual(result, targetjson)
 

@@ -82,7 +82,7 @@ def find_pwstore():
 
 def print_friendly(jsondata):
     """ Take a JSON array and pretty-print a string representation """
-    pretty_string = json.dumps(json.loads(jsondata), sort_keys=False, indent=4)
+    pretty_string = json.dumps(json.loads(jsondata), sort_keys=True, indent=4)
     print(pretty_string)
     return pretty_string
 
