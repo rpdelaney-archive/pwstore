@@ -11,8 +11,24 @@
 import click
 import os
 import sys
+import subprocess
 import gnupg
 import json
+
+
+def git_add(filepath):
+    """ Stage a file in the pwstore """
+    cmd = ['git', 'add', filepath]
+    cwd = find_pwstore()
+    subprocess.check_call(cmd, cwd=cwd)
+
+
+def git_commit():
+    """ Commit staged changes to the pwstore """
+    message = "Updated given records to pwstore."
+    cmd = ['git', 'commit', '-m', message]
+    cwd = find_pwstore()
+    subprocess.check_call(cmd, cwd=cwd)
 
 
 def get_edata(filepath):
