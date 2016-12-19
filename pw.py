@@ -69,7 +69,7 @@ def find_pwstore():
     Try to find out where the password store directory is
     """
     try:
-        if os.environ['PWSTORE_DIR']:
+        if os.path.isdir(os.environ['PWSTORE_DIR']):
             return os.environ['PWSTORE_DIR']
     except KeyError:
         pass
