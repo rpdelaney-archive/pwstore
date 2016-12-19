@@ -8,6 +8,7 @@
 # See the README file for additional terms and conditions on your use of this
 # software.
 #
+import appdirs
 import click
 import os
 import sys
@@ -74,8 +75,7 @@ def find_pwstore():
     except KeyError:
         pass
 
-    homedir = os.environ['HOME']
-    trydir = homedir + '/.pw-store'
+    trydir = appdirs.user_data_dir('pwstore')
     if os.path.isdir(trydir):
         return trydir
 
