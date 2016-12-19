@@ -132,6 +132,19 @@ def main(ctx, record):
 
 @main.command()
 @click.pass_context
+def list(ctx):
+    """
+    List the keys in a record
+    """
+    edata = get_edata(ctx.obj['datafile'])
+    data = decrypt(ctx.obj['gpg'], edata)
+    mydict = json.loads(str(data))
+    for item in mydict.keys():
+        print(item)
+
+
+@main.command()
+@click.pass_context
 def add(ctx):
     """
     Create a new record
