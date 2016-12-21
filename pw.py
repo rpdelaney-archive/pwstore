@@ -48,6 +48,15 @@ def decrypt(gpg, edata):
     return gpg.decrypt(edata)
 
 
+def get_data(gpg, filepath):
+    """
+    Retrieve data (presumed to be gpg encrypted) from a file and return it decrypted
+    """
+    edata = get_edata(filepath)
+    data = decrypt(gpg, edata)
+    return data
+
+
 def find_gpghome():
     """
     Try to figure out where the gnupg homedir is
@@ -136,8 +145,7 @@ def list(ctx):
     """
     List the keys in a record
     """
-    edata = get_edata(ctx.obj['datafile'])
-    data = decrypt(ctx.obj['gpg'], edata)
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     mydict = json.loads(str(data))
     for item in mydict.keys():
         print(item)
@@ -159,8 +167,7 @@ def delete(ctx, key):
     """
     Delete KEY from a record
     """
-    edata = get_edata(ctx.obj['datafile'])
-    data = decrypt(ctx.obj['gpg'], edata)
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print_friendly(delete_key(data, key))
 
 
@@ -171,8 +178,7 @@ def get(ctx, key):
     """
     Retrieve a KEY value from a record
     """
-    edata = get_edata(ctx.obj['datafile'])
-    data = decrypt(ctx.obj['gpg'], edata)
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print(get_key(data, key))
 
 
@@ -184,8 +190,7 @@ def update(ctx, key, value):
     """
     Update a record's KEY with VALUE
     """
-    edata = get_edata(ctx.obj['datafile'])
-    data = decrypt(ctx.obj['gpg'], edata)
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print_friendly(update_key(data, key, value))
 
 
@@ -195,8 +200,7 @@ def select(ctx):
     """
     Decrypt a record and print it raw
     """
-    edata = get_edata(ctx.obj['datafile'])
-    data = decrypt(ctx.obj['gpg'], edata)
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print(data)
 
 
