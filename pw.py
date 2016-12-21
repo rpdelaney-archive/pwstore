@@ -50,11 +50,11 @@ def decrypt(gpg, edata):
 
 def get_data(gpg, filepath):
     """
-    Retrieve data (presumed to be gpg encrypted) from a file and return it decrypted
+    Retrieve data (presumed to be gpg encrypted) from a file and return it as a decrypted string
     """
     edata = get_edata(filepath)
     data = decrypt(gpg, edata)
-    return data
+    return str(data)
 
 
 def find_gpghome():
