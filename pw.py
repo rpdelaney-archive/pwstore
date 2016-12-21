@@ -201,7 +201,7 @@ def select(ctx):
     Decrypt a record and print it raw
     """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-    print(data)
+    print_friendly(data)
 
 
 @main.command()
