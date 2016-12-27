@@ -52,6 +52,9 @@ def encrypt(gpg, data):
     """
     Take a gpg handler and some data (presumed to be plain text) and return encrypted data
     """
+    recipient = find_recipient()
+    edata = gpg.encrypt(data, recipient)
+    return edata
 
 
 def get_data(gpg, filepath):
@@ -175,7 +178,9 @@ def add(ctx):
     """
     Create a new record
     """
-    pass
+    data = '{\n}'
+    edata = encrypt(ctx.obj['gpg'], data)
+    print(edata)
 
 
 @main.command()
