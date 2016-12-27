@@ -48,6 +48,12 @@ def decrypt(gpg, edata):
     return gpg.decrypt(edata)
 
 
+def encrypt(gpg, data):
+    """
+    Take a gpg handler and some data (presumed to be plain text) and return encrypted data
+    """
+
+
 def get_data(gpg, filepath):
     """
     Retrieve data (presumed to be gpg encrypted) from a file and return it as a decrypted string
@@ -55,6 +61,18 @@ def get_data(gpg, filepath):
     edata = get_edata(filepath)
     data = decrypt(gpg, edata)
     return str(data)
+
+
+def find_recipient():
+    """
+    Try to figure out who the gpg recipient should be for encrypted data
+    """
+    try:
+        if os.environ['PWSTORE_KEY']:
+            return os.environ['PWSTORE_KEY']
+    except KeyError:
+        print("Failed to encrypt data. PWSTORE_KEY is not set.")
+        sys.exit(1)
 
 
 def find_gpghome():
