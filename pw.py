@@ -123,7 +123,7 @@ CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
 def main(ctx, record):
     gpghome = find_gpghome()
     assert gpghome is not None
-    gpg = gnupg.GPG(gnupghome=gpghome, verbose=False)
+    gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
     pwstore = find_pwstore()
     assert pwstore is not None
 
