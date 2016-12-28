@@ -40,6 +40,14 @@ def git_commit():
     subprocess.check_call(cmd, cwd=cwd)
 
 
+def save_edata(edata, filepath):
+    """
+    Takes data (presumed to be gpg encrypted) and saves it to a file
+    """
+    with open(filepath, 'w+') as myfile:
+        myfile.write(str(edata))
+
+
 def get_edata(filepath):
     """
     Retrieve data (presumed to be gpg encrypted) from a file and return it raw
@@ -188,7 +196,7 @@ def add(ctx):
     """
     data = '{\n}'
     edata = encrypt(ctx.obj['gpg'], data)
-    print(edata)
+    save_edata(edata, ctx.obj['datafile'])
 
 
 @main.command()
