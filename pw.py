@@ -12,9 +12,17 @@ import appdirs
 import click
 import os
 import sys
+import logging
 import subprocess
 import gnupg
 import json
+
+# Initialize Logging Module
+logger = logging.getLogger(__name__)
+if not logger.handlers:
+    ch = logging.StreamHandler()
+    logger.addHandler(ch)
+    logger.setLevel(logging.WARNING)
 
 
 def git_add(filepath):
@@ -74,7 +82,7 @@ def find_recipient():
         if os.environ['PWSTORE_KEY']:
             return os.environ['PWSTORE_KEY']
     except KeyError:
-        print("Failed to encrypt data. PWSTORE_KEY is not set.")
+        logger.critical("Failed to encrypt data. PWSTORE_KEY is not set.")
         sys.exit(1)
 
 
