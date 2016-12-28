@@ -271,6 +271,8 @@ def alias(ctx, alias):
     source = ctx.obj['datafile']
     target = ctx.obj['pwstore'] + '/' + alias + '.gpg'
     os.symlink(source, target)
+    git_add(target)
+    git_commit()
 
 
 if __name__ == '__main__':
