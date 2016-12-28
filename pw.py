@@ -33,10 +33,9 @@ def git_add(filepath):
     subprocess.check_call(cmd, cwd=cwd)
 
 
-def git_commit():
+def git_commit(message="Updated given records to pwstore."):
     """ Commit staged changes to the pwstore """
     logger.debug('Committing staged files to pwstore...')
-    message = "Updated given records to pwstore."
     cmd = ['git', 'commit', '-m', message]
     cwd = find_pwstore()
     subprocess.check_call(cmd, cwd=cwd)
@@ -267,7 +266,7 @@ def drop(ctx):
     cmd = ['git', 'rm', target]
     cwd = find_pwstore()
     subprocess.check_call(cmd, cwd=cwd)
-    git_commit()
+    git_commit("Dropped record from pwstore.")
 
 
 @main.command()
