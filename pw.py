@@ -215,7 +215,10 @@ def delete(ctx, key):
     Delete KEY from a record
     """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-    print_friendly(delete_key(data, key))
+    newdata = delete_key(data, key)
+    save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
+    git_add(ctx.obj['datafile'])
+    git_commit()
 
 
 @main.command()
