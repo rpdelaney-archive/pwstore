@@ -204,6 +204,8 @@ def add(ctx):
     data = '{\n}'
     edata = encrypt(ctx.obj['gpg'], data)
     save_edata(edata, ctx.obj['datafile'])
+    git_add(ctx.obj['datafile'])
+    git_commit("Created empty record.")
 
 
 @main.command()
