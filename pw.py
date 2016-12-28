@@ -238,7 +238,10 @@ def update(ctx, key, value):
     Update a record's KEY with VALUE
     """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-    print_friendly(update_key(data, key, value))
+    newdata = update_key(data, key, value)
+    save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
+    git_add(ctx.obj['datafile'])
+    git_commit()
 
 
 @main.command()
