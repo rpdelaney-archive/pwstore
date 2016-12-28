@@ -261,6 +261,18 @@ def drop(ctx):
     pass
 
 
+@main.command()
+@click.argument('alias')
+@click.pass_context
+def alias(ctx, alias):
+    """
+    Create a symlink named ALIAS
+    """
+    source = ctx.obj['datafile']
+    target = ctx.obj['pwstore'] + '/' + alias + '.gpg'
+    os.symlink(source, target)
+
+
 if __name__ == '__main__':
     sys.exit(main())
 
