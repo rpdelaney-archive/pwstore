@@ -27,6 +27,7 @@ if not logger.handlers:
 
 def git_add(filepath):
     """ Stage a file in the pwstore """
+    logger.debug('Staging file in pwstore: ' + filepath)
     cmd = ['git', 'add', filepath]
     cwd = find_pwstore()
     subprocess.check_call(cmd, cwd=cwd)
@@ -34,6 +35,7 @@ def git_add(filepath):
 
 def git_commit():
     """ Commit staged changes to the pwstore """
+    logger.debug('Committing staged files to pwstore...')
     message = "Updated given records to pwstore."
     cmd = ['git', 'commit', '-m', message]
     cwd = find_pwstore()
@@ -45,6 +47,7 @@ def save_edata(edata, filepath):
     Takes data (presumed to be gpg encrypted) and saves it to a file
     """
     with open(filepath, 'w+') as myfile:
+        logger.debug('Writing encrypted data to file ' + filepath)
         myfile.write(str(edata))
 
 
@@ -53,6 +56,7 @@ def get_edata(filepath):
     Retrieve data (presumed to be gpg encrypted) from a file and return it raw
     """
     with open(filepath, 'rb') as myfile:
+        logger.debug('Reading encrypted data from file ' + filepath)
         edata = myfile.read()
     return edata
 
@@ -87,8 +91,10 @@ def find_recipient():
     Try to figure out who the gpg recipient should be for encrypted data
     """
     try:
-        if os.environ['PWSTORE_KEY']:
-            return os.environ['PWSTORE_KEY']
+        rkey = os.environ['PWSTORE_KEY']
+        if rkey:
+            logger.debug("Recipient key is: " + rkey)
+            return rkey
     except KeyError:
         logger.critical("Failed to encrypt data. PWSTORE_KEY is not set.")
         sys.exit(1)
@@ -100,8 +106,10 @@ def find_gpghome():
     """
 
     try:
-        if os.environ['GNUPGHOME']:
-            return os.environ['GNUPGHOME']
+        gdir = os.environ['GNUPGHOME']
+        if gdir:
+            logger.debug("GNUPGHOME is: " + gdir)
+            return gdir
     except KeyError:
         pass
 
@@ -249,6 +257,7 @@ def drop(ctx):
     """
     Delete an entire record from the disk
     """
+    logger.critical("This doesn't do anything yet.")
     pass
 
 
