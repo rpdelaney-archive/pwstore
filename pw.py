@@ -263,8 +263,11 @@ def drop(ctx):
     """
     Delete an entire record from the disk
     """
-    logger.critical("This doesn't do anything yet.")
-    pass
+    target = ctx.obj['datafile']
+    cmd = ['git', 'rm', target]
+    cwd = find_pwstore()
+    subprocess.check_call(cmd, cwd=cwd)
+    git_commit()
 
 
 @main.command()
