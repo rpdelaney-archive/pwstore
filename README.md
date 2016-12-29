@@ -35,6 +35,26 @@ now, you must set your recipient key in the environment:
 export PWSTORE_KEY='0xA96895ACB7F4970C'
 ```
 
+### Examples
+#### Create a new record
+```pw github.com add```
+
+#### Create an alias
+```
+pw github.com alias github
+```
+
+#### Add a password
+```
+pw github update password "$(pwgen -1)"
+```
+
+#### Add some metadata
+```
+pw github update login_url "http://github.com"
+pw github update username rpdelaney
+```
+
 ## Why use pw?
 In most cases, you should use password-store. Overall, it is much more mature
 and feature-rich.
