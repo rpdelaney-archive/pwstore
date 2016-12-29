@@ -25,6 +25,17 @@ if not logger.handlers:
     logger.setLevel(logging.WARNING)
 
 
+def is_initialized():
+    """ Verify that a given directory has a git repository in it """
+    cmd = ['git', 'status']
+    cwd = find_pwstore()
+    proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
+    if proc.wait() == 0:
+        return True
+    else:
+        return False
+
+
 def git_add(filepath):
     """ Stage a file in the pwstore """
     logger.debug('Staging file in pwstore: ' + filepath)
@@ -180,6 +191,14 @@ def main(ctx, record):
         'pwstore': pwstore,
         'datafile': datafile
     }
+
+    # Check that the pwstore has been initialized.
+    # TODO: If not, initialize it
+    if is_initialized():
+        print("It's alive!")
+    else:
+        print("It's dead!")
+
     return 0
 
 
