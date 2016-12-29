@@ -36,6 +36,15 @@ def is_initialized():
         return False
 
 
+def git_init():
+    """ Initialize a git repository in the pwstore """
+    cmd = ['git', 'init']
+    cwd = find_pwstore()
+    proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
+    if proc.wait() != 0:
+        raise RuntimeError("Failed to initialize the pwstore.")
+
+
 def git_add(filepath):
     """ Stage a file in the pwstore """
     logger.debug('Staging file in pwstore: ' + filepath)
@@ -177,11 +186,8 @@ def main(ctx, record):
     }
 
     # Check that the pwstore has been initialized.
-    # TODO: If not, initialize it
-    if is_initialized():
-        print("It's alive!")
-    else:
-        print("It's dead!")
+    if not is_initialized():
+        git_init()
 
     return 0
 
