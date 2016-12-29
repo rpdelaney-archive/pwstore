@@ -175,7 +175,7 @@ def main(ctx, record):
     pwstore = find_pwstore()
     assert pwstore is not None
 
-    datafile = pwstore + '/' + record + '.gpg'
+    datafile = os.path.join(pwstore, record + '.gpg')
 
     # Define the context object to be passed
     ctx.obj = {
@@ -272,7 +272,7 @@ def drop(ctx):
 def alias(ctx, alias):
     """ Create a symlink named ALIAS """
     source = ctx.obj['datafile']
-    target = ctx.obj['pwstore'] + '/' + alias + '.gpg'
+    target = os.path.join(ctx.obj['pwstore'], alias + '.gpg')
     os.symlink(source, target)
     git_add(target)
     git_commit()
