@@ -1,5 +1,5 @@
 # pw.py
-A cli password manager in python. Based on password-store[[1]] by Jason A.
+A cli password manager in python. Inspired by password-store[[1]] by Jason A.
 Donenfeld.
 
 ## Usage
