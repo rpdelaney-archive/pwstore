@@ -37,7 +37,9 @@ export PWSTORE_KEY='0xA96895ACB7F4970C'
 
 ### Examples
 #### Create a new record
-```pw github.com add```
+```
+pw github.com add
+```
 
 #### Create an alias
 ```
