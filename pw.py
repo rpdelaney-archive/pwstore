@@ -53,18 +53,14 @@ def git_commit(message="Updated given records to pwstore."):
 
 
 def save_edata(edata, filepath):
-    """
-    Takes data (presumed to be gpg encrypted) and saves it to a file
-    """
+    """ Takes data (presumed to be gpg encrypted) and saves it to a file """
     with open(filepath, 'w+') as myfile:
         logger.debug('Writing encrypted data to file ' + filepath)
         myfile.write(str(edata))
 
 
 def get_edata(filepath):
-    """
-    Retrieve data (presumed to be gpg encrypted) from a file and return it raw
-    """
+    """ Retrieve data (presumed to be gpg encrypted) from a file and return it raw """
     with open(filepath, 'rb') as myfile:
         logger.debug('Reading encrypted data from file ' + filepath)
         edata = myfile.read()
@@ -72,34 +68,26 @@ def get_edata(filepath):
 
 
 def decrypt(gpg, edata):
-    """
-    Take a gpg handler and some data (presumed to be gpg encrypted) and return the decrypted data
-    """
+    """ Take a gpg handler and some data (presumed to be gpg encrypted) and return the decrypted data """
     return gpg.decrypt(edata)
 
 
 def encrypt(gpg, data):
-    """
-    Take a gpg handler and some data (presumed to be plain text) and return encrypted data
-    """
+    """ Take a gpg handler and some data (presumed to be plain text) and return encrypted data """
     recipient = find_recipient()
     edata = gpg.encrypt(data, recipient)
     return edata
 
 
 def get_data(gpg, filepath):
-    """
-    Retrieve data (presumed to be gpg encrypted) from a file and return it as a decrypted string
-    """
+    """ Retrieve data (presumed to be gpg encrypted) from a file and return it as a decrypted string """
     edata = get_edata(filepath)
     data = decrypt(gpg, edata)
     return str(data)
 
 
 def find_recipient():
-    """
-    Try to figure out who the gpg recipient should be for encrypted data
-    """
+    """ Try to figure out who the gpg recipient should be for encrypted data """
     try:
         rkey = os.environ['PWSTORE_KEY']
         if rkey:
@@ -111,9 +99,7 @@ def find_recipient():
 
 
 def find_gpghome():
-    """
-    Try to figure out where the gnupg homedir is
-    """
+    """ Try to figure out where the gnupg homedir is """
 
     try:
         gdir = os.environ['GNUPGHOME']
@@ -130,9 +116,7 @@ def find_gpghome():
 
 
 def find_pwstore():
-    """
-    Try to find out where the password store directory is
-    """
+    """ Try to find out where the password store directory is """
     try:
         if os.path.isdir(os.environ['PWSTORE_DIR']):
             return os.environ['PWSTORE_DIR']
@@ -205,9 +189,7 @@ def main(ctx, record):
 @main.command()
 @click.pass_context
 def list(ctx):
-    """
-    List the keys in a record
-    """
+    """ List the keys in a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     mydict = json.loads(str(data))
     for item in mydict.keys():
@@ -217,9 +199,7 @@ def list(ctx):
 @main.command()
 @click.pass_context
 def add(ctx):
-    """
-    Create a new record
-    """
+    """ Create a new record """
     data = '{\n}'
     edata = encrypt(ctx.obj['gpg'], data)
     save_edata(edata, ctx.obj['datafile'])
@@ -231,9 +211,7 @@ def add(ctx):
 @click.argument('key')
 @click.pass_context
 def delete(ctx, key):
-    """
-    Delete KEY from a record
-    """
+    """ Delete KEY from a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     newdata = delete_key(data, key)
     save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
@@ -245,9 +223,7 @@ def delete(ctx, key):
 @click.argument('key')
 @click.pass_context
 def get(ctx, key):
-    """
-    Retrieve a KEY value from a record
-    """
+    """ Retrieve a KEY value from a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print(get_key(data, key))
 
@@ -257,9 +233,7 @@ def get(ctx, key):
 @click.argument('value')
 @click.pass_context
 def update(ctx, key, value):
-    """
-    Update a record's KEY with VALUE
-    """
+    """ Update a record's KEY with VALUE """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     newdata = update_key(data, key, value)
     save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
@@ -270,9 +244,7 @@ def update(ctx, key, value):
 @main.command()
 @click.pass_context
 def select(ctx):
-    """
-    Decrypt a record and print it raw
-    """
+    """ Decrypt a record and print it raw """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print_friendly(data)
 
@@ -280,9 +252,7 @@ def select(ctx):
 @main.command()
 @click.pass_context
 def drop(ctx):
-    """
-    Delete an entire record from the disk
-    """
+    """ Delete an entire record from the disk """
     target = ctx.obj['datafile']
     cmd = ['git', 'rm', target]
     cwd = find_pwstore()
@@ -294,9 +264,7 @@ def drop(ctx):
 @click.argument('alias')
 @click.pass_context
 def alias(ctx, alias):
-    """
-    Create a symlink named ALIAS
-    """
+    """ Create a symlink named ALIAS """
     source = ctx.obj['datafile']
     target = ctx.obj['pwstore'] + '/' + alias + '.gpg'
     os.symlink(source, target)
