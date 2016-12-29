@@ -43,6 +43,8 @@ def git_init():
     proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
     if proc.wait() != 0:
         raise RuntimeError("Failed to initialize the pwstore.")
+    else:
+        logger.warn("Warning: Initalized a new password store in ", cwd)
 
 
 def git_add(filepath):
