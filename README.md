@@ -43,7 +43,7 @@ The main difference is that pw.py stores data in a json format, enabling you
 to store additional metadata such as username, login page URL, etc:
 
 ```
-pw twitch.tv update username rpdelaney
+pw github.com update username rpdelaney
 ```
 
 [1]: https://www.passwordstore.org/
