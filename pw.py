@@ -209,10 +209,13 @@ def list(ctx):
 def add(ctx):
     """ Create a new record """
     data = '{\n}'
-    edata = encrypt(ctx.obj['gpg'], data)
-    save_edata(edata, ctx.obj['datafile'])
-    git_add(ctx.obj['datafile'])
-    git_commit("Created empty record.")
+    if os.path.exists(ctx.obj['datafile']):
+        logger.critical("Record title already exists. Nothing was done.")
+    else:
+        edata = encrypt(ctx.obj['gpg'], data)
+        save_edata(edata, ctx.obj['datafile'])
+        git_add(ctx.obj['datafile'])
+        git_commit("Created empty record.")
 
 
 @main.command()
