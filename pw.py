@@ -241,6 +241,23 @@ def get(ctx, key):
 
 @main.command()
 @click.argument('key')
+@click.pass_context
+def qrcode(ctx, key):
+    """ Display a KEY value as a qrcode """
+    try:
+        import qrcode
+    except ImportError:
+        raise RuntimeError("Required library not found: qrcode")
+
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+    key = get_key(data, key)
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make(key, image_factory=factory)
+    img.save(key + '.svg')
+
+
+@main.command()
+@click.argument('key')
 @click.argument('value')
 @click.pass_context
 def update(ctx, key, value):
