@@ -17,6 +17,7 @@ Commands:
   drop    Delete an entire record from the disk
   get     Retrieve a KEY value from a record
   list    List the keys in a record
+  qrcode  Display a KEY value as a qrcode
   select  Decrypt a record and print it raw
   update  Update a record's KEY with VALUE
 ```
@@ -27,6 +28,10 @@ The following non-standard dependencies are required:
 pip install python-gnupg
 ```
 
+There is an optional dependency to display passwords as QRcodes:
+```
+pip install pyqrcode
+```
 ### GPG
 Like password-store, pw.py uses GPG encryption to store data securely.  For
 now, you must set your recipient key in the environment:
