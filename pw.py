@@ -250,8 +250,8 @@ def qrcode(ctx, key):
         raise RuntimeError("Required library not found: qrcode")
 
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-    key = get_key(data, key)
-    code = pyqrcode.create(key)
+    value = get_key(data, key)
+    code = pyqrcode.create(value)
     print(code.terminal(quiet_zone=1))
 
 
