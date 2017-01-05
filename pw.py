@@ -253,9 +253,6 @@ def qrcode(ctx, key):
     key = get_key(data, key)
     code = pyqrcode.create(key)
     print(code.terminal(quiet_zone=1))
-#   factory = qrcode.image.svg.SvgImage
-#   img = qrcode.make(key, image_factory=factory)
-#   img.save(key + '.svg')
 
 
 @main.command()
