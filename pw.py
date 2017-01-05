@@ -245,15 +245,17 @@ def get(ctx, key):
 def qrcode(ctx, key):
     """ Display a KEY value as a qrcode """
     try:
-        import qrcode
+        import pyqrcode
     except ImportError:
         raise RuntimeError("Required library not found: qrcode")
 
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     key = get_key(data, key)
-    factory = qrcode.image.svg.SvgImage
-    img = qrcode.make(key, image_factory=factory)
-    img.save(key + '.svg')
+    code = pyqrcode.create(key)
+    print(code.terminal(quiet_zone=1))
+#   factory = qrcode.image.svg.SvgImage
+#   img = qrcode.make(key, image_factory=factory)
+#   img.save(key + '.svg')
 
 
 @main.command()
