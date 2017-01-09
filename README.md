@@ -53,7 +53,7 @@ pw github.com alias github
 
 #### Add a password
 ```
-pw github update password "$(pwgen -1)"
+pw github update password "$(apg -n1)"
 ```
 
 #### Add some metadata
