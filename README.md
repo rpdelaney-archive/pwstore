@@ -74,3 +74,7 @@ pw github.com update username rpdelaney
 ```
 
 [1]: https://www.passwordstore.org/
+
+## To-do
+* Copy key values to the clipboard (probably using pyperclip)
+* Enter a key value at the current cursor position (probably using PyAutoGUI)
