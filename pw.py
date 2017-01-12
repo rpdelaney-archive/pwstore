@@ -126,14 +126,14 @@ def find_gpghome():
 
 def find_pwstore():
     """ Try to find out where the password store directory is """
-    try:
-        if os.path.isdir(os.environ['PWSTORE_DIR']):
-            return os.environ['PWSTORE_DIR']
-    except KeyError:
-        pass
+    trydir = os.environ.get('PWSTORE_DIR')
+    if trydir is not None and os.path.isdir(trydir):
+        return trydir
 
     trydir = appdirs.user_data_dir('pwstore')
-    if os.path.isdir(trydir):
+    if not os.path.isdir(trydir):
+        logger.warn("WARNING: Creating password store directory at " + trydir)
+        os.mkdir(trydir)
         return trydir
 
 
