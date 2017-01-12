@@ -25,10 +25,9 @@ if not logger.handlers:
     logger.setLevel(logging.WARNING)
 
 
-def is_initialized():
+def is_initialized(cwd):
     """ Verify that a given directory has a git repository in it """
     cmd = ['git', 'status']
-    cwd = find_pwstore()
     proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
     if proc.wait() == 0:
         return True
@@ -36,10 +35,9 @@ def is_initialized():
         return False
 
 
-def git_init():
-    """ Initialize a git repository in the pwstore """
+def git_init(cwd):
+    """ Initialize a git repository in the given directory """
     cmd = ['git', 'init']
-    cwd = find_pwstore()
     proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
     if proc.wait() != 0:
         raise RuntimeError("Failed to initialize the pwstore.")
@@ -192,8 +190,8 @@ def main(ctx, record):
     }
 
     # Check that the pwstore has been initialized.
-    if not is_initialized():
-        git_init()
+    if not is_initialized(pwstore):
+        git_init(pwstore)
 
     return 0
 
