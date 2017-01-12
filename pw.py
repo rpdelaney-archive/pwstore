@@ -172,8 +172,12 @@ CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
 @click.pass_context
 def main(ctx, record):
     gpghome = find_gpghome()
-    assert gpghome is not None
-    gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
+    try:
+        assert gpghome is not None
+        gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
+    except AssertionError:
+        logger.critical("FATAL: GNUPGHOME could not be found.")
+
     pwstore = find_pwstore()
     assert pwstore is not None
 
