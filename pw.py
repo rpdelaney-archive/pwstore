@@ -28,9 +28,12 @@ if not logger.handlers:
 def is_initialized(cwd):
     """ Verify that a given directory has a git repository in it """
     cmd = ['git', 'status']
-    proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
-    if proc.wait() == 0:
-        return True
+    if os.path.isdir(cwd):
+        proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
+        if proc.wait() == 0:
+            return True
+        else:
+            return False
     else:
         return False
 
