@@ -32,10 +32,7 @@ def is_initialized(cwd):
         proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         if proc.wait() == 0:
             return True
-        else:
-            return False
-    else:
-        return False
+    return False
 
 
 def git_init(cwd):
