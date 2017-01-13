@@ -55,8 +55,9 @@ def git_add(cwd, filepath):
 def git_commit(cwd, message="Updated given records to pwstore."):
     """ Commit staged changes to the pwstore """
     logger.debug('Committing staged files to pwstore...')
-    cmd = ['git', 'commit', '-m', message]
-    subprocess.check_call(cmd, cwd=cwd)
+    repo = Repo(cwd)
+    commit_id = repo.do_commit(message.encode())
+    assert repo.head() == commit_id
 
 
 def save_edata(edata, filepath):
