@@ -52,11 +52,10 @@ def git_add(cwd, filepath):
     repo.stage(os.path.basename(filepath))
 
 
-def git_commit(message="Updated given records to pwstore."):
+def git_commit(cwd, message="Updated given records to pwstore."):
     """ Commit staged changes to the pwstore """
     logger.debug('Committing staged files to pwstore...')
     cmd = ['git', 'commit', '-m', message]
-    cwd = find_pwstore()
     subprocess.check_call(cmd, cwd=cwd)
 
 
@@ -212,7 +211,7 @@ def add(ctx):
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
         git_add(find_pwstore(), ctx.obj['datafile'])
-        git_commit("Created empty record.")
+        git_commit(ctx.obj['pwstore'], "Created empty record.")
 
 
 @main.command()
@@ -224,7 +223,7 @@ def delete(ctx, key):
     newdata = delete_key(data, key)
     save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
     git_add(find_pwstore(), ctx.obj['datafile'])
-    git_commit()
+    git_commit(ctx.obj['pwstore'])
 
 
 @main.command()
@@ -262,7 +261,7 @@ def update(ctx, key, value):
     newdata = update_key(data, key, value)
     save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
     git_add(find_pwstore(), ctx.obj['datafile'])
-    git_commit()
+    git_commit(ctx.obj['pwstore'])
 
 
 @main.command()
@@ -281,7 +280,7 @@ def drop(ctx):
     cmd = ['git', 'rm', target]
     cwd = find_pwstore()
     subprocess.check_call(cmd, cwd=cwd)
-    git_commit("Dropped record from pwstore.")
+    git_commit(cwd, "Dropped record from pwstore.")
 
 
 @main.command()
@@ -292,8 +291,8 @@ def alias(ctx, alias):
     source = ctx.obj['datafile']
     target = os.path.join(ctx.obj['pwstore'], alias + '.gpg')
     os.symlink(source, target)
-    git_add(find_pwstore(), target)
-    git_commit()
+    git_add(ctx.obj['pwstore'], target)
+    git_commit(ctx.obj['pwstore'])
 
 
 if __name__ == '__main__':
