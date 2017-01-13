@@ -8,20 +8,11 @@ from unittest.mock import patch
 
 class test_git_add(unittest.TestCase):
 
-    @patch('subprocess.check_call')
-    def test_git_add(self, check_call):
-        filename = 'eggs'
-        pw.git_add(filename)
-        check_call.assert_called_once_with(['git', 'add', filename], cwd=pw.find_pwstore())
-
+    pass
 
 class test_git_commit(unittest.TestCase):
 
-    @patch('subprocess.check_call')
-    def test_git_commit(self, check_call):
-        pw.git_commit()
-        check_call.assert_called_once_with(['git', 'commit', '-m', 'Updated given records to pwstore.'], cwd=pw.find_pwstore())
-
+    pass
 
 class test_get_key(unittest.TestCase):
 
