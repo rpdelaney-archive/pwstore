@@ -13,10 +13,10 @@ import click
 import os
 import sys
 import logging
-import subprocess
 import gnupg
 import json
 import dulwich
+from dulwich import porcelain
 from dulwich.repo import Repo
 
 # Initialize Logging Module
@@ -277,10 +277,11 @@ def select(ctx):
 @click.pass_context
 def drop(ctx):
     """ Delete an entire record from the disk """
-    target = ctx.obj['datafile']
-    cmd = ['git', 'rm', target]
-    cwd = find_pwstore()
-    subprocess.check_call(cmd, cwd=cwd)
+    target = os.path.basename(ctx.obj['datafile'])
+    cwd = ctx.obj['pwstore'] + '/'
+    logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
+    porcelain.rm(cwd, [target])
+    os.unlink(os.path.abspath(cwd + target))
     git_commit(cwd, "Dropped record from pwstore.")
 
 
