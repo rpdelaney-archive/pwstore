@@ -16,6 +16,8 @@ import logging
 import subprocess
 import gnupg
 import json
+import dulwich
+from dulwich.repo import Repo
 
 # Initialize Logging Module
 logger = logging.getLogger(__name__)
@@ -27,12 +29,14 @@ if not logger.handlers:
 
 def is_initialized(cwd):
     """ Verify that a given directory has a git repository in it """
-    cmd = ['git', 'status']
-    if os.path.isdir(cwd):
-        proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        if proc.wait() == 0:
-            return True
-    return False
+    if not os.path.isdir(cwd):
+        return False
+
+    try:
+        Repo(cwd)
+        return True
+    except dulwich.errors.NotGitRepository:
+        return False
 
 
 def git_init(cwd):
