@@ -29,7 +29,7 @@ def is_initialized(cwd):
     """ Verify that a given directory has a git repository in it """
     cmd = ['git', 'status']
     if os.path.isdir(cwd):
-        proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
+        proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         if proc.wait() == 0:
             return True
         else:
