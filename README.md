@@ -25,7 +25,7 @@ Commands:
 ### Dependencies
 The following non-standard dependencies are required:
 ```
-pip install python-gnupg
+pip install python-gnupg dulwich
 ```
 
 There is an optional dependency to display passwords as QRcodes:
