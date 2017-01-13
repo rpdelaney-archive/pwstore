@@ -41,7 +41,7 @@ def is_initialized(cwd):
 
 def git_init(cwd):
     """ Initialize a git repository in a given directory """
-    Repo.init(cwd)
+    Repo.init(cwd, mkdir=True)
     logger.warn("WARNING: Initialized a new password store at " + cwd)
 
 
@@ -129,11 +129,7 @@ def find_pwstore():
     if trydir is not None and os.path.isdir(trydir):
         return trydir
 
-    trydir = appdirs.user_data_dir('pwstore')
-    if not os.path.isdir(trydir):
-        logger.warn("WARNING: Creating password store directory at " + trydir)
-        os.mkdir(trydir)
-        return trydir
+    return appdirs.user_data_dir('pwstore')
 
 
 def print_friendly(jsondata):
