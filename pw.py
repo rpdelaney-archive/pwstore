@@ -13,9 +13,11 @@ import click
 import os
 import sys
 import logging
-import subprocess
 import gnupg
 import json
+import dulwich
+from dulwich import porcelain
+from dulwich.repo import Repo
 
 # Initialize Logging Module
 logger = logging.getLogger(__name__)
@@ -27,36 +29,35 @@ if not logger.handlers:
 
 def is_initialized(cwd):
     """ Verify that a given directory has a git repository in it """
-    cmd = ['git', 'status']
-    if os.path.isdir(cwd):
-        proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        if proc.wait() == 0:
-            return True
-    return False
+    if not os.path.isdir(cwd):
+        return False
+
+    try:
+        Repo(cwd)
+        return True
+    except dulwich.errors.NotGitRepository:
+        return False
 
 
 def git_init(cwd):
-    """ Initialize a git repository in the given directory """
-    cmd = ['git', 'init']
-    proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL)
-    if proc.wait() != 0:
-        raise RuntimeError("Failed to initialize the pwstore.")
-    else:
-        logger.warn("WARNING: Initialized a new password store at " + cwd)
+    """ Initialize a git repository in a given directory """
+    Repo.init(cwd, mkdir=True)
+    logger.warn("WARNING: Initialized a new password store at " + cwd)
 
 
 def git_add(cwd, filepath):
     """ Stage a file in the pwstore """
     logger.debug('Staging file in pwstore: ' + filepath)
-    cmd = ['git', 'add', filepath]
-    subprocess.check_call(cmd, cwd=cwd)
+    repo = Repo(cwd)
+    repo.stage(os.path.basename(filepath))
 
 
 def git_commit(cwd, message="Updated given records to pwstore."):
     """ Commit staged changes to the pwstore """
     logger.debug('Committing staged files to pwstore...')
-    cmd = ['git', 'commit', '-m', message]
-    subprocess.check_call(cmd, cwd=cwd)
+    repo = Repo(cwd)
+    commit_id = repo.do_commit(message.encode())
+    assert repo.head() == commit_id
 
 
 def save_edata(edata, filepath):
@@ -128,11 +129,7 @@ def find_pwstore():
     if trydir is not None and os.path.isdir(trydir):
         return trydir
 
-    trydir = appdirs.user_data_dir('pwstore')
-    if not os.path.isdir(trydir):
-        logger.warn("WARNING: Creating password store directory at " + trydir)
-        os.mkdir(trydir)
-        return trydir
+    return appdirs.user_data_dir('pwstore')
 
 
 def print_friendly(jsondata):
@@ -280,10 +277,11 @@ def select(ctx):
 @click.pass_context
 def drop(ctx):
     """ Delete an entire record from the disk """
-    target = ctx.obj['datafile']
-    cmd = ['git', 'rm', target]
-    cwd = find_pwstore()
-    subprocess.check_call(cmd, cwd=cwd)
+    target = os.path.basename(ctx.obj['datafile'])
+    cwd = ctx.obj['pwstore'] + '/'
+    logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
+    porcelain.rm(cwd, [target])
+    os.unlink(os.path.abspath(cwd + target))
     git_commit(cwd, "Dropped record from pwstore.")
 
 
