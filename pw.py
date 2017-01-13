@@ -48,8 +48,8 @@ def git_init(cwd):
 def git_add(cwd, filepath):
     """ Stage a file in the pwstore """
     logger.debug('Staging file in pwstore: ' + filepath)
-    cmd = ['git', 'add', filepath]
-    subprocess.check_call(cmd, cwd=cwd)
+    repo = Repo(cwd)
+    repo.stage(os.path.basename(filepath))
 
 
 def git_commit(message="Updated given records to pwstore."):
