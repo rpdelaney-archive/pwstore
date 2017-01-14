@@ -209,7 +209,7 @@ def add(ctx):
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
         git_add(find_pwstore(), ctx.obj['datafile'])
-        git_commit(ctx.obj['pwstore'], "Created empty record.")
+        git_commit(ctx.obj['pwstore'], "Created empty record " + os.path.basename(ctx.obj['datafile']))
 
 
 @main.command()
@@ -279,7 +279,7 @@ def drop(ctx):
     logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
     porcelain.rm(cwd, [target])
     os.unlink(os.path.abspath(cwd + target))
-    git_commit(cwd, "Dropped record from pwstore.")
+    git_commit(cwd, "Dropped record " + target + " from pwstore.")
 
 
 @main.command()
