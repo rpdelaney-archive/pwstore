@@ -3,7 +3,11 @@
 import json
 import unittest
 import pw
-from unittest.mock import patch
+
+
+class test_is_initialized(unittest.TestCase):
+
+    pass
 
 
 class test_git_add(unittest.TestCase):
