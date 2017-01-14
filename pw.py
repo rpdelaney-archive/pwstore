@@ -52,7 +52,7 @@ def git_add(cwd, filepath):
     repo.stage(os.path.basename(filepath))
 
 
-def git_commit(cwd, message="Updated given records to pwstore."):
+def git_commit(cwd, message="Updated given records to password store."):
     """ Commit staged changes to the pwstore """
     logger.debug('Committing staged files to pwstore...')
     repo = Repo(cwd)
@@ -108,7 +108,6 @@ def find_recipient():
 
 def find_gpghome():
     """ Try to figure out where the gnupg homedir is """
-
     try:
         gdir = os.environ['GNUPGHOME']
         if gdir:
