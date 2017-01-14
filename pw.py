@@ -11,7 +11,6 @@
 import appdirs
 import click
 import os
-import sys
 import logging
 import gnupg
 import json
@@ -102,8 +101,7 @@ def find_recipient():
             logger.debug("Recipient key is: " + rkey)
             return rkey
     except KeyError:
-        logger.critical("Failed to encrypt data. PWSTORE_KEY is not set.")
-        sys.exit(1)
+        raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
 
 
 def find_gpghome():
@@ -297,7 +295,7 @@ def alias(ctx, alias):
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()
 
 
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
