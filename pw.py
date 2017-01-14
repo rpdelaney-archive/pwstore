@@ -279,7 +279,7 @@ def drop(ctx):
     logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
     porcelain.rm(cwd, [target])
     os.unlink(os.path.abspath(cwd + target))
-    git_commit(cwd, "Dropped record " + target + " from pwstore.")
+    git_commit(cwd, "Dropped record " + target + " from password store.")
 
 
 @main.command()
