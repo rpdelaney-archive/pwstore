@@ -7,16 +7,34 @@ import pw
 
 class test_is_initialized(unittest.TestCase):
 
-    pass
+    def unit_test_nonexistant_dir(self):
+        pass
+
+    def unit_test_initialized_dir(self):
+        pass
+
+    def unit_test_noninitialized_dir(self):
+        pass
+
+    def functional_test_nonexistant_dir(self):
+        pass
+
+    def functional_test_initialized_dir(self):
+        pass
+
+    def functional_test_noninitialized_dir(self):
+        pass
 
 
 class test_git_add(unittest.TestCase):
 
     pass
 
+
 class test_git_commit(unittest.TestCase):
 
     pass
+
 
 class test_get_key(unittest.TestCase):
 
