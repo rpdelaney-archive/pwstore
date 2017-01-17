@@ -17,7 +17,7 @@ class test_is_initialized(unittest.TestCase):
         pass
 
     def functional_test_nonexistent_dir(self):
-        cwd = '/dir/that/does/not/exist'
+        cwd = 'tests/dir/that/does/not/exist'
         result = pw.is_initialized(cwd)
         self.assertFalse(result)
 
