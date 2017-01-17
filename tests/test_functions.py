@@ -16,14 +16,20 @@ class test_is_initialized(unittest.TestCase):
     def unit_test_noninitialized_dir(self):
         pass
 
-    def functional_test_nonexistant_dir(self):
-        pass
+    def functional_test_nonexistent_dir(self):
+        cwd = '/dir/that/does/not/exist'
+        result = pw.is_initialized(cwd)
+        self.assertFalse(result)
 
     def functional_test_initialized_dir(self):
-        pass
+        cwd = 'tests/git_initialized/'
+        result = pw.is_initialized(cwd)
+        self.assertTrue(result)
 
     def functional_test_noninitialized_dir(self):
-        pass
+        cwd = 'tests/git_uninitialized/'
+        result = pw.is_initialized(cwd)
+        self.assertFalse(result)
 
 
 class test_git_add(unittest.TestCase):
