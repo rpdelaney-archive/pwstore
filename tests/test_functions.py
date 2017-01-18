@@ -7,7 +7,7 @@ import pw
 
 class test_is_initialized(unittest.TestCase):
 
-    def unit_test_nonexistant_dir(self):
+    def unit_test_nonexistent_dir(self):
         pass
 
     def unit_test_initialized_dir(self):
