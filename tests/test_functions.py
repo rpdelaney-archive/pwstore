@@ -39,7 +39,17 @@ class test_git_add(unittest.TestCase):
 
 class test_git_commit(unittest.TestCase):
 
-    pass
+    def unit_test_commit_is_sent_with_encoded_message(self):
+        pass
+
+    def unit_test_raise_exception_if_head_doesnt_match_returned_commit(self):
+        pass
+
+    def unit_test_repo_called_with_correct_cwd(self):
+        pass
+
+    def functional_test_dirty_repo(self):
+        pass
 
 
 class test_get_key(unittest.TestCase):
