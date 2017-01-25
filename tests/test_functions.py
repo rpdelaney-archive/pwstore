@@ -46,14 +46,21 @@ class test_git_commit(unittest.TestCase):
     @mock.patch('pw.Repo') # Since we import Repo into the module, we need to patch pw.repo
     def unit_test_raise_exception_if_head_doesnt_match_returned_commit(self, repo):
         repo_object = mock.MagicMock() # Repo() returns a repo object, which we mock
-        repo_object.commit_id.return_value = 'foo' # Set the return values
-        repo_object.head.return_value = 'bar'
+        repo_object.commit_id = mock.MagicMock(return_value='foo') # Set the return values
+        repo_object.head = mock.MagicMock(return_value='bar')
         repo.return_value = repo_object # Set Repo() to return our mock object
         with self.assertRaises(AssertionError): # Confirm we get an assertion error (Without the with, we'd have to create a lambda and pass it to self.assertRaises as the second arg
             pw.git_commit('a', 'b')
 
-    def unit_test_repo_called_with_correct_cwd(self):
-        pass
+    @mock.patch('pw.Repo')
+    def unit_test_repo_called_with_correct_cwd(self, repo):
+        repo_object = mock.MagicMock()
+        cwd = 'dir/that/does/not/exist'
+        repo_object.head = mock.MagicMock(return_value='foo')
+        repo_object.do_commit = mock.MagicMock(return_value='foo')
+        repo.return_value = repo_object
+        pw.git_commit(cwd)
+        repo.assert_called_once_with(cwd) # Assert that repo.Repo, i.e. the class, is called with cwd, not repo_object, the instance
 
     def functional_test_dirty_repo(self):
         pass
