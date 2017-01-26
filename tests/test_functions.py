@@ -9,9 +9,15 @@ import tempfile
 import dulwich
 
 
+def get_empty_dir():
+    """ Set up an empty directory (non-initalized git repo) """
+    empty_dir = tempfile.TemporaryDirectory()
+    return empty_dir
+
+
 def get_initialized_dir():
     """ Create and return an initialized git repository in tmpfs """
-    git_initialized_dir = tempfile.TemporaryDirectory()
+    git_initialized_dir = get_empty_dir()
     dulwich.repo.Repo.init(git_initialized_dir.name)
     return git_initialized_dir
 
@@ -23,12 +29,6 @@ def get_dirty_dir():
     repo = dulwich.repo.Repo(git_dir.name)
     repo.stage(os.path.basename(git_file.name))
     return git_dir
-
-
-def get_empty_dir():
-    """ Set up an empty directory (non-initalized git repo) """
-    empty_dir = tempfile.TemporaryDirectory()
-    return empty_dir
 
 
 class test_is_initialized(unittest.TestCase):
