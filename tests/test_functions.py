@@ -70,13 +70,13 @@ class test_git_commit(unittest.TestCase):
     def unit_test_commit_is_sent_with_encoded_message(self):
         pass
 
-    @mock.patch('pw.Repo') # Since we import Repo into the module, we need to patch pw.repo
+    @mock.patch('pw.Repo')
     def unit_test_raise_exception_if_head_doesnt_match_returned_commit(self, repo):
-        repo_object = mock.MagicMock() # Repo() returns a repo object, which we mock
-        repo_object.commit_id = mock.MagicMock(return_value='foo') # Set the return values
+        repo_object = mock.MagicMock()
+        repo_object.commit_id = mock.MagicMock(return_value='foo')
         repo_object.head = mock.MagicMock(return_value='bar')
-        repo.return_value = repo_object # Set Repo() to return our mock object
-        with self.assertRaises(AssertionError): # Confirm we get an assertion error (Without the with, we'd have to create a lambda and pass it to self.assertRaises as the second arg
+        repo.return_value = repo_object
+        with self.assertRaises(AssertionError):
             pw.git_commit('a', 'b')
 
     @mock.patch('pw.Repo')
@@ -87,7 +87,7 @@ class test_git_commit(unittest.TestCase):
         repo_object.do_commit = mock.MagicMock(return_value='foo')
         repo.return_value = repo_object
         pw.git_commit(cwd)
-        repo.assert_called_once_with(cwd) # Assert that repo.Repo, i.e. the class, is called with cwd, not repo_object, the instance
+        repo.assert_called_once_with(cwd)
 
     def functional_test_dirty_repo(self):
         git_dir = get_dirty_dir()
