@@ -4,6 +4,21 @@ import json
 import unittest
 import pw
 import mock
+import tempfile
+import dulwich
+
+
+def get_initialized_dir():
+    """ Create and return an initialized git repository in tmpfs """
+    git_initialized_dir = tempfile.TemporaryDirectory()
+    dulwich.repo.Repo.init(git_initialized_dir.name)
+    return git_initialized_dir
+
+
+def get_empty_dir():
+    """ Set up an empty directory (non-initalized git repo) """
+    empty_dir = tempfile.TemporaryDirectory()
+    return empty_dir
 
 
 class test_is_initialized(unittest.TestCase):
@@ -23,14 +38,16 @@ class test_is_initialized(unittest.TestCase):
         self.assertFalse(result)
 
     def functional_test_initialized_dir(self):
-        cwd = 'tests/git_initialized/'
-        result = pw.is_initialized(cwd)
+        cwd = get_initialized_dir()
+        result = pw.is_initialized(cwd.name)
         self.assertTrue(result)
+        cwd.cleanup
 
     def functional_test_noninitialized_dir(self):
-        cwd = 'tests/git_uninitialized/'
-        result = pw.is_initialized(cwd)
+        cwd = get_empty_dir()
+        result = pw.is_initialized(cwd.name)
         self.assertFalse(result)
+        cwd.cleanup
 
 
 class test_git_add(unittest.TestCase):
