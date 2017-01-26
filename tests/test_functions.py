@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import json
 import unittest
 import pw
@@ -13,6 +14,15 @@ def get_initialized_dir():
     git_initialized_dir = tempfile.TemporaryDirectory()
     dulwich.repo.Repo.init(git_initialized_dir.name)
     return git_initialized_dir
+
+
+def get_dirty_dir():
+    """ Create and return a dirty git repo in tmpfs """
+    git_dir = get_initialized_dir()
+    git_file = tempfile.NamedTemporaryFile(dir=git_dir.name, delete=False)
+    repo = dulwich.repo.Repo(git_dir.name)
+    repo.stage(os.path.basename(git_file.name))
+    return git_dir
 
 
 def get_empty_dir():
@@ -80,7 +90,9 @@ class test_git_commit(unittest.TestCase):
         repo.assert_called_once_with(cwd) # Assert that repo.Repo, i.e. the class, is called with cwd, not repo_object, the instance
 
     def functional_test_dirty_repo(self):
-        pass
+        git_dir = get_dirty_dir()
+        pw.git_commit(git_dir.name)
+        git_dir.cleanup
 
 
 class test_get_key(unittest.TestCase):
