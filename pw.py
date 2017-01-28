@@ -294,6 +294,20 @@ def alias(ctx, alias):
     git_commit(ctx.obj['pwstore'])
 
 
+@main.command()
+@click.argument('key')
+@click.pass_context
+def copy(ctx, key):
+    """ Copy a KEY value to the system clipboard """
+    try:
+        import pyperclip
+        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+        value = get_key(data, key)
+        pyperclip.copy(value)
+    except ModuleNotFoundError:
+        raise RuntimeError("Required library not found: pyperclip")
+
+
 if __name__ == '__main__':
     main()
 
