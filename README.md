@@ -4,8 +4,7 @@ Donenfeld.
 
 ## Usage
 ```
-$ ./pw.py -?
-Usage: pw.py [OPTIONS] RECORD COMMAND [ARGS]...
+Usage: pw [OPTIONS] RECORD COMMAND [ARGS]...
 
 Options:
   -?, -h, --help  Show this message and exit.
@@ -13,6 +12,7 @@ Options:
 Commands:
   add     Create a new record
   alias   Create a symlink named ALIAS
+  copy    Copy a KEY value to the system clipboard
   delete  Delete KEY from a record
   drop    Delete an entire record from the disk
   get     Retrieve a KEY value from a record
@@ -28,9 +28,9 @@ The following non-standard dependencies are required:
 pip install python-gnupg dulwich
 ```
 
-There is an optional dependency to display passwords as QRcodes:
+There are two optional dependencies, to display passwords as QRcodes, and to copy the password to the clipboard:
 ```
-pip install pyqrcode
+pip install pyqrcode pyperclip
 ```
 ### GPG
 Like password-store, pw.py uses GPG encryption to store data securely.  For
