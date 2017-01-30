@@ -19,6 +19,7 @@ Commands:
   list    List the keys in a record
   qrcode  Display a KEY value as a qrcode
   select  Decrypt a record and print it raw
+  type    Type a KEY value at the cursor position
   update  Update a record's KEY with VALUE
 ```
 
@@ -28,9 +29,11 @@ The following non-standard dependencies are required:
 pip install python-gnupg dulwich
 ```
 
-There are two optional dependencies, to display passwords as QRcodes, and to copy the password to the clipboard:
+There are three optional dependencies: to display passwords as QRcodes, to copy
+the password to the clipboard, and to type the password at the current cursor
+position:
 ```
-pip install pyqrcode pyperclip
+pip install pyqrcode pyperclip pyautogui
 ```
 ### GPG
 Like password-store, pw.py uses GPG encryption to store data securely.  For
