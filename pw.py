@@ -312,7 +312,7 @@ def copy(ctx, key):
 @click.argument('key')
 @click.pass_context
 def type(ctx, key):
-    """ Type a KEY value at the current cursor position """
+    """ Type a KEY value at the cursor position """
     try:
         import pyautogui
         data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
