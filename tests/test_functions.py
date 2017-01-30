@@ -40,8 +40,13 @@ class test_is_initialized(unittest.TestCase):
         pw.is_initialized(cwd)
         ospath.assert_called_once_with(cwd)
 
-    def unit_test_initialized_dir(self):
-        pass
+    @mock.patch('pw.Repo')
+    def unit_test_Repo_called(self, repo):
+        mydir = get_empty_dir()
+        cwd = mydir.name
+        pw.is_initialized(cwd)
+        repo.assert_called_once_with(cwd)
+        mydir.cleanup
 
     def unit_test_noninitialized_dir(self):
         pass
