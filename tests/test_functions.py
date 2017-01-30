@@ -67,8 +67,15 @@ class test_git_add(unittest.TestCase):
 
 class test_git_commit(unittest.TestCase):
 
-    def unit_test_commit_is_sent_with_encoded_message(self):
-        pass
+    @mock.patch('pw.Repo')
+    def unit_test_commit_is_sent_with_encoded_message(self, repo):
+        repo_object = mock.MagicMock()
+        cwd = 'dir/that/does/not/exist'
+        repo_object.head = mock.MagicMock(return_value='foo')
+        repo_object.do_commit = mock.MagicMock(return_value='foo')
+        repo.return_value = repo_object
+        pw.git_commit(cwd, "mymessage")
+        repo_object.do_commit.assert_called_once_with(b'mymessage')
 
     @mock.patch('pw.Repo')
     def unit_test_raise_exception_if_head_doesnt_match_returned_commit(self, repo):
