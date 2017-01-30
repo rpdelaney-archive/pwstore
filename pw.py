@@ -308,6 +308,20 @@ def copy(ctx, key):
         raise RuntimeError("Required library not found: pyperclip")
 
 
+@main.command()
+@click.argument('key')
+@click.pass_context
+def type(ctx, key):
+    """ Type a KEY value at the current cursor position """
+    try:
+        import pyautogui
+        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+        value = get_key(data, key)
+        pyautogui.typewrite(value)
+    except ModuleNotFoundError:
+        raise RuntimeError("Required library not found: pyautogui")
+
+
 if __name__ == '__main__':
     main()
 
