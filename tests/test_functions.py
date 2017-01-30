@@ -33,8 +33,12 @@ def get_dirty_dir():
 
 class test_is_initialized(unittest.TestCase):
 
-    def unit_test_nonexistent_dir(self):
-        pass
+    @mock.patch('os.path.isdir')
+    def unit_test_os_path_isdir(self, ospath):
+        ospath.return_value = False
+        cwd = 'dir/that/does/not/exist'
+        pw.is_initialized(cwd)
+        ospath.assert_called_once_with(cwd)
 
     def unit_test_initialized_dir(self):
         pass
