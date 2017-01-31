@@ -51,8 +51,10 @@ class test_is_initialized(unittest.TestCase):
     def unit_test_Repo_called(self, repo):
         mydir = get_empty_dir()
         cwd = mydir.name
-        pw.is_initialized(cwd)
-        mydir.cleanup
+        try:
+            pw.is_initialized(cwd)
+        finally:
+            mydir.cleanup
         repo.assert_called_once_with(cwd)
 
     def functional_test_nonexistent_dir(self):
@@ -62,14 +64,18 @@ class test_is_initialized(unittest.TestCase):
 
     def functional_test_initialized_dir(self):
         cwd = get_initialized_dir()
-        result = pw.is_initialized(cwd.name)
-        cwd.cleanup
+        try:
+            result = pw.is_initialized(cwd.name)
+        finally:
+            cwd.cleanup
         self.assertTrue(result)
 
     def functional_test_noninitialized_dir(self):
         cwd = get_empty_dir()
-        result = pw.is_initialized(cwd.name)
-        cwd.cleanup
+        try:
+            result = pw.is_initialized(cwd.name)
+        finally:
+            cwd.cleanup
         self.assertFalse(result)
 
 
