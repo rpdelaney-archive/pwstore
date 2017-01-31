@@ -30,7 +30,7 @@ def get_unstaged_dir():
     return git_file, git_dir
 
 
-def get_dirty_dir():
+def get_staged_dir():
     """ Create and return a dirty git repo (file staged) in tmpfs """
     git_file, git_dir = get_unstaged_dir()
     repo = dulwich.repo.Repo(git_dir.name)
@@ -117,7 +117,7 @@ class test_git_commit(unittest.TestCase):
         repo.assert_called_once_with(cwd)
 
     def functional_test_dirty_repo(self):
-        git_file, git_dir = get_dirty_dir()
+        git_file, git_dir = get_staged_dir()
         try:
             pw.git_commit(git_dir.name)
         finally:
