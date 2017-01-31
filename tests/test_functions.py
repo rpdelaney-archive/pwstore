@@ -48,9 +48,6 @@ class test_is_initialized(unittest.TestCase):
         repo.assert_called_once_with(cwd)
         mydir.cleanup
 
-    def unit_test_noninitialized_dir(self):
-        pass
-
     def functional_test_nonexistent_dir(self):
         cwd = 'tests/dir/that/does/not/exist'
         result = pw.is_initialized(cwd)
