@@ -23,10 +23,16 @@ def get_initialized_dir():
     return git_initialized_dir
 
 
-def get_dirty_dir():
-    """ Create and return a dirty git repo in tmpfs """
+def get_unstaged_dir():
+    """ Create and return a dirty git repo (file unstaged) in tmpfs """
     git_dir = get_initialized_dir()
     git_file = tempfile.NamedTemporaryFile(dir=git_dir.name, delete=False)
+    return git_file, git_dir
+
+
+def get_dirty_dir():
+    """ Create and return a dirty git repo (file staged) in tmpfs """
+    git_file, git_dir = get_unstaged_dir()
     repo = dulwich.repo.Repo(git_dir.name)
     repo.stage(os.path.basename(git_file.name))
     return git_file, git_dir
