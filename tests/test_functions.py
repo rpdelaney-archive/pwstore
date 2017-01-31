@@ -81,7 +81,7 @@ class test_git_commit(unittest.TestCase):
         repo_object.head = mock.MagicMock(return_value='foo')
         repo_object.do_commit = mock.MagicMock(return_value='foo')
         repo.return_value = repo_object
-        pw.git_commit(cwd, "mymessage")
+        pw.git_commit(cwd, 'mymessage')
         repo_object.do_commit.assert_called_once_with(b'mymessage')
 
     @mock.patch('pw.Repo')
