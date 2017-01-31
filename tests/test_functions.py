@@ -69,7 +69,14 @@ class test_is_initialized(unittest.TestCase):
 
 class test_git_add(unittest.TestCase):
 
-    pass
+    @mock.patch('pw.Repo')
+    def unit_test_repo_stage_called(self, repo):
+        repo_object = mock.MagicMock()
+        cwd = 'dir/that/does/not/exist'
+        myfile = 'dir/that/does/not/exist/file'
+        repo.return_value = repo_object
+        pw.git_add(cwd, myfile)
+        repo_object.stage.assert_called_once_with(os.path.basename(myfile))
 
 
 class test_git_commit(unittest.TestCase):
