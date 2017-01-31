@@ -45,8 +45,8 @@ class test_is_initialized(unittest.TestCase):
         mydir = get_empty_dir()
         cwd = mydir.name
         pw.is_initialized(cwd)
-        repo.assert_called_once_with(cwd)
         mydir.cleanup
+        repo.assert_called_once_with(cwd)
 
     def functional_test_nonexistent_dir(self):
         cwd = 'tests/dir/that/does/not/exist'
@@ -56,14 +56,14 @@ class test_is_initialized(unittest.TestCase):
     def functional_test_initialized_dir(self):
         cwd = get_initialized_dir()
         result = pw.is_initialized(cwd.name)
-        self.assertTrue(result)
         cwd.cleanup
+        self.assertTrue(result)
 
     def functional_test_noninitialized_dir(self):
         cwd = get_empty_dir()
         result = pw.is_initialized(cwd.name)
-        self.assertFalse(result)
         cwd.cleanup
+        self.assertFalse(result)
 
 
 class test_git_add(unittest.TestCase):
