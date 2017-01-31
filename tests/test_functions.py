@@ -29,7 +29,7 @@ def get_dirty_dir():
     git_file = tempfile.NamedTemporaryFile(dir=git_dir.name, delete=False)
     repo = dulwich.repo.Repo(git_dir.name)
     repo.stage(os.path.basename(git_file.name))
-    return git_dir
+    return git_file, git_dir
 
 
 class test_is_initialized(unittest.TestCase):
@@ -111,7 +111,7 @@ class test_git_commit(unittest.TestCase):
         repo.assert_called_once_with(cwd)
 
     def functional_test_dirty_repo(self):
-        git_dir = get_dirty_dir()
+        git_file, git_dir = get_dirty_dir()
         try:
             pw.git_commit(git_dir.name)
         finally:
