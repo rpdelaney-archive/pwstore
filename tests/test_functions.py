@@ -105,8 +105,10 @@ class test_git_commit(unittest.TestCase):
 
     def functional_test_dirty_repo(self):
         git_dir = get_dirty_dir()
-        pw.git_commit(git_dir.name)
-        git_dir.cleanup
+        try:
+            pw.git_commit(git_dir.name)
+        finally:
+            git_dir.cleanup
 
 
 class test_get_key(unittest.TestCase):
