@@ -84,6 +84,18 @@ class test_git_add(unittest.TestCase):
         pw.git_add(cwd, myfile)
         repo_object.stage.assert_called_once_with(os.path.basename(myfile))
 
+    def functional_test_git_add(self):
+        git_file, git_dir = get_unstaged_dir()
+        repo = dulwich.repo.Repo(git_dir.name)
+        index = repo.open_index()
+        try:
+            assert list(index) == []
+            pw.git_add(git_dir.name, git_file.name)
+            index = repo.open_index()
+            assert list(index) == [os.path.basename(git_file.name).encode()]
+        finally:
+            git_dir.cleanup
+
 
 class test_git_commit(unittest.TestCase):
 
