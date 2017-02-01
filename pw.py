@@ -40,7 +40,11 @@ def is_initialized(cwd):
 
 def git_init(cwd):
     """ Initialize a git repository in a given directory """
-    Repo.init(cwd, mkdir=True)
+    if os.path.isdir(cwd):
+        Repo.init(cwd)
+    else:
+        Repo.init(cwd, mkdir=True)
+
     logger.warn("WARNING: Initialized a new password store at " + cwd)
 
 
