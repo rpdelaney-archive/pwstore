@@ -88,13 +88,21 @@ class test_git_init(unittest.TestCase):
         pw.git_init(cwd)
         pw.Repo.init.assert_called_once_with(cwd, mkdir=True)
 
-    def functional_test_git_init(self):
+    def functional_test_nonexisting_dir(self):
         cwd = 'dirthatdoesnotexist/'
         try:
             pw.git_init(cwd)
             dulwich.repo.Repo(cwd)
         finally:
             shutil.rmtree(cwd)
+
+    def functional_test_existing_dir(self):
+        cwd = get_empty_dir()
+        try:
+            pw.git_init(cwd.name)
+            dulwich.repo.Repo(cwd.name)
+        finally:
+            cwd.cleanup
 
 
 class test_git_add(unittest.TestCase):
