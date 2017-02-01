@@ -79,6 +79,15 @@ class test_is_initialized(unittest.TestCase):
         self.assertFalse(result)
 
 
+class test_git_init(unittest.TestCase):
+
+    @mock.patch('pw.Repo')
+    def unit_test_repo_init_called(self, repo):
+        cwd = 'dir/that/does/not/exist'
+        pw.git_init(cwd)
+        pw.Repo.init.assert_called_once_with(cwd, mkdir=True)
+
+
 class test_git_add(unittest.TestCase):
 
     @mock.patch('pw.Repo')
