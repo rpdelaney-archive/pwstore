@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import shutil
 import json
 import unittest
 import pw
@@ -88,7 +89,12 @@ class test_git_init(unittest.TestCase):
         pw.Repo.init.assert_called_once_with(cwd, mkdir=True)
 
     def functional_test_git_init(self):
-        pass
+        cwd = 'dirthatdoesnotexist/'
+        try:
+            pw.git_init(cwd)
+            dulwich.repo.Repo(cwd)
+        finally:
+            shutil.rmtree(cwd)
 
 
 class test_git_add(unittest.TestCase):
