@@ -87,6 +87,9 @@ class test_git_init(unittest.TestCase):
         pw.git_init(cwd)
         pw.Repo.init.assert_called_once_with(cwd, mkdir=True)
 
+    def functional_test_git_init(self):
+        pass
+
 
 class test_git_add(unittest.TestCase):
 
