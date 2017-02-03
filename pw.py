@@ -278,12 +278,15 @@ def select(ctx):
 @click.pass_context
 def drop(ctx):
     """ Delete an entire record from the disk """
-    target = os.path.basename(ctx.obj['datafile'])
-    cwd = ctx.obj['pwstore'] + '/'
-    logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
-    porcelain.rm(cwd, [target])
-    os.unlink(os.path.abspath(cwd + target))
-    git_commit(cwd, "Dropped record " + target + " from password store.")
+    if os.path.exists(ctx.obj['datafile']):
+        target = os.path.basename(ctx.obj['datafile'])
+        cwd = ctx.obj['pwstore'] + '/'
+        logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
+        porcelain.rm(cwd, [target])
+        os.unlink(os.path.abspath(cwd + target))
+        git_commit(cwd, "Dropped record " + target + " from password store.")
+    else:
+        logger.critical("Record title does not exist. Nothing was done.")
 
 
 @main.command()
