@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
-# Python 3.5.2
+# Python 3.6
 #
-# © Copyright 2016 Ryan Delaney. All rights reserved.
+# © Copyright 2017 Ryan Delaney. All rights reserved.
 # This work is distributed WITHOUT ANY WARRANTY whatsoever; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the README file for additional terms and conditions on your use of this
@@ -118,8 +118,8 @@ def find_gpghome():
     except KeyError:
         pass
 
-    homedir = os.environ['HOME'] + '/.gnupg/'
-    tryfile = homedir + 'gpg.conf'
+    homedir = os.path.join(os.environ['HOME'], '/.gnupg/')
+    tryfile = os.path.join(homedir, 'gpg.conf')
     if os.path.isfile(tryfile):
         return homedir
 
