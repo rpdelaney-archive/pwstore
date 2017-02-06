@@ -20,10 +20,7 @@ from dulwich.repo import Repo
 
 # Initialize Logging Module
 logger = logging.getLogger(__name__)
-if not logger.handlers:
-    ch = logging.StreamHandler()
-    logger.addHandler(ch)
-    logger.setLevel(logging.WARNING)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.WARNING)
 
 
 def is_initialized(cwd):
