@@ -168,6 +168,21 @@ class test_git_commit(unittest.TestCase):
             git_dir.cleanup
 
 
+class test_git_drop(unittest.TestCase):
+
+    def unit_test_porcelain_rm_called(self):
+        pass
+
+    def unit_test_git_commit_called(self):
+        pass
+
+    def unit_test_os_unlink_called(self):
+        pass
+
+    def functional_test_file_removed(self):
+        pass
+
+
 class test_get_key(unittest.TestCase):
 
     def test_get_key(self):
