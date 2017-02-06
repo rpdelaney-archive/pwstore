@@ -63,6 +63,15 @@ def git_commit(cwd, message="Updated given records to password store."):
     assert repo.head() == commit_id
 
 
+def git_drop(cwd, target):
+    """ Remove a tracked file from a repository & delete from disk """
+    cwd = cwd + os.sep  # we have to add a trailing separator because porcelain.rm is picky about paths
+    logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
+    porcelain.rm(cwd, [target])
+    os.unlink(os.path.abspath(os.path.join(cwd + target)))
+    git_commit(cwd, "Dropped record " + target + " from password store.")
+
+
 def save_edata(edata, filepath):
     """ Takes data (presumed to be gpg encrypted) and saves it to a file """
     with open(filepath, 'w+') as myfile:
@@ -279,12 +288,9 @@ def select(ctx):
 def drop(ctx):
     """ Delete an entire record from the disk """
     if os.path.exists(ctx.obj['datafile']):
+        cwd = ctx.obj['pwstore']
         target = os.path.basename(ctx.obj['datafile'])
-        cwd = ctx.obj['pwstore'] + '/'
-        logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
-        porcelain.rm(cwd, [target])
-        os.unlink(os.path.abspath(cwd + target))
-        git_commit(cwd, "Dropped record " + target + " from password store.")
+        git_drop(cwd, target)
     else:
         logger.critical("Record title does not exist. Nothing was done.")
 
