@@ -45,7 +45,7 @@ def git_init(cwd):
     else:
         Repo.init(cwd, mkdir=True)
 
-    logger.warn("WARNING: Initialized a new password store at " + cwd)
+    logger.warn("Initialized a new password store at " + cwd)
 
 
 def git_add(cwd, filepath):
@@ -65,7 +65,7 @@ def git_commit(cwd, message="Updated given records to password store."):
 
 def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
-    logger.warn("WARNING: Dropping record " + target + " from repository " + cwd)
+    logger.warn("Dropping record " + target + " from repository " + cwd)
     porcelain.rm(cwd, [target])
     os.unlink(os.path.abspath(os.path.join(cwd, target)))
     git_commit(cwd, "Dropped record " + target + " from password store.")
@@ -178,7 +178,7 @@ def main(ctx, record):
         assert gpghome is not None
         gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
     except AssertionError:
-        logger.critical("FATAL: GNUPGHOME could not be found.")
+        logger.critical("GNUPGHOME could not be found.")
 
     pwstore = find_pwstore()
     assert pwstore is not None
