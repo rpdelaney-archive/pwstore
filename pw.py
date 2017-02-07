@@ -176,6 +176,7 @@ def main(ctx, record):
         gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
     except AssertionError:
         logger.critical("GNUPGHOME could not be found.")
+        raise
 
     pwstore = find_pwstore()
     assert pwstore is not None
