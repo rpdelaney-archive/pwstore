@@ -85,7 +85,13 @@ def get_edata(filepath):
 
 def decrypt(gpg, edata):
     """ Take a gpg handler and some data (presumed to be gpg encrypted) and return the decrypted data """
-    return gpg.decrypt(edata)
+    data = gpg.decrypt(edata)
+    try:
+        assert data.ok
+    except AssertionError:
+        logger.critical("GPG decryption failed for an unknown reason.")
+        raise
+    return data
 
 
 def encrypt(gpg, data):
