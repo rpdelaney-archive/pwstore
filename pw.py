@@ -89,7 +89,7 @@ def decrypt(gpg, edata):
     try:
         assert data.ok
     except AssertionError:
-        logger.critical("GPG decryption failed for an unknown reason.")
+        logger.critical("GPG decryption failed. Status was: " + str(data.status))
         raise
     return data
 
