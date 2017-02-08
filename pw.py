@@ -98,6 +98,11 @@ def encrypt(gpg, data):
     """ Take a gpg handler and some data (presumed to be plain text) and return encrypted data """
     recipient = find_recipient()
     edata = gpg.encrypt(data, recipient)
+    try:
+        assert edata.ok
+    except AssertionError:
+        logger.critical("GPG encryption failed. Status was: " + str(edata.status))
+        raise
     return edata
 
 
