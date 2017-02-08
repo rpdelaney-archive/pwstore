@@ -262,7 +262,7 @@ def qrcode(ctx, key):
     try:
         import pyqrcode
     except ImportError:
-        raise RuntimeError("Required library not found: qrcode")
+        raise RuntimeError("Required library not found: pyqrcode")
 
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     value = get_key(data, key)
