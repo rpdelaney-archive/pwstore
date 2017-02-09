@@ -189,7 +189,12 @@ class test_git_drop(unittest.TestCase):
         pass
 
     def functional_test_file_removed(self):
-        pass
+        git_file, git_dir = get_clean_dir()
+        pw.git_drop(git_dir.name, git_file.name)
+        try:
+            assert not os.path.exists(git_file.name)
+        finally:
+            git_dir.cleanup
 
 
 class test_get_key(unittest.TestCase):
