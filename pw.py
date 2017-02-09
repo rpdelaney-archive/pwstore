@@ -62,6 +62,7 @@ def git_commit(cwd, message="Updated given records to password store."):
 
 def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
+    target = os.path.basename(target)
     logger.warn("Dropping record " + target + " from repository " + cwd)
     porcelain.rm(cwd, [target])
     os.unlink(os.path.abspath(os.path.join(cwd, target)))
