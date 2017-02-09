@@ -39,6 +39,15 @@ def get_staged_dir():
     return git_file, git_dir
 
 
+def get_clean_dir():
+    """ Create and return a clean git repo (file tracked, unstaged) in tmpfs """
+    git_file, git_dir = get_staged_dir()
+    repo = dulwich.repo.Repo(git_dir.name)
+    commit_id = repo.do_commit(b'test')
+    assert repo.head() == commit_id
+    return git_file, git_dir
+
+
 class test_is_initialized(unittest.TestCase):
 
     @mock.patch('os.path.isdir')
