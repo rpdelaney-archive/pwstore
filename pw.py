@@ -42,19 +42,19 @@ def git_init(cwd):
     else:
         Repo.init(cwd, mkdir=True)
 
-    logger.warn("Initialized a new password store at " + cwd)
+    logger.warn("Initialized a new password store at {}".format(cwd))
 
 
 def git_add(cwd, filepath):
     """ Stage a file in the pwstore """
-    logger.debug('Staging file in pwstore: ' + filepath)
+    logger.debug("Staging file in pwstore: {}".format(filepath))
     repo = Repo(cwd)
     repo.stage(os.path.basename(filepath))
 
 
 def git_commit(cwd, message="Updated given records to password store."):
     """ Commit staged changes to the pwstore """
-    logger.debug('Committing staged files to pwstore...')
+    logger.debug("Committing staged files to pwstore...")
     repo = Repo(cwd)
     commit_id = repo.do_commit(message.encode())
     assert repo.head() == commit_id
@@ -63,23 +63,23 @@ def git_commit(cwd, message="Updated given records to password store."):
 def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
     target = os.path.basename(target)
-    logger.warn("Dropping record " + target + " from repository " + cwd)
+    logger.warn("Dropping record {} from repository {}".format(target, cwd))
     porcelain.rm(cwd, [target])
     os.unlink(os.path.abspath(os.path.join(cwd, target)))
-    git_commit(cwd, "Dropped record " + target + " from password store.")
+    git_commit(cwd, "Dropped record {} from password store.".format(target))
 
 
 def save_edata(edata, filepath):
     """ Takes data (presumed to be gpg encrypted) and saves it to a file """
     with open(filepath, 'w+') as myfile:
-        logger.debug('Writing encrypted data to file ' + filepath)
+        logger.debug("Writing encrypted data to file {}".format(filepath))
         myfile.write(str(edata))
 
 
 def get_edata(filepath):
     """ Retrieve data (presumed to be gpg encrypted) from a file and return it raw """
     with open(filepath, 'rb') as myfile:
-        logger.debug('Reading encrypted data from file ' + filepath)
+        logger.debug("Reading encrypted data from file {}".format(filepath))
         edata = myfile.read()
     return edata
 
@@ -90,7 +90,7 @@ def decrypt(gpg, edata):
     try:
         assert data.ok
     except AssertionError:
-        logger.critical("GPG decryption failed. Status was: " + str(data.status))
+        logger.critical("GPG decryption failed. Status was: {}".format(data.status))
         raise
     return data
 
@@ -102,7 +102,7 @@ def encrypt(gpg, data):
     try:
         assert edata.ok
     except AssertionError:
-        logger.critical("GPG encryption failed. Status was: " + str(edata.status))
+        logger.critical("GPG encryption failed. Status was: {}".format(edata.status))
         raise
     return edata
 
@@ -119,7 +119,7 @@ def find_recipient():
     try:
         rkey = os.environ['PWSTORE_KEY']
         if rkey:
-            logger.debug("Recipient key is: " + rkey)
+            logger.debug("Recipient key is: {}".format(rkey))
             return rkey
     except KeyError:
         raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
@@ -130,7 +130,7 @@ def find_gpghome():
     try:
         gdir = os.environ['GNUPGHOME']
         if gdir:
-            logger.debug("GNUPGHOME is: " + gdir)
+            logger.debug("GNUPGHOME is: {}".format(gdir))
             return gdir
     except KeyError:
         pass
@@ -231,7 +231,7 @@ def add(ctx):
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
         git_add(find_pwstore(), ctx.obj['datafile'])
-        git_commit(ctx.obj['pwstore'], "Created empty record " + os.path.basename(ctx.obj['datafile']))
+        git_commit(ctx.obj['pwstore'], "Created empty record {}".format(os.path.basename(ctx.obj['datafile'])))
 
 
 @main.command()
