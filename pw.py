@@ -325,7 +325,7 @@ def copy(ctx, key):
         data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
         value = get_key(data, key)
         pyperclip.copy(value)
-    except ModuleNotFoundError:
+    except ImportError:
         raise RuntimeError("Required library not found: pyperclip")
 
 
@@ -339,7 +339,7 @@ def type(ctx, key):
         data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
         value = get_key(data, key)
         pyautogui.typewrite(value)
-    except ModuleNotFoundError:
+    except ImportError:
         raise RuntimeError("Required library not found: pyautogui")
 
 
