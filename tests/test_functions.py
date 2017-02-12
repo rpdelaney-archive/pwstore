@@ -205,15 +205,19 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
+    def unit_test_os_unlink_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
+        pass
+
+    @mock.patch('pw.porcelain.rm')
+    @mock.patch('os.unlink')
+    @mock.patch('os.path.basename')
+    @mock.patch('pw.git_commit')
     def unit_test_git_commit_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pw.git_drop(cwd, target)
         git_commit.assert_called_once_with(cwd, "Dropped record {} from password store.".format(os_path_basename.return_value))
-
-    def unit_test_os_unlink_called(self):
-        pass
 
     def functional_test_file_removed(self):
         git_file, git_dir = get_clean_dir()
