@@ -197,7 +197,7 @@ class test_git_drop(unittest.TestCase):
     def unit_test_porcelain_rm_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
-        os.path.basename.return_value = 'file'
+        os_path_basename.return_value = 'file'
         pw.git_drop(cwd, target)
         porcelain_rm.assert_called_once_with(cwd, ['file'])
 
