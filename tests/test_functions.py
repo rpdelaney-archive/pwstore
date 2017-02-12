@@ -206,7 +206,12 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
     def unit_test_os_unlink_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
-        pass
+        cwd = '/dir/that/does/not/exist'
+        target = '/dir/that/does/not/exist/file'
+        os_path_basename.return_value = 'file'
+        pw.git_drop(cwd, target)
+        os_unlink.assert_called_once_with(os.path.abspath(os.path.join(cwd, target)))
+        os_unlink.assert_called_once_with('/dir/that/does/not/exist/file')
 
     @mock.patch('pw.porcelain.rm')
     @mock.patch('os.unlink')
