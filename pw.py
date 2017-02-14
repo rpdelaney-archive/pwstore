@@ -297,9 +297,7 @@ def select(ctx):
 def drop(ctx):
     """ Delete an entire record from the disk """
     if os.path.exists(ctx.obj['datafile']):
-        cwd = ctx.obj['pwstore']
-        target = ctx.obj['datafile']
-        git_drop(cwd, target)
+        git_drop(ctx.obj['pwstore'], ctx.obj['datafile'])
     else:
         logger.critical("Record title does not exist. Nothing was done.")
 
