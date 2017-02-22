@@ -179,33 +179,36 @@ class test_git_commit(unittest.TestCase):
 
 class test_git_drop(unittest.TestCase):
 
+    @mock.patch('os.path.exists')
     @mock.patch('pw.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_basename_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
+    def unit_test_basename_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pw.git_drop(cwd, target)
         os_path_basename.assert_any_call(target)
 
+    @mock.patch('os.path.exists')
     @mock.patch('pw.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_porcelain_rm_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
+    def unit_test_porcelain_rm_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pw.git_drop(cwd, target)
         porcelain_rm.assert_called_once_with(cwd, ['file'])
 
+    @mock.patch('os.path.exists')
     @mock.patch('pw.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_os_unlink_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
+    def unit_test_os_unlink_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
@@ -213,11 +216,12 @@ class test_git_drop(unittest.TestCase):
         os_unlink.assert_called_once_with(os.path.abspath(os.path.join(cwd, target)))
         os_unlink.assert_called_once_with('/dir/that/does/not/exist/file')
 
+    @mock.patch('os.path.exists')
     @mock.patch('pw.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_git_commit_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm):
+    def unit_test_git_commit_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'

@@ -62,11 +62,14 @@ def git_commit(cwd, message="Updated given records to password store."):
 
 def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
-    target = os.path.basename(target)
-    logger.warn("Dropping record {} from repository {}".format(target, cwd))
-    porcelain.rm(cwd, [target])
-    os.unlink(os.path.abspath(os.path.join(cwd, target)))
-    git_commit(cwd, "Dropped record {} from password store.".format(target))
+    if os.path.exists(target):
+        target = os.path.basename(target)
+        logger.warn("Dropping record {} from repository {}".format(target, cwd))
+        porcelain.rm(cwd, [target])
+        os.unlink(os.path.abspath(os.path.join(cwd, target)))
+        git_commit(cwd, "Dropped record {} from password store.".format(target))
+    else:
+        logger.critical("Record title does not exist. Nothing was done.")
 
 
 def save_edata(edata, filepath):
@@ -296,10 +299,7 @@ def select(ctx):
 @click.pass_context
 def drop(ctx):
     """ Delete an entire record from the disk """
-    if os.path.exists(ctx.obj['datafile']):
-        git_drop(ctx.obj['pwstore'], ctx.obj['datafile'])
-    else:
-        logger.critical("Record title does not exist. Nothing was done.")
+    git_drop(ctx.obj['pwstore'], ctx.obj['datafile'])
 
 
 @main.command()
