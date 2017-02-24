@@ -72,6 +72,13 @@ def git_drop(cwd, target):
         logger.critical("Record title does not exist. Nothing was done.")
 
 
+def symlink(cwd, source, target):
+    """ Create a symlink (alias) from source to target in the pwstore """
+    os.symlink(source, target)
+    git_add(cwd, target)
+    git_commit(cwd)
+
+
 def save_edata(edata, filepath):
     """ Takes data (presumed to be gpg encrypted) and saves it to a file """
     with open(filepath, 'w+') as myfile:
@@ -309,9 +316,8 @@ def alias(ctx, alias):
     """ Create a symlink named ALIAS """
     source = ctx.obj['datafile']
     target = os.path.join(ctx.obj['pwstore'], alias + '.gpg')
-    os.symlink(source, target)
-    git_add(ctx.obj['pwstore'], target)
-    git_commit(ctx.obj['pwstore'])
+    cwd = find_pwstore()
+    symlink(cwd, source, target)
 
 
 @main.command()

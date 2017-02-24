@@ -249,6 +249,50 @@ class test_git_drop(unittest.TestCase):
             git_dir.cleanup
 
 
+class test_symlink(unittest.TestCase):
+
+    @mock.patch('pw.git_commit')
+    @mock.patch('pw.git_add')
+    @mock.patch('os.symlink')
+    def unit_test_os_symlink_called(self, os_symlink, git_add, git_commit):
+        cwd = '/dir/that/does/not/exist/'
+        source = '/dir/that/does/not/exist/source'
+        target = '/dir/that/does/not/exist/target'
+        pw.symlink(cwd, source, target)
+        os_symlink.assert_called_once_with(source, target)
+
+    @mock.patch('pw.git_commit')
+    @mock.patch('pw.git_add')
+    @mock.patch('os.symlink')
+    def unit_test_git_add_called(self, os_symlink, git_add, git_commit):
+        cwd = '/dir/that/does/not/exist/'
+        source = '/dir/that/does/not/exist/source'
+        target = '/dir/that/does/not/exist/target'
+        pw.symlink(cwd, source, target)
+        git_add.assert_called_once_with(cwd, target)
+
+    @mock.patch('pw.git_commit')
+    @mock.patch('pw.git_add')
+    @mock.patch('os.symlink')
+    def unit_test_git_commit_called(self, os_symlink, git_add, git_commit):
+        cwd = '/dir/that/does/not/exist/'
+        source = '/dir/that/does/not/exist/source'
+        target = '/dir/that/does/not/exist/target'
+        pw.symlink(cwd, source, target)
+        git_commit.assert_called_once_with(cwd)
+
+    def functional_test_symlink_created(self):
+        git_file, git_dir = get_clean_dir()
+        cwd = git_dir.name
+        source = git_file.name
+        target = source + ".foo"
+        try:
+            pw.symlink(cwd, source, target)
+            assert os.path.islink(target)
+        finally:
+            git_dir.cleanup
+
+
 class test_get_key(unittest.TestCase):
 
     def functional_test_get_key(self):
