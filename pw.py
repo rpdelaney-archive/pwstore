@@ -257,7 +257,7 @@ def delete(ctx, key):
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     newdata = delete_key(data, key)
     save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
-    git_add(find_pwstore(), ctx.obj['datafile'])
+    git_add(ctx.obj['pwstore'], ctx.obj['datafile'])
     git_commit(ctx.obj['pwstore'])
 
 
@@ -279,7 +279,7 @@ def update(ctx, key, value):
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     newdata = update_key(data, key, value)
     save_edata(encrypt(ctx.obj['gpg'], newdata), ctx.obj['datafile'])
-    git_add(find_pwstore(), ctx.obj['datafile'])
+    git_add(ctx.obj['pwstore'], ctx.obj['datafile'])
     git_commit(ctx.obj['pwstore'])
 
 
@@ -305,7 +305,7 @@ def alias(ctx, alias):
     """ Create a symlink named ALIAS """
     source = ctx.obj['datafile']
     target = os.path.join(ctx.obj['pwstore'], alias + '.gpg')
-    cwd = find_pwstore()
+    cwd = ctx.obj['pwstore']
     symlink(cwd, source, target)
 
 
