@@ -245,7 +245,7 @@ def add(ctx):
     else:
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
-        git_add(find_pwstore(), ctx.obj['datafile'])
+        git_add(ctx.obj['pwstore'], ctx.obj['datafile'])
         git_commit(ctx.obj['pwstore'], "Created empty record {}".format(os.path.basename(ctx.obj['datafile'])))
 
 
@@ -268,22 +268,6 @@ def get(ctx, key):
     """ Retrieve a KEY value from a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print(get_key(data, key))
-
-
-@main.command()
-@click.argument('key')
-@click.pass_context
-def qrcode(ctx, key):
-    """ Display a KEY value as a qrcode """
-    try:
-        import pyqrcode
-    except ImportError:
-        raise RuntimeError("Required library not found: pyqrcode")
-
-    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-    value = get_key(data, key)
-    code = pyqrcode.create(value)
-    print(code.terminal(quiet_zone=1))
 
 
 @main.command()
@@ -351,6 +335,22 @@ def type(ctx, key):
         pyautogui.typewrite(value)
     except ImportError:
         raise RuntimeError("Required library not found: pyautogui")
+
+
+@main.command()
+@click.argument('key')
+@click.pass_context
+def qrcode(ctx, key):
+    """ Display a KEY value as a qrcode """
+    try:
+        import pyqrcode
+    except ImportError:
+        raise RuntimeError("Required library not found: pyqrcode")
+
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+    value = get_key(data, key)
+    code = pyqrcode.create(value)
+    print(code.terminal(quiet_zone=1))
 
 
 if __name__ == '__main__':
