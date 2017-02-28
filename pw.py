@@ -167,22 +167,27 @@ def print_friendly(jsondata):
     return pretty_string
 
 
+def parse_json(data):
+    """ Take an object (presumed to be json data) and return a dict """
+    return json.loads(str(data))
+
+
 def get_key(jsondata, key):
     """ Take a JSON array and return the value corresponding to a given key """
-    parsed_json = json.loads(str(jsondata))
+    parsed_json = parse_json(jsondata)
     return parsed_json[key]
 
 
 def update_key(jsondata, key, value):
     """ Take a JSON array and update the value of a given key, returning the updated array """
-    parsed_json = json.loads(str(jsondata))
+    parsed_json = parse_json(jsondata)
     parsed_json[key] = value
     return json.dumps(parsed_json)
 
 
 def delete_key(jsondata, key):
     """ Take a JSON array and remove a key, returning the updated array """
-    parsed_json = json.loads(str(jsondata))
+    parsed_json = parse_json(jsondata)
     parsed_json.pop(key)
     return json.dumps(parsed_json)
 
@@ -225,7 +230,7 @@ def main(ctx, record):
 def list(ctx):
     """ List the keys in a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-    mydict = json.loads(str(data))
+    mydict = parse_json(data)
     for item in mydict.keys():
         print(item)
 

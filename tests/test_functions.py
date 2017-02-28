@@ -293,6 +293,20 @@ class test_symlink(unittest.TestCase):
             git_dir.cleanup
 
 
+class test_parse_json(unittest.TestCase):
+
+    @mock.patch('json.loads')
+    def unit_test_json_loads_called(self, json_loads):
+        jsonstring = '{"4": "5", "6": "7"}'
+        pw.parse_json(jsonstring)
+        json_loads.assert_called_once_with(jsonstring)
+
+    def functional_test_returns_dict(self):
+        jsonstring = '{"4": "5", "6": "7"}'
+        result = pw.parse_json(jsonstring)
+        assert isinstance(result, dict)
+
+
 class test_get_key(unittest.TestCase):
 
     def functional_test_get_key(self):
