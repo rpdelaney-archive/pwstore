@@ -1,4 +1,4 @@
-pw.py
+pwstore
 =====
 
 A cli password manager in python. Inspired by
@@ -10,7 +10,7 @@ Usage
 
 ::
 
-    Usage: pw [OPTIONS] RECORD COMMAND [ARGS]...
+    Usage: pwstore [OPTIONS] RECORD COMMAND [ARGS]...
 
     Options:
       -?, -h, --help  Show this message and exit.
@@ -48,7 +48,7 @@ current cursor position:
 GPG
 ~~~
 
-Like password-store, pw.py uses GPG encryption to store data securely.
+Like password-store, pwstore uses GPG encryption to store data securely.
 For now, you must set your recipient key in the environment:
 
 ::
@@ -63,29 +63,29 @@ Create a new record
 
 ::
 
-    pw github.com add
+    pwstore github.com add
 
 Create an alias
 ^^^^^^^^^^^^^^^
 
 ::
 
-    pw github.com alias github
+    pwstore github.com alias github
 
 Add a password
 ^^^^^^^^^^^^^^
 
 ::
 
-    pw github update password "$(apg -n1)"
+    pwstore github update password "$(apg -n1)"
 
 Add some metadata
 ^^^^^^^^^^^^^^^^^
 
 ::
 
-    pw github update login_url "http://github.com"
-    pw github update username rpdelaney
+    pwstore github update login_url "http://github.com"
+    pwstore github update username rpdelaney
 
 Why use pw?
 -----------
@@ -93,9 +93,9 @@ Why use pw?
 In most cases, you should use password-store. Overall, it is much more
 mature and feature-rich.
 
-The main difference is that pw.py stores data in a json format, enabling
+The main difference is that pwstore stores data in a json format, enabling
 you to store additional metadata such as username, login page URL, etc:
 
 ::
 
-    pw github.com update username rpdelaney
+    pwstore github.com update username rpdelaney
