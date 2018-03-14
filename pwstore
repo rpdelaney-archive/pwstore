@@ -72,6 +72,24 @@ def git_drop(cwd, target):
         logger.critical("Record title does not exist. Nothing was done.")
 
 
+def git_sync(cwd):
+    """ Sync a repository with the origin """
+    repo = Repo(cwd)
+    status = porcelain.status(repo)
+    try:
+        assert status.unstaged == []
+        assert status.staged["add"] == []
+        assert status.staged["delete"] == []
+        assert status.staged["modify"] == []
+    except AssertionError:
+        message = "pwstore {} is in a dirty state. Nothing was done.".format(repo.path)
+        raise RuntimeError(message)
+
+    logger.debug("Attempting to pull from the remote...")
+    pass
+    logger.debug("Attempting to push to the remote...")
+
+
 def symlink(cwd, source, target):
     """ Create a symlink (alias) from source to target in the pwstore """
     os.symlink(source, target)
@@ -350,6 +368,14 @@ def qrcode(ctx, key):
         print(code.terminal(quiet_zone=1))
     except ImportError:
         raise RuntimeError("Required library not found: pyqrcode")
+
+
+@main.command()
+@click.pass_context
+def sync(ctx):
+    """ Sync the repository with the origin """
+    repo_dir = ctx.obj['pwstore']
+    git_sync(repo_dir)
 
 
 if __name__ == '__main__':
