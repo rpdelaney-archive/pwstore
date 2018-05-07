@@ -13,20 +13,21 @@ Usage
     Usage: pwstore [OPTIONS] RECORD COMMAND [ARGS]...
 
     Options:
-      -?, -h, --help  Show this message and exit.
+    -?, -h, --help  Show this message and exit.
 
     Commands:
-      add     Create a new record
-      alias   Create a symlink named ALIAS
-      copy    Copy a KEY value to the system clipboard
-      delete  Delete KEY from a record
-      drop    Delete an entire record from the disk
-      get     Retrieve a KEY value from a record
-      list    List the keys in a record
-      qrcode  Display a KEY value as a qrcode
-      select  Decrypt a record and print it raw
-      type    Type a KEY value at the cursor position
-      update  Update a record's KEY with VALUE
+    add      Create a new record
+    alias    Create a symlink named ALIAS
+    copy     Copy a KEY value to the system clipboard
+    delete   Delete KEY from a record
+    drop     Delete an entire record from the disk
+    get      Retrieve a KEY value from a record
+    list     List the keys in a record
+    qrcode   Display a KEY value as a qrcode
+    qrcodei  Display a KEY value as a qrcode in a png
+    select   Decrypt a record and print it raw
+    type     Type a KEY value at the cursor position
+    update   Update a record's KEY with VALUE
 
 Dependencies
 ~~~~~~~~~~~~
@@ -43,7 +44,7 @@ current cursor position:
 
 ::
 
-    pip install pyqrcode pyperclip pyautogui
+    pip install pyqrcode Pillow pyperclip pyautogui
 
 GPG
 ~~~
