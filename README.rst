@@ -36,7 +36,7 @@ The following non-standard dependencies are required:
 
 ::
 
-    pip install python-gnupg dulwich
+    pip install python-gnupg dulwich appdirs click
 
 There are three optional dependencies: to display passwords as QRcodes,
 to copy the password to the clipboard, and to type the password at the
