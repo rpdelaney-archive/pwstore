@@ -359,7 +359,6 @@ def qrcodei(ctx, key):
     """ Display a KEY value as a qrcode in a png """
     try:
         import pyqrcode
-        import io
         import tempfile
         from PIL import Image
         data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
