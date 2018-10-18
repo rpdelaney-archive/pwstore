@@ -32,19 +32,38 @@ Usage
 Dependencies
 ~~~~~~~~~~~~
 
-The following non-standard dependencies are required:
+The following non-standard dependencies are required for basic functionality:
 
 ::
 
     pip3 install python-gnupg dulwich appdirs click
 
-There are three optional dependencies: to display passwords as QRcodes,
-to copy the password to the clipboard, and to type the password at the
-current cursor position:
+There are optional dependencies for some extra features:
+
+To display passwords as QRcodes in the terminal,
+
+::
+
+    pip3 install pyqrcode
+
+To display passwords as QRcodes as images,
+
+::
+
+    pip3 install pyqrcode Pillow pypng
+
+To copy the password to the clipboard,
 
 ::
 
     pip3 install pyqrcode Pillow pyperclip pyautogui
+
+And to type the password at the current cursor position.
+
+::
+
+    pip3 install pyautogui
+
 
 GPG
 ~~~
