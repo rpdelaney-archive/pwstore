@@ -64,10 +64,12 @@ def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
     if os.path.exists(target):
         target = os.path.basename(target)
-        logger.warn("Dropping record {} from repository {}".format(target, cwd))
+        logger.warn("Dropping record {} from repository {}".format(
+            target, cwd))
         porcelain.rm(cwd, [target])
         os.unlink(os.path.abspath(os.path.join(cwd, target)))
-        git_commit(cwd, "Dropped record {} from password store.".format(target))
+        git_commit(cwd, "Dropped record {} from password store.".format(
+            target))
     else:
         logger.critical("Record title does not exist. Nothing was done.")
 
@@ -87,7 +89,9 @@ def save_edata(edata, filepath):
 
 
 def get_edata(filepath):
-    """ Retrieve data (presumed to be gpg encrypted) from a file and return it raw """
+    """
+    Retrieve data (presumed to be gpg encrypted) from a file and return it raw
+    """
     with open(filepath, 'rb') as myfile:
         logger.debug("Reading encrypted data from file {}".format(filepath))
         edata = myfile.read()
@@ -95,37 +99,50 @@ def get_edata(filepath):
 
 
 def decrypt(gpg, edata):
-    """ Take a gpg handler and some data (presumed to be gpg encrypted) and return the decrypted data """
+    """
+    Take a gpg handler and some data (presumed to be gpg encrypted) and return
+    the decrypted data
+    """
     data = gpg.decrypt(edata)
     try:
         assert data.ok
     except AssertionError:
-        logger.critical("GPG decryption failed. Status was: {}".format(data.status))
+        logger.critical("GPG decryption failed. Status was: {}".format(
+            data.status))
         raise
     return data
 
 
 def encrypt(gpg, data):
-    """ Take a gpg handler and some data (presumed to be plain text) and return encrypted data """
+    """
+    Take a gpg handler and some data (presumed to be plain text) and return
+    encrypted data
+    """
     recipient = find_recipient()
     edata = gpg.encrypt(data, recipient)
     try:
         assert edata.ok
     except AssertionError:
-        logger.critical("GPG encryption failed. Status was: {}".format(edata.status))
+        logger.critical("GPG encryption failed. Status was: {}".format(
+            edata.status))
         raise
     return edata
 
 
 def get_data(gpg, filepath):
-    """ Retrieve data (presumed to be gpg encrypted) from a file and return it as a decrypted string """
+    """
+    Retrieve data (presumed to be gpg encrypted) from a file and return it as a
+    decrypted string
+    """
     edata = get_edata(filepath)
     data = decrypt(gpg, edata)
     return str(data)
 
 
 def find_recipient():
-    """ Try to figure out who the gpg recipient should be for encrypted data """
+    """
+    Try to figure out who the gpg recipient should be for encrypted data
+    """
     try:
         rkey = os.environ['PWSTORE_KEY']
         if rkey:
@@ -179,7 +196,10 @@ def get_key(jsondata, key):
 
 
 def update_key(jsondata, key, value):
-    """ Take a JSON array and update the value of a given key, returning the updated array """
+    """
+    Take a JSON array and update the value of a given key, returning the
+    updated array
+    """
     parsed_json = parse_json(jsondata)
     parsed_json[key] = value
     return json.dumps(parsed_json)
@@ -193,6 +213,8 @@ def delete_key(jsondata, key):
 
 
 CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
+
+
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.argument('record')
 @click.pass_context
@@ -246,7 +268,8 @@ def add(ctx):
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
         git_add(ctx.obj['pwstore'], ctx.obj['datafile'])
-        git_commit(ctx.obj['pwstore'], "Created empty record {}".format(os.path.basename(ctx.obj['datafile'])))
+        git_commit(ctx.obj['pwstore'], "Created empty record {}".format(
+            os.path.basename(ctx.obj['datafile'])))
 
 
 @main.command()
@@ -376,7 +399,8 @@ def qrcodei(ctx, key):
         data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
         value = get_key(data, key)
         code = pyqrcode.create(value)
-        with tempfile.NamedTemporaryFile(prefix='pwstore-', suffix='.png') as f:
+        with tempfile.NamedTemporaryFile(
+                prefix='pwstore-', suffix='.png') as f:
             code.png(f.name, scale=10, quiet_zone=2)
             img = Image.open(f.name)
             img.show()
@@ -388,4 +412,5 @@ if __name__ == '__main__':
     main()
 
 
-# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
+# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
+# vim: fileencoding=UTF-8:
