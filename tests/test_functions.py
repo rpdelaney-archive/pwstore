@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: UTF-8 -*-
 
 import os
 import shutil
@@ -40,7 +39,9 @@ def get_staged_dir():
 
 
 def get_clean_dir():
-    """ Create and return a clean git repo (file tracked, unstaged) in tmpfs """
+    """
+    Create and return a clean git repo (file tracked, unstaged) in tmpfs
+    """
     git_file, git_dir = get_staged_dir()
     repo = dulwich.repo.Repo(git_dir.name)
     commit_id = repo.do_commit(b'test')
@@ -151,7 +152,8 @@ class test_git_commit(unittest.TestCase):
         repo_object.do_commit.assert_called_once_with(b'mymessage')
 
     @mock.patch('pw.Repo')
-    def unit_test_raise_exception_if_head_doesnt_match_returned_commit(self, repo):
+    def unit_test_raise_exception_if_head_doesnt_match_returned_commit(
+            self, repo):
         repo_object = mock.MagicMock()
         repo_object.commit_id = mock.MagicMock(return_value='foo')
         repo_object.head = mock.MagicMock(return_value='bar')
@@ -184,7 +186,9 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_exists_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
+    def unit_test_exists_called_on_target(
+            self, git_commit, os_path_basename,
+            os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
@@ -196,7 +200,9 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_basename_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
+    def unit_test_basename_called_on_target(
+            self, git_commit, os_path_basename,
+            os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
@@ -208,7 +214,9 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_porcelain_rm_called_on_target(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
+    def unit_test_porcelain_rm_called_on_target(
+            self, git_commit, os_path_basename,
+            os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
@@ -220,12 +228,15 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_os_unlink_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
+    def unit_test_os_unlink_called(
+            self, git_commit, os_path_basename,
+            os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pw.git_drop(cwd, target)
-        os_unlink.assert_called_once_with(os.path.abspath(os.path.join(cwd, target)))
+        os_unlink.assert_called_once_with(
+            os.path.abspath(os.path.join(cwd, target)))
         os_unlink.assert_called_once_with('/dir/that/does/not/exist/file')
 
     @mock.patch('os.path.exists')
@@ -233,12 +244,16 @@ class test_git_drop(unittest.TestCase):
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
     @mock.patch('pw.git_commit')
-    def unit_test_git_commit_called(self, git_commit, os_path_basename, os_unlink, porcelain_rm, os_path_exists):
+    def unit_test_git_commit_called(
+            self, git_commit, os_path_basename,
+            os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pw.git_drop(cwd, target)
-        git_commit.assert_called_once_with(cwd, "Dropped record {} from password store.".format(os_path_basename.return_value))
+        git_commit.assert_called_once_with(
+            cwd, "Dropped record {} from password store.".format(
+                os_path_basename.return_value))
 
     def functional_test_file_removed(self):
         git_file, git_dir = get_clean_dir()
@@ -348,4 +363,5 @@ class test_print_friendly(unittest.TestCase):
         self.assertEqual(result, targetjson)
 
 
-# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4 fileencoding=UTF-8:
+# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
+# vim: fileencoding=UTF-8:
