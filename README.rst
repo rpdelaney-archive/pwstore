@@ -56,7 +56,7 @@ To copy the password to the clipboard,
 
 ::
 
-    pip3 install pyqrcode Pillow pyperclip pyautogui
+    pip3 install pyperclip
 
 And to type the password at the current cursor position.
 
