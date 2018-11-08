@@ -4,7 +4,7 @@ import os
 import shutil
 import json
 import unittest
-import pw
+import pwstore.__init__ as pwstore
 import mock
 import tempfile
 import dulwich
@@ -55,28 +55,28 @@ class test_is_initialized(unittest.TestCase):
     def unit_test_os_path_isdir(self, ospath):
         ospath.return_value = False
         cwd = 'dir/that/does/not/exist'
-        pw.is_initialized(cwd)
+        pwstore.is_initialized(cwd)
         ospath.assert_called_once_with(cwd)
 
-    @mock.patch('pw.Repo')
+    @mock.patch('pwstore.Repo')
     def unit_test_Repo_called(self, repo):
         mydir = get_empty_dir()
         cwd = mydir.name
         try:
-            pw.is_initialized(cwd)
+            pwstore.is_initialized(cwd)
         finally:
             mydir.cleanup
         repo.assert_called_once_with(cwd)
 
     def functional_test_nonexistent_dir(self):
         cwd = 'tests/dir/that/does/not/exist'
-        result = pw.is_initialized(cwd)
+        result = pwstore.is_initialized(cwd)
         self.assertFalse(result)
 
     def functional_test_initialized_dir(self):
         cwd = get_initialized_dir()
         try:
-            result = pw.is_initialized(cwd.name)
+            result = pwstore.is_initialized(cwd.name)
         finally:
             cwd.cleanup
         self.assertTrue(result)
@@ -84,7 +84,7 @@ class test_is_initialized(unittest.TestCase):
     def functional_test_noninitialized_dir(self):
         cwd = get_empty_dir()
         try:
-            result = pw.is_initialized(cwd.name)
+            result = pwstore.is_initialized(cwd.name)
         finally:
             cwd.cleanup
         self.assertFalse(result)
@@ -92,16 +92,16 @@ class test_is_initialized(unittest.TestCase):
 
 class test_git_init(unittest.TestCase):
 
-    @mock.patch('pw.Repo')
+    @mock.patch('pwstore.Repo')
     def unit_test_repo_init_called(self, repo):
         cwd = 'dir/that/does/not/exist'
-        pw.git_init(cwd)
-        pw.Repo.init.assert_called_once_with(cwd, mkdir=True)
+        pwstore.git_init(cwd)
+        pwstore.Repo.init.assert_called_once_with(cwd, mkdir=True)
 
     def functional_test_nonexisting_dir(self):
         cwd = 'dirthatdoesnotexist/'
         try:
-            pw.git_init(cwd)
+            pwstore.git_init(cwd)
             dulwich.repo.Repo(cwd)
         finally:
             shutil.rmtree(cwd)
@@ -109,7 +109,7 @@ class test_git_init(unittest.TestCase):
     def functional_test_existing_dir(self):
         cwd = get_empty_dir()
         try:
-            pw.git_init(cwd.name)
+            pwstore.git_init(cwd.name)
             dulwich.repo.Repo(cwd.name)
         finally:
             cwd.cleanup
@@ -117,13 +117,13 @@ class test_git_init(unittest.TestCase):
 
 class test_git_add(unittest.TestCase):
 
-    @mock.patch('pw.Repo')
+    @mock.patch('pwstore.Repo')
     def unit_test_repo_stage_called(self, repo):
         repo_object = mock.MagicMock()
         cwd = 'dir/that/does/not/exist'
         myfile = 'dir/that/does/not/exist/file'
         repo.return_value = repo_object
-        pw.git_add(cwd, myfile)
+        pwstore.git_add(cwd, myfile)
         repo_object.stage.assert_called_once_with(os.path.basename(myfile))
 
     def functional_test_git_add(self):
@@ -132,7 +132,7 @@ class test_git_add(unittest.TestCase):
         index = repo.open_index()
         try:
             assert list(index) == []
-            pw.git_add(git_dir.name, git_file.name)
+            pwstore.git_add(git_dir.name, git_file.name)
             index = repo.open_index()
             assert list(index) == [os.path.basename(git_file.name).encode()]
         finally:
@@ -141,17 +141,17 @@ class test_git_add(unittest.TestCase):
 
 class test_git_commit(unittest.TestCase):
 
-    @mock.patch('pw.Repo')
+    @mock.patch('pwstore.Repo')
     def unit_test_commit_is_sent_with_encoded_message(self, repo):
         repo_object = mock.MagicMock()
         cwd = 'dir/that/does/not/exist'
         repo_object.head = mock.MagicMock(return_value='foo')
         repo_object.do_commit = mock.MagicMock(return_value='foo')
         repo.return_value = repo_object
-        pw.git_commit(cwd, 'mymessage')
+        pwstore.git_commit(cwd, 'mymessage')
         repo_object.do_commit.assert_called_once_with(b'mymessage')
 
-    @mock.patch('pw.Repo')
+    @mock.patch('pwstore.Repo')
     def unit_test_raise_exception_if_head_doesnt_match_returned_commit(
             self, repo):
         repo_object = mock.MagicMock()
@@ -159,22 +159,22 @@ class test_git_commit(unittest.TestCase):
         repo_object.head = mock.MagicMock(return_value='bar')
         repo.return_value = repo_object
         with self.assertRaises(AssertionError):
-            pw.git_commit('a', 'b')
+            pwstore.git_commit('a', 'b')
 
-    @mock.patch('pw.Repo')
+    @mock.patch('pwstore.Repo')
     def unit_test_repo_called_with_correct_cwd(self, repo):
         repo_object = mock.MagicMock()
         cwd = 'dir/that/does/not/exist'
         repo_object.head = mock.MagicMock(return_value='foo')
         repo_object.do_commit = mock.MagicMock(return_value='foo')
         repo.return_value = repo_object
-        pw.git_commit(cwd)
+        pwstore.git_commit(cwd)
         repo.assert_called_once_with(cwd)
 
     def functional_test_dirty_repo(self):
         git_file, git_dir = get_staged_dir()
         try:
-            pw.git_commit(git_dir.name)
+            pwstore.git_commit(git_dir.name)
         finally:
             git_dir.cleanup
 
@@ -182,82 +182,82 @@ class test_git_commit(unittest.TestCase):
 class test_git_drop(unittest.TestCase):
 
     @mock.patch('os.path.exists')
-    @mock.patch('pw.porcelain.rm')
+    @mock.patch('pwstore.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
-    @mock.patch('pw.git_commit')
+    @mock.patch('pwstore.git_commit')
     def unit_test_exists_called_on_target(
             self, git_commit, os_path_basename,
             os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
-        pw.git_drop(cwd, target)
+        pwstore.git_drop(cwd, target)
         os_path_exists.assert_called_once_with(target)
 
     @mock.patch('os.path.exists')
-    @mock.patch('pw.porcelain.rm')
+    @mock.patch('pwstore.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
-    @mock.patch('pw.git_commit')
+    @mock.patch('pwstore.git_commit')
     def unit_test_basename_called_on_target(
             self, git_commit, os_path_basename,
             os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
-        pw.git_drop(cwd, target)
+        pwstore.git_drop(cwd, target)
         os_path_basename.assert_any_call(target)
 
     @mock.patch('os.path.exists')
-    @mock.patch('pw.porcelain.rm')
+    @mock.patch('pwstore.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
-    @mock.patch('pw.git_commit')
+    @mock.patch('pwstore.git_commit')
     def unit_test_porcelain_rm_called_on_target(
             self, git_commit, os_path_basename,
             os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
-        pw.git_drop(cwd, target)
+        pwstore.git_drop(cwd, target)
         porcelain_rm.assert_called_once_with(cwd, ['file'])
 
     @mock.patch('os.path.exists')
-    @mock.patch('pw.porcelain.rm')
+    @mock.patch('pwstore.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
-    @mock.patch('pw.git_commit')
+    @mock.patch('pwstore.git_commit')
     def unit_test_os_unlink_called(
             self, git_commit, os_path_basename,
             os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
-        pw.git_drop(cwd, target)
+        pwstore.git_drop(cwd, target)
         os_unlink.assert_called_once_with(
             os.path.abspath(os.path.join(cwd, target)))
         os_unlink.assert_called_once_with('/dir/that/does/not/exist/file')
 
     @mock.patch('os.path.exists')
-    @mock.patch('pw.porcelain.rm')
+    @mock.patch('pwstore.porcelain.rm')
     @mock.patch('os.unlink')
     @mock.patch('os.path.basename')
-    @mock.patch('pw.git_commit')
+    @mock.patch('pwstore.git_commit')
     def unit_test_git_commit_called(
             self, git_commit, os_path_basename,
             os_unlink, porcelain_rm, os_path_exists):
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
-        pw.git_drop(cwd, target)
+        pwstore.git_drop(cwd, target)
         git_commit.assert_called_once_with(
             cwd, "Dropped record {} from password store.".format(
                 os_path_basename.return_value))
 
     def functional_test_file_removed(self):
         git_file, git_dir = get_clean_dir()
-        pw.git_drop(git_dir.name, git_file.name)
+        pwstore.git_drop(git_dir.name, git_file.name)
         try:
             assert not os.path.exists(git_file.name)
         finally:
@@ -266,34 +266,34 @@ class test_git_drop(unittest.TestCase):
 
 class test_symlink(unittest.TestCase):
 
-    @mock.patch('pw.git_commit')
-    @mock.patch('pw.git_add')
+    @mock.patch('pwstore.git_commit')
+    @mock.patch('pwstore.git_add')
     @mock.patch('os.symlink')
     def unit_test_os_symlink_called(self, os_symlink, git_add, git_commit):
         cwd = '/dir/that/does/not/exist/'
         source = '/dir/that/does/not/exist/source'
         target = '/dir/that/does/not/exist/target'
-        pw.symlink(cwd, source, target)
+        pwstore.symlink(cwd, source, target)
         os_symlink.assert_called_once_with(source, target)
 
-    @mock.patch('pw.git_commit')
-    @mock.patch('pw.git_add')
+    @mock.patch('pwstore.git_commit')
+    @mock.patch('pwstore.git_add')
     @mock.patch('os.symlink')
     def unit_test_git_add_called(self, os_symlink, git_add, git_commit):
         cwd = '/dir/that/does/not/exist/'
         source = '/dir/that/does/not/exist/source'
         target = '/dir/that/does/not/exist/target'
-        pw.symlink(cwd, source, target)
+        pwstore.symlink(cwd, source, target)
         git_add.assert_called_once_with(cwd, target)
 
-    @mock.patch('pw.git_commit')
-    @mock.patch('pw.git_add')
+    @mock.patch('pwstore.git_commit')
+    @mock.patch('pwstore.git_add')
     @mock.patch('os.symlink')
     def unit_test_git_commit_called(self, os_symlink, git_add, git_commit):
         cwd = '/dir/that/does/not/exist/'
         source = '/dir/that/does/not/exist/source'
         target = '/dir/that/does/not/exist/target'
-        pw.symlink(cwd, source, target)
+        pwstore.symlink(cwd, source, target)
         git_commit.assert_called_once_with(cwd)
 
     def functional_test_symlink_created(self):
@@ -302,7 +302,7 @@ class test_symlink(unittest.TestCase):
         source = git_file.name
         target = source + ".foo"
         try:
-            pw.symlink(cwd, source, target)
+            pwstore.symlink(cwd, source, target)
             assert os.path.islink(target)
         finally:
             git_dir.cleanup
@@ -313,12 +313,12 @@ class test_parse_json(unittest.TestCase):
     @mock.patch('json.loads')
     def unit_test_json_loads_called(self, json_loads):
         jsonstring = '{"4": "5", "6": "7"}'
-        pw.parse_json(jsonstring)
+        pwstore.parse_json(jsonstring)
         json_loads.assert_called_once_with(jsonstring)
 
     def functional_test_returns_dict(self):
         jsonstring = '{"4": "5", "6": "7"}'
-        result = pw.parse_json(jsonstring)
+        result = pwstore.parse_json(jsonstring)
         assert isinstance(result, dict)
 
 
@@ -326,7 +326,7 @@ class test_get_key(unittest.TestCase):
 
     def functional_test_get_key(self):
         jsonstring = '{"4": "5", "6": "7"}'
-        result = pw.get_key(jsonstring, "4")
+        result = pwstore.get_key(jsonstring, "4")
         self.assertEqual(result, '5')
 
 
@@ -335,13 +335,13 @@ class test_update_key(unittest.TestCase):
     def functional_test_update_key(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = json.loads('{"4": "5", "6": "8"}')
-        result = json.loads(pw.update_key(inputjson, "6", "8"))
+        result = json.loads(pwstore.update_key(inputjson, "6", "8"))
         self.assertEqual(result, targetjson)
 
     def functional_test_update_nonextant_key(self):
         inputjson = '{"4": "5"}'
         targetjson = json.loads('{"4": "5", "6": "8"}')
-        result = json.loads(pw.update_key(inputjson, "6", "8"))
+        result = json.loads(pwstore.update_key(inputjson, "6", "8"))
         self.assertEqual(result, targetjson)
 
 
@@ -350,7 +350,7 @@ class test_delete_key(unittest.TestCase):
     def functional_test_delete_key(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = json.loads('{"4": "5"}')
-        result = json.loads(pw.delete_key(inputjson, "6"))
+        result = json.loads(pwstore.delete_key(inputjson, "6"))
         self.assertEqual(result, targetjson)
 
 
@@ -359,7 +359,7 @@ class test_print_friendly(unittest.TestCase):
     def functional_test_print_friendly(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = '{\n    "4": "5",\n    "6": "7"\n}'
-        result = pw.print_friendly(inputjson)
+        result = pwstore.print_friendly(inputjson)
         self.assertEqual(result, targetjson)
 
 
