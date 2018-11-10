@@ -1,5 +1,5 @@
 pwstore
-=====
+======================
 
 A cli password manager in python. Inspired by
 password-store[`1 <https://www.passwordstore.org/>`__] by Jason A.
