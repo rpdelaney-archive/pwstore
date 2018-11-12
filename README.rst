@@ -29,10 +29,16 @@ Usage
     type     Type a KEY value at the cursor position
     update   Update a record's KEY with VALUE
 
-Dependencies
+Installation
 ~~~~~~~~~~~~
 
-The following non-standard dependencies are required for basic functionality:
+::
+
+    pip3 install pwstore
+
+
+If you want to clone and run it locally, the following non-standard
+dependencies are required for basic functionality:
 
 ::
 
