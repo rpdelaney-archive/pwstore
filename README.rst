@@ -37,39 +37,11 @@ Installation
     pip3 install pwstore
 
 
-If you want to clone and run it locally, the following non-standard
-dependencies are required for basic functionality:
+If you want to clone and run it locally:
 
 ::
 
-    pip3 install python-gnupg dulwich appdirs click
-
-There are optional dependencies for some extra features:
-
-To display passwords as QRcodes in the terminal,
-
-::
-
-    pip3 install pyqrcode
-
-To display passwords as QRcodes as images,
-
-::
-
-    pip3 install pyqrcode Pillow pypng
-
-To copy the password to the clipboard,
-
-::
-
-    pip3 install pyperclip
-
-And to type the password at the current cursor position.
-
-::
-
-    pip3 install pyautogui
-
+    git clone git@github.com:rpdelaney/pwstore.git && pip3 install ./pwstore
 
 GPG
 ~~~
