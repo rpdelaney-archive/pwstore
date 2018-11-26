@@ -364,4 +364,3 @@ class test_print_friendly(unittest.TestCase):
 
 
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
-# vim: fileencoding=UTF-8:
