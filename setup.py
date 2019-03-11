@@ -70,7 +70,8 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['python-gnupg', 'dulwich', 'Click', 'appdirs',
-            'PyQRCode', 'Pillow', 'pypng', 'pyperclip', 'PyAutoGUI'],
+            'PyQRCode', 'Pillow', 'pypng', 'pyperclip', 'PyAutoGUI',
+            'tempfile'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
@@ -78,7 +79,7 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
 #       'dev': ['check-manifest'],
-        'test': ['os', 'shutil', 'json', 'unittest', 'mock', 'tempfile'],
+        'test': ['os', 'shutil', 'json', 'unittest', 'mock'],
     },
 
     # If there are data files included in your packages that need to be
