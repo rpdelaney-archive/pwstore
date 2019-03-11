@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Python 3.6
 #
-# © Copyright 2017-2018 Ryan Delaney. All rights reserved.
+# © Copyright 2017-2019 Ryan Delaney. All rights reserved.
 # This work is distributed WITHOUT ANY WARRANTY whatsoever; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the README file for additional terms and conditions on your use of this
