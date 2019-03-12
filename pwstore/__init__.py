@@ -394,15 +394,21 @@ def qrcodei(ctx, key):
     try:
         import pyqrcode
         import tempfile
-        from PIL import Image
-        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-        value = get_key(data, key)
+        import webbrowser
+        import asyncio
+#       data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+#       value = get_key(data, key)
+        value = "testing"
         code = pyqrcode.create(value)
-        with tempfile.NamedTemporaryFile(
-                prefix='pwstore-', suffix='.png') as f:
-            code.png(f.name, scale=10, quiet_zone=2)
-            img = Image.open(f.name)
-            img.show()
+
+        async def display_qrcode():
+            with tempfile.NamedTemporaryFile(
+                prefix=f"pwstore-{ctx.obj['record']}-", suffix=".png") as f:
+                code.png(f.name, scale=10, quiet_zone=2)
+                webbrowser.open_new(f'file://{f.name}')
+
+        asyncio.run(display_qrcode())
+
     except ImportError:
         raise RuntimeError("Required library not found: pyqrcode")
 
