@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+mock = "*"
+
+[ packages]
+appdirs = "~=1.4.3"
+click = "~=7.0"
+dulwich = "~=0.19.11"
+pillow = "~=5.3.0"
+pyautogui = "~=0.9.38"
+pyperclip = "~=1.7.0"
+pypng = "~=0.0.18"
+pyqrcode = "~=1.2.1"
+python-gnupg = "~=0.4.3"
+
+[requires]
+python_version = "3.7"
