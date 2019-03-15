@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-mock = "*"
+mock = "~=2.0.0"
 
 [ packages]
 appdirs = "~=1.4.3"
