@@ -4,9 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "~=4.3"
 mock = "~=2.0.0"
 
-[ packages]
+[packages]
 appdirs = "~=1.4.3"
 click = "~=7.0"
 dulwich = "~=0.19.11"
