@@ -5,7 +5,6 @@ import shutil
 import json
 import pytest
 import pwstore
-import mock
 import tempfile
 import dulwich
 
@@ -51,18 +50,15 @@ def get_clean_dir():
 
 class test_is_initialized(object):
 
-    def test_fail(self):
-        assert False
-
-    @mock.patch('os.path.isdir')
-    def unit_test_os_path_isdir(self, ospath):
+    def unit_test_os_path_isdir(self, ospath, mocker):
+        mocker.patch('os.path.isdir')
         ospath.return_value = False
         cwd = 'dir/that/does/not/exist'
         pwstore.is_initialized(cwd)
         ospath.assert_called_once_with(cwd)
 
-    @mock.patch('pwstore.Repo')
-    def unit_test_Repo_called(self, repo):
+    def unit_test_Repo_called(self, repo, mocker):
+        mocker.patch('pwstore.Repo')
         mydir = get_empty_dir()
         cwd = mydir.name
         try:
@@ -95,8 +91,8 @@ class test_is_initialized(object):
 
 class test_git_init(object):
 
-    @mock.patch('pwstore.Repo')
-    def unit_test_repo_init_called(self, repo):
+    def unit_test_repo_init_called(self, repo, mocker):
+        mocker.patch('pwstore.Repo')
         cwd = 'dir/that/does/not/exist'
         pwstore.git_init(cwd)
         pwstore.Repo.init.assert_called_once_with(cwd, mkdir=True)
@@ -120,9 +116,9 @@ class test_git_init(object):
 
 class test_git_add(object):
 
-    @mock.patch('pwstore.Repo')
-    def unit_test_repo_stage_called(self, repo):
-        repo_object = mock.MagicMock()
+    def unit_test_repo_stage_called(self, repo, mocker):
+        mocker.patch('pwstore.Repo')
+        repo_object = mocker.MagicMock()
         cwd = 'dir/that/does/not/exist'
         myfile = 'dir/that/does/not/exist/file'
         repo.return_value = repo_object
@@ -144,32 +140,32 @@ class test_git_add(object):
 
 class test_git_commit(object):
 
-    @mock.patch('pwstore.Repo')
-    def unit_test_commit_is_sent_with_encoded_message(self, repo):
-        repo_object = mock.MagicMock()
+    def unit_test_commit_is_sent_with_encoded_message(self, repo, mocker):
+        mocker.patch('pwstore.Repo')
+        repo_object = mocker.MagicMock()
         cwd = 'dir/that/does/not/exist'
-        repo_object.head = mock.MagicMock(return_value='foo')
-        repo_object.do_commit = mock.MagicMock(return_value='foo')
+        repo_object.head = mocker.MagicMock(return_value='foo')
+        repo_object.do_commit = mocker.MagicMock(return_value='foo')
         repo.return_value = repo_object
         pwstore.git_commit(cwd, 'mymessage')
         repo_object.do_commit.assert_called_once_with(b'mymessage')
 
-    @mock.patch('pwstore.Repo')
     def unit_test_raise_exception_if_head_doesnt_match_returned_commit(
-            self, repo):
-        repo_object = mock.MagicMock()
-        repo_object.commit_id = mock.MagicMock(return_value='foo')
-        repo_object.head = mock.MagicMock(return_value='bar')
+            self, repo, mocker):
+        mocker.patch('pwstore.Repo')
+        repo_object = mocker.MagicMock()
+        repo_object.commit_id = mocker.MagicMock(return_value='foo')
+        repo_object.head = mocker.MagicMock(return_value='bar')
         repo.return_value = repo_object
         with pytest.raises(AssertionError):
             pwstore.git_commit('a', 'b')
 
-    @mock.patch('pwstore.Repo')
-    def unit_test_repo_called_with_correct_cwd(self, repo):
-        repo_object = mock.MagicMock()
+    def unit_test_repo_called_with_correct_cwd(self, repo, mocker):
+        mocker.patch('pwstore.Repo')
+        repo_object = mocker.MagicMock()
         cwd = 'dir/that/does/not/exist'
-        repo_object.head = mock.MagicMock(return_value='foo')
-        repo_object.do_commit = mock.MagicMock(return_value='foo')
+        repo_object.head = mocker.MagicMock(return_value='foo')
+        repo_object.do_commit = mocker.MagicMock(return_value='foo')
         repo.return_value = repo_object
         pwstore.git_commit(cwd)
         repo.assert_called_once_with(cwd)
@@ -184,56 +180,56 @@ class test_git_commit(object):
 
 class test_git_drop(object):
 
-    @mock.patch('os.path.exists')
-    @mock.patch('pwstore.porcelain.rm')
-    @mock.patch('os.unlink')
-    @mock.patch('os.path.basename')
-    @mock.patch('pwstore.git_commit')
     def unit_test_exists_called_on_target(
             self, git_commit, os_path_basename,
-            os_unlink, porcelain_rm, os_path_exists):
+            os_unlink, porcelain_rm, os_path_exists, mocker):
+        mocker.patch('os.path.exists')
+        mocker.patch('pwstore.porcelain.rm')
+        mocker.patch('os.unlink')
+        mocker.patch('os.path.basename')
+        mocker.patch('pwstore.git_commit')
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pwstore.git_drop(cwd, target)
         os_path_exists.assert_called_once_with(target)
 
-    @mock.patch('os.path.exists')
-    @mock.patch('pwstore.porcelain.rm')
-    @mock.patch('os.unlink')
-    @mock.patch('os.path.basename')
-    @mock.patch('pwstore.git_commit')
     def unit_test_basename_called_on_target(
             self, git_commit, os_path_basename,
-            os_unlink, porcelain_rm, os_path_exists):
+            os_unlink, porcelain_rm, os_path_exists, mocker):
+        mocker.patch('os.path.exists')
+        mocker.patch('pwstore.porcelain.rm')
+        mocker.patch('os.unlink')
+        mocker.patch('os.path.basename')
+        mocker.patch('pwstore.git_commit')
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pwstore.git_drop(cwd, target)
         os_path_basename.assert_any_call(target)
 
-    @mock.patch('os.path.exists')
-    @mock.patch('pwstore.porcelain.rm')
-    @mock.patch('os.unlink')
-    @mock.patch('os.path.basename')
-    @mock.patch('pwstore.git_commit')
     def unit_test_porcelain_rm_called_on_target(
             self, git_commit, os_path_basename,
-            os_unlink, porcelain_rm, os_path_exists):
+            os_unlink, porcelain_rm, os_path_exists, mocker):
+        mocker.patch('os.path.exists')
+        mocker.patch('pwstore.porcelain.rm')
+        mocker.patch('os.unlink')
+        mocker.patch('os.path.basename')
+        mocker.patch('pwstore.git_commit')
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
         pwstore.git_drop(cwd, target)
         porcelain_rm.assert_called_once_with(cwd, ['file'])
 
-    @mock.patch('os.path.exists')
-    @mock.patch('pwstore.porcelain.rm')
-    @mock.patch('os.unlink')
-    @mock.patch('os.path.basename')
-    @mock.patch('pwstore.git_commit')
     def unit_test_os_unlink_called(
             self, git_commit, os_path_basename,
-            os_unlink, porcelain_rm, os_path_exists):
+            os_unlink, porcelain_rm, os_path_exists, mocker):
+        mocker.patch('os.path.exists')
+        mocker.patch('pwstore.porcelain.rm')
+        mocker.patch('os.unlink')
+        mocker.patch('os.path.basename')
+        mocker.patch('pwstore.git_commit')
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
@@ -242,14 +238,14 @@ class test_git_drop(object):
             os.path.abspath(os.path.join(cwd, target)))
         os_unlink.assert_called_once_with('/dir/that/does/not/exist/file')
 
-    @mock.patch('os.path.exists')
-    @mock.patch('pwstore.porcelain.rm')
-    @mock.patch('os.unlink')
-    @mock.patch('os.path.basename')
-    @mock.patch('pwstore.git_commit')
     def unit_test_git_commit_called(
             self, git_commit, os_path_basename,
-            os_unlink, porcelain_rm, os_path_exists):
+            os_unlink, porcelain_rm, os_path_exists, mocker):
+        mocker.patch('os.path.exists')
+        mocker.patch('pwstore.porcelain.rm')
+        mocker.patch('os.unlink')
+        mocker.patch('os.path.basename')
+        mocker.patch('pwstore.git_commit')
         cwd = '/dir/that/does/not/exist'
         target = '/dir/that/does/not/exist/file'
         os_path_basename.return_value = 'file'
@@ -269,30 +265,33 @@ class test_git_drop(object):
 
 class test_symlink(object):
 
-    @mock.patch('pwstore.git_commit')
-    @mock.patch('pwstore.git_add')
-    @mock.patch('os.symlink')
-    def unit_test_os_symlink_called(self, os_symlink, git_add, git_commit):
+    def unit_test_os_symlink_called(
+            self, os_symlink, git_add, git_commit, mocker):
+        mocker.patch('pwstore.git_commit')
+        mocker.patch('pwstore.git_add')
+        mocker.patch('os.symlink')
         cwd = '/dir/that/does/not/exist/'
         source = '/dir/that/does/not/exist/source'
         target = '/dir/that/does/not/exist/target'
         pwstore.symlink(cwd, source, target)
         os_symlink.assert_called_once_with(source, target)
 
-    @mock.patch('pwstore.git_commit')
-    @mock.patch('pwstore.git_add')
-    @mock.patch('os.symlink')
-    def unit_test_git_add_called(self, os_symlink, git_add, git_commit):
+    def unit_test_git_add_called(
+            self, os_symlink, git_add, git_commit, mocker):
+        mocker.patch('pwstore.git_commit')
+        mocker.patch('pwstore.git_add')
+        mocker.patch('os.symlink')
         cwd = '/dir/that/does/not/exist/'
         source = '/dir/that/does/not/exist/source'
         target = '/dir/that/does/not/exist/target'
         pwstore.symlink(cwd, source, target)
         git_add.assert_called_once_with(cwd, target)
 
-    @mock.patch('pwstore.git_commit')
-    @mock.patch('pwstore.git_add')
-    @mock.patch('os.symlink')
-    def unit_test_git_commit_called(self, os_symlink, git_add, git_commit):
+    def unit_test_git_commit_called(
+            self, os_symlink, git_add, git_commit, mocker):
+        mocker.patch('pwstore.git_commit')
+        mocker.patch('pwstore.git_add')
+        mocker.patch('os.symlink')
         cwd = '/dir/that/does/not/exist/'
         source = '/dir/that/does/not/exist/source'
         target = '/dir/that/does/not/exist/target'
@@ -313,8 +312,8 @@ class test_symlink(object):
 
 class test_parse_json(object):
 
-    @mock.patch('json.loads')
-    def unit_test_json_loads_called(self, json_loads):
+    def unit_test_json_loads_called(self, json_loads, mocker):
+        mocker.patch('json.loads')
         jsonstring = '{"4": "5", "6": "7"}'
         pwstore.parse_json(jsonstring)
         json_loads.assert_called_once_with(jsonstring)
