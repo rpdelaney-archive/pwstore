@@ -56,7 +56,8 @@ def git_commit(cwd, message="Updated given records to password store."):
     logger.debug("Committing staged files to pwstore...")
     repo = Repo(cwd)
     commit_id = repo.do_commit(message.encode())
-    assert repo.head() == commit_id
+    if repo.head() != commit_id:
+        raise RuntimeError(f"Commit failed, commit_id was {commit_id}")
 
 
 def git_drop(cwd, target):
@@ -103,12 +104,10 @@ def decrypt(gpg, edata):
     the decrypted data
     """
     data = gpg.decrypt(edata)
-    try:
-        assert data.ok
-    except AssertionError:
+    if not data.ok:
         logger.critical("GPG decryption failed. Status was: {}".format(
             data.status))
-        raise
+        raise RuntimeError
     return data
 
 
@@ -119,12 +118,10 @@ def encrypt(gpg, data):
     """
     recipient = find_recipient()
     edata = gpg.encrypt(data, recipient)
-    try:
-        assert edata.ok
-    except AssertionError:
+    if not edata.ok:
         logger.critical("GPG encryption failed. Status was: {}".format(
             edata.status))
-        raise
+        raise RuntimeError
     return edata
 
 
@@ -219,15 +216,14 @@ CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
 @click.pass_context
 def main(ctx, record):
     gpghome = find_gpghome()
-    try:
-        assert gpghome is not None
-        gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
-    except AssertionError:
+    if not gpghome:
         logger.critical("GNUPGHOME could not be found.")
-        raise
+        raise FileNotFoundError
+    gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
 
     pwstore = find_pwstore()
-    assert pwstore is not None
+    if not pwstore:
+        raise FileNotFoundError
 
     datafile = os.path.join(pwstore, record + '.gpg')
 
