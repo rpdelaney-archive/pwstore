@@ -3,8 +3,8 @@
 import os
 import shutil
 import json
-import unittest
-import pwstore.__init__ as pwstore
+import pytest
+import pwstore
 import mock
 import tempfile
 import dulwich
@@ -49,7 +49,10 @@ def get_clean_dir():
     return git_file, git_dir
 
 
-class test_is_initialized(unittest.TestCase):
+class test_is_initialized(object):
+
+    def test_fail(self):
+        assert False
 
     @mock.patch('os.path.isdir')
     def unit_test_os_path_isdir(self, ospath):
@@ -71,7 +74,7 @@ class test_is_initialized(unittest.TestCase):
     def functional_test_nonexistent_dir(self):
         cwd = 'tests/dir/that/does/not/exist'
         result = pwstore.is_initialized(cwd)
-        self.assertFalse(result)
+        assert result is False
 
     def functional_test_initialized_dir(self):
         cwd = get_initialized_dir()
@@ -79,7 +82,7 @@ class test_is_initialized(unittest.TestCase):
             result = pwstore.is_initialized(cwd.name)
         finally:
             cwd.cleanup
-        self.assertTrue(result)
+        assert result is True
 
     def functional_test_noninitialized_dir(self):
         cwd = get_empty_dir()
@@ -87,10 +90,10 @@ class test_is_initialized(unittest.TestCase):
             result = pwstore.is_initialized(cwd.name)
         finally:
             cwd.cleanup
-        self.assertFalse(result)
+        assert result is False
 
 
-class test_git_init(unittest.TestCase):
+class test_git_init(object):
 
     @mock.patch('pwstore.Repo')
     def unit_test_repo_init_called(self, repo):
@@ -115,7 +118,7 @@ class test_git_init(unittest.TestCase):
             cwd.cleanup
 
 
-class test_git_add(unittest.TestCase):
+class test_git_add(object):
 
     @mock.patch('pwstore.Repo')
     def unit_test_repo_stage_called(self, repo):
@@ -139,7 +142,7 @@ class test_git_add(unittest.TestCase):
             git_dir.cleanup
 
 
-class test_git_commit(unittest.TestCase):
+class test_git_commit(object):
 
     @mock.patch('pwstore.Repo')
     def unit_test_commit_is_sent_with_encoded_message(self, repo):
@@ -158,7 +161,7 @@ class test_git_commit(unittest.TestCase):
         repo_object.commit_id = mock.MagicMock(return_value='foo')
         repo_object.head = mock.MagicMock(return_value='bar')
         repo.return_value = repo_object
-        with self.assertRaises(AssertionError):
+        with pytest.raises(AssertionError):
             pwstore.git_commit('a', 'b')
 
     @mock.patch('pwstore.Repo')
@@ -179,7 +182,7 @@ class test_git_commit(unittest.TestCase):
             git_dir.cleanup
 
 
-class test_git_drop(unittest.TestCase):
+class test_git_drop(object):
 
     @mock.patch('os.path.exists')
     @mock.patch('pwstore.porcelain.rm')
@@ -264,7 +267,7 @@ class test_git_drop(unittest.TestCase):
             git_dir.cleanup
 
 
-class test_symlink(unittest.TestCase):
+class test_symlink(object):
 
     @mock.patch('pwstore.git_commit')
     @mock.patch('pwstore.git_add')
@@ -308,7 +311,7 @@ class test_symlink(unittest.TestCase):
             git_dir.cleanup
 
 
-class test_parse_json(unittest.TestCase):
+class test_parse_json(object):
 
     @mock.patch('json.loads')
     def unit_test_json_loads_called(self, json_loads):
@@ -322,45 +325,45 @@ class test_parse_json(unittest.TestCase):
         assert isinstance(result, dict)
 
 
-class test_get_key(unittest.TestCase):
+class test_get_key(object):
 
     def functional_test_get_key(self):
         jsonstring = '{"4": "5", "6": "7"}'
         result = pwstore.get_key(jsonstring, "4")
-        self.assertEqual(result, '5')
+        assert result == '5'
 
 
-class test_update_key(unittest.TestCase):
+class test_update_key(object):
 
     def functional_test_update_key(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = json.loads('{"4": "5", "6": "8"}')
         result = json.loads(pwstore.update_key(inputjson, "6", "8"))
-        self.assertEqual(result, targetjson)
+        assert result == targetjson
 
     def functional_test_update_nonextant_key(self):
         inputjson = '{"4": "5"}'
         targetjson = json.loads('{"4": "5", "6": "8"}')
         result = json.loads(pwstore.update_key(inputjson, "6", "8"))
-        self.assertEqual(result, targetjson)
+        assert result == targetjson
 
 
-class test_delete_key(unittest.TestCase):
+class test_delete_key(object):
 
     def functional_test_delete_key(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = json.loads('{"4": "5"}')
         result = json.loads(pwstore.delete_key(inputjson, "6"))
-        self.assertEqual(result, targetjson)
+        assert result == targetjson
 
 
-class test_print_friendly(unittest.TestCase):
+class test_print_friendly(object):
 
     def functional_test_print_friendly(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = '{\n    "4": "5",\n    "6": "7"\n}'
         result = pwstore.print_friendly(inputjson)
-        self.assertEqual(result, targetjson)
+        assert result == targetjson
 
 
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
