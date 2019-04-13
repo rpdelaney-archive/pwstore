@@ -1,12 +1,12 @@
 pwstore
 ======================
-.. |img-pypi| https://img.shields.io/pypi/format/pwstore.svg?color=blue&label=pwstore&logo=pwstore&style=for-the-badge
-.. |url-pypi| https://pypi.org/project/pwstore/
-.. |badge-pypi| image:: |img-pypi|  :alt: PyPI - Format :target: |url-pypi|
+.. _img-pypi image:: https://img.shields.io/pypi/format/pwstore.svg?color=blue&label=pwstore&logo=pwstore&style=for-the-badge :alt: PyPI - Format
+.. _url-pypi :target: https://pypi.org/project/pwstore/
+.. |badge-pypi| `img-pypi`_  `url-pypi`_
 
-.. |img-circleci| https://img.shields.io/circleci/project/github/rpdelaney/pwstore/master.svg?style=for-the-badge
-.. |url-circleci| https://circleci.com/gh/rpdelaney/pwstore
-.. |badge-circleci| image:: |img-circleci|  :alt: CircleCI - Status :target: |url-circleci|
+.. _img-circleci image:: https://img.shields.io/circleci/project/github/rpdelaney/pwstore/master.svg?style=for-the-badge :alt: CircleCI - Status
+.. _url-circleci :target: https://circleci.com/gh/rpdelaney/pwstore
+.. |badge-circleci| `img-circleci`_ `url-circleci`_
 
 |badge-pypi| |badge-circleci|
 
