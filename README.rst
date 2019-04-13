@@ -1,7 +1,14 @@
 pwstore
 ======================
-.. image:: https://img.shields.io/pypi/format/pwstore.svg?color=blue&label=pwstore&logo=pwstore&style=for-the-badge  :target: https://pypi.org/project/pwstore/ :alt: PyPI - Format
-.. image:: https://img.shields.io/circleci/project/github/rpdelaney/pwstore/master.svg?style=for-the-badge  :target: https://circleci.com/gh/rpdelaney/pwstore :alt: CircleCI - Status
+.. |img-pypi| https://img.shields.io/pypi/format/pwstore.svg?color=blue&label=pwstore&logo=pwstore&style=for-the-badge
+.. |url-pypi| https://pypi.org/project/pwstore/
+.. |badge-pypi| image:: |img-pypi|  :alt: PyPI - Format :target: |url-pypi|
+
+.. |img-circleci| https://img.shields.io/circleci/project/github/rpdelaney/pwstore/master.svg?style=for-the-badge
+.. |url-circleci| https://circleci.com/gh/rpdelaney/pwstore
+.. |badge-circleci| image:: |img-circleci|  :alt: CircleCI - Status :target: |url-circleci|
+
+|badge-pypi| |badge-circleci|
 
 A cli password manager in python. Inspired by
 password-store[`1 <https://www.passwordstore.org/>`__] by Jason A.
