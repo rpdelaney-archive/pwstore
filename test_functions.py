@@ -352,4 +352,12 @@ class test_print_friendly(object):
         assert result == targetjson
 
 
+class test_main(object):
+
+    def functional_test_filenotfound_raised(self, mocker):
+        mocker.patch('pwstore.find_gpghome', return_value=None)
+        with pytest.raises(FileNotFoundError):
+            pwstore.main()
+
+
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
