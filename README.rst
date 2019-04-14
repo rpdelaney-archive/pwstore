@@ -1,5 +1,13 @@
 pwstore
 ======================
+|PYPI| |CIRCLECI| |LICENSE|
+
+.. |PYPI| image:: https://img.shields.io/pypi/format/pwstore.svg?color=blue&label=pwstore&logo=pwstore&style=flat-square
+   :target: https://pypi.org/project/pwstore/
+.. |CIRCLECI| image:: https://img.shields.io/circleci/project/github/rpdelaney/pwstore/master.svg?style=flat-square
+   :target: https://circleci.com/gh/rpdelaney/pwstore
+.. |LICENSE| image:: https://img.shields.io/github/license/rpdelaney/pwstore.svg?color=green&label=copyleft&style=flat-square
+   :target: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 A cli password manager in python. Inspired by
 password-store[`1 <https://www.passwordstore.org/>`__] by Jason A.
