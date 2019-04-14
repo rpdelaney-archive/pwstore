@@ -4,13 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "~=4.3"
+pytest = "~=4.4.0"
 pytest_mock = "~=1.10"
+pytest-pudb = "==0.7.0"
 
 [packages]
 appdirs = "~=1.4.3"
 click = "~=7.0"
-dulwich = "~=0.19.11"
+dulwich = "==0.19.11"
 pillow = "~=5.3.0"
 pyautogui = "~=0.9.38"
 pyperclip = "~=1.7.0"
