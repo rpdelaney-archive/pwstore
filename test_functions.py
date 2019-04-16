@@ -156,7 +156,7 @@ class test_git_commit(object):
         repo_object.commit_id = mocker.MagicMock(return_value='foo')
         repo_object.head = mocker.MagicMock(return_value='bar')
         pwstore.Repo.return_value = repo_object
-        with pytest.raises(AssertionError):
+        with pytest.raises(RuntimeError):
             pwstore.git_commit('a', 'b')
 
     def unit_test_repo_called_with_correct_cwd(self, mocker):
