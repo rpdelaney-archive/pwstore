@@ -41,7 +41,7 @@ def git_init(cwd):
     else:
         Repo.init(cwd, mkdir=True)
 
-    logger.warn("Initialized a new password store at {}".format(cwd))
+    logger.warning("Initialized a new password store at {}".format(cwd))
 
 
 def git_add(cwd, filepath):
@@ -64,7 +64,7 @@ def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
     if os.path.exists(target):
         target = os.path.basename(target)
-        logger.warn("Dropping record {} from repository {}".format(
+        logger.warning("Dropping record {} from repository {}".format(
             target, cwd))
         porcelain.rm(cwd, [target])
         os.unlink(os.path.abspath(os.path.join(cwd, target)))
