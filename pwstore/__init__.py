@@ -359,10 +359,10 @@ def type(ctx, key):
 def search(ctx):
     """ Find a record in the pwstore by title """
     result = []
-    for f in os.listdir(ctx.obj['pwstore']):
-        if os.path.isfile(os.path.join(ctx.obj['pwstore'], f)):
-            if ctx.obj['record'].upper() in f.upper():
-                result.append(f.replace('.gpg', ''))
+    for filename in os.listdir(ctx.obj['pwstore']):
+        if os.path.isfile(os.path.join(ctx.obj['pwstore'], filename)):
+            if ctx.obj['record'].upper() in filename.upper():
+                result.append(filename.replace('.gpg', ''))
     print('\n'.join(result))
 
 
