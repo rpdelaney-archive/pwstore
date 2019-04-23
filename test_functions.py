@@ -213,22 +213,7 @@ class test_git_drop(object):
         target = '/dir/that/does/not/exist/file'
         os.path.basename.return_value = 'file'
         pwstore.git_drop(cwd, target)
-        pwstore.porcelain.rm.assert_called_once_with(cwd, ['file'])
-
-    def unit_test_os_unlink_called(self, mocker):
-        mocker.patch('os.path.exists')
-        mocker.patch('pwstore.porcelain.rm')
-        mocker.patch('os.unlink')
-        mocker.patch('os.path.basename')
-        mocker.patch('pwstore.git_commit')
-        cwd = '/dir/that/does/not/exist'
-        target = '/dir/that/does/not/exist/file'
-        os.path.basename.return_value = 'file'
-        pwstore.git_drop(cwd, target)
-        os.unlink.assert_called_once_with(
-            os.path.abspath(os.path.join(cwd, target)))
-        os.unlink.assert_called_once_with(
-            '/dir/that/does/not/exist/file')
+        pwstore.porcelain.rm.assert_called_once_with(cwd, [target])
 
     def unit_test_git_commit_called(self, mocker):
         mocker.patch('os.path.exists')
