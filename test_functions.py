@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=no-self-use, missing-docstring, too-few-public-methods
 
 import os
 import shutil
