@@ -63,13 +63,13 @@ def git_commit(cwd, message="Updated given records to password store."):
 def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
     if os.path.exists(target):
-        target = os.path.basename(target)
-        logger.warn("Dropping record {} from repository {}".format(
-            target, cwd))
+        basefilename = os.path.basename(target)
+        logger.warning("Dropping record {} from repository {}".format(
+            basefilename, cwd))
         porcelain.rm(cwd, [target])
         os.unlink(os.path.abspath(os.path.join(cwd, target)))
         git_commit(cwd, "Dropped record {} from password store.".format(
-            target))
+            basefilename))
     else:
         logger.critical("Record title does not exist. Nothing was done.")
 
