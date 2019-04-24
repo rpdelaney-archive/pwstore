@@ -1,0 +1,10 @@
+[run]
+branch = true
+
+[report]
+show_missing = true
+
+[html]
+directory = "test-results"
+
+# vim: ft=toml
