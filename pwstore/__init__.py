@@ -116,6 +116,9 @@ def encrypt(gpg, data):
     encrypted data
     """
     recipient = find_recipient()
+    if recipient is None:
+        raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
+
     edata = gpg.encrypt(data, recipient)
     if not edata.ok:
         LOGGER.critical("GPG encryption failed. Status was: %s", edata.status)
@@ -137,13 +140,11 @@ def find_recipient():
     """
     Try to figure out who the gpg recipient should be for encrypted data
     """
-    try:
-        rkey = os.environ['PWSTORE_KEY']
-        if rkey:
-            LOGGER.debug("Recipient key is: %s", rkey)
-            return rkey
-    except KeyError:
-        raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
+    rkey = os.environ.get('PWSTORE_KEY')
+    if rkey:
+        LOGGER.debug("Recipient key is: %s", rkey)
+
+    return rkey
 
 
 def find_gpghome():
