@@ -156,18 +156,17 @@ def find_recipient():
 
 def find_gpghome():
     """ Try to figure out where the gnupg homedir is """
-    try:
-        gdir = os.environ['GNUPGHOME']
-        if gdir:
-            LOGGER.debug("GNUPGHOME is: %s", gdir)
-            return gdir
-    except KeyError:
-        pass
+    gdir = os.environ.get('GNUPGHOME')
+    if gdir:
+        LOGGER.debug("GNUPGHOME is: %s", gdir)
+        return gdir
 
     homedir = os.path.join(os.environ['HOME'], '/.gnupg/')
     tryfile = os.path.join(homedir, 'gpg.conf')
     if os.path.isfile(tryfile):
         return homedir
+
+    return None
 
 
 def find_pwstore():
