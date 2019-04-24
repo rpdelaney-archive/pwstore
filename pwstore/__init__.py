@@ -390,9 +390,9 @@ def cmd_qrcodei(ctx, key):
     value = get_key(data, key)
     code = pyqrcode.create(value)
     with tempfile.NamedTemporaryFile(
-            prefix='pwstore-', suffix='.png') as f:
-        code.png(f.name, scale=10, quiet_zone=2)
-        img = Image.open(f.name)
+            prefix='pwstore-', suffix='.png') as img:
+        code.png(img.name, scale=10, quiet_zone=2)
+        img = Image.open(img.name)
         img.show()
 
 
