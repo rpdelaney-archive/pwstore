@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
+# Python 3.7.3
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
 #
-# © Copyright 2017-2019 Ryan Delaney. All rights reserved.
-# This work is distributed WITHOUT ANY WARRANTY whatsoever; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the README file for additional terms and conditions on your use of this
-# software.
-#
+"""
+A command-line password manager in python. Inspired by password-store by Jason
+A. Donenfeld.
+"""
+__author__ = "Ryan Delaney (ryan.delaney@gmail.com)"
+__date__ = "2019-04-24"
+__copyright__ = """© Copyright 2019 Ryan Delaney. All rights reserved.
+This work is distributed WITHOUT ANY WARRANTY whatsoever; without even the
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the README file for additional terms and conditions on your use of this
+software."""
+
 import os
 import logging
 import json
