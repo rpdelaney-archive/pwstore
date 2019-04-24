@@ -18,7 +18,7 @@ from dulwich import porcelain
 from dulwich.repo import Repo
 
 # Initialize Logging Module
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.WARNING)
 
 
@@ -41,19 +41,19 @@ def git_init(cwd):
     else:
         Repo.init(cwd, mkdir=True)
 
-    logger.warning("Initialized a new password store at %s", cwd)
+    LOGGER.warning("Initialized a new password store at %s", cwd)
 
 
 def git_add(cwd, filepath):
     """ Stage a file in the pwstore """
-    logger.debug("Staging file in pwstore: %s", filepath)
+    LOGGER.debug("Staging file in pwstore: %s", filepath)
     repo = Repo(cwd)
     repo.stage(os.path.basename(filepath))
 
 
 def git_commit(cwd, message="Updated given records to password store."):
     """ Commit staged changes to the pwstore """
-    logger.debug("Committing staged files to pwstore...")
+    LOGGER.debug("Committing staged files to pwstore...")
     repo = Repo(cwd)
     commit_id = repo.do_commit(message.encode())
     if repo.head() != commit_id:
@@ -64,14 +64,14 @@ def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
     if os.path.exists(target):
         basefilename = os.path.basename(target)
-        logger.warning(
+        LOGGER.warning(
             "Dropping record %s from repository %s", basefilename, cwd
         )
         porcelain.rm(cwd, [target])
         git_commit(cwd, "Dropped record {} from password store.".format(
             basefilename))
     else:
-        logger.critical("Record title does not exist. Nothing was done.")
+        LOGGER.critical("Record title does not exist. Nothing was done.")
 
 
 def symlink(cwd, source, target):
@@ -84,7 +84,7 @@ def symlink(cwd, source, target):
 def save_edata(edata, filepath):
     """ Takes data (presumed to be gpg encrypted) and saves it to a file """
     with open(filepath, 'w+') as myfile:
-        logger.debug("Writing encrypted data to file %s", filepath)
+        LOGGER.debug("Writing encrypted data to file %s", filepath)
         myfile.write(str(edata))
 
 
@@ -93,7 +93,7 @@ def get_edata(filepath):
     Retrieve data (presumed to be gpg encrypted) from a file and return it raw
     """
     with open(filepath, 'rb') as myfile:
-        logger.debug("Reading encrypted data from file %s", filepath)
+        LOGGER.debug("Reading encrypted data from file %s", filepath)
         edata = myfile.read()
     return edata
 
@@ -105,7 +105,7 @@ def decrypt(gpg, edata):
     """
     data = gpg.decrypt(edata)
     if not data.ok:
-        logger.critical("GPG decryption failed. Status was: %s", data.status)
+        LOGGER.critical("GPG decryption failed. Status was: %s", data.status)
         raise RuntimeError
     return data
 
@@ -118,7 +118,7 @@ def encrypt(gpg, data):
     recipient = find_recipient()
     edata = gpg.encrypt(data, recipient)
     if not edata.ok:
-        logger.critical("GPG encryption failed. Status was: %s", edata.status)
+        LOGGER.critical("GPG encryption failed. Status was: %s", edata.status)
         raise RuntimeError
     return edata
 
@@ -140,7 +140,7 @@ def find_recipient():
     try:
         rkey = os.environ['PWSTORE_KEY']
         if rkey:
-            logger.debug("Recipient key is: %s", rkey)
+            LOGGER.debug("Recipient key is: %s", rkey)
             return rkey
     except KeyError:
         raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
@@ -151,7 +151,7 @@ def find_gpghome():
     try:
         gdir = os.environ['GNUPGHOME']
         if gdir:
-            logger.debug("GNUPGHOME is: %s", gdir)
+            LOGGER.debug("GNUPGHOME is: %s", gdir)
             return gdir
     except KeyError:
         pass
@@ -216,7 +216,7 @@ def main(ctx, record):
     """ Main function and app entrypoint """
     gpghome = find_gpghome()
     if not gpghome:
-        logger.critical("GNUPGHOME could not be found.")
+        LOGGER.critical("GNUPGHOME could not be found.")
         raise FileNotFoundError
     gpg = gnupg.GPG(gnupghome=gpghome, verbose=False, use_agent=True)
 
@@ -257,7 +257,7 @@ def cmd_add(ctx):
     """ Create a new record """
     data = '{\n}'
     if os.path.exists(ctx.obj['datafile']):
-        logger.critical("Record title already exists. Nothing was done.")
+        LOGGER.critical("Record title already exists. Nothing was done.")
     else:
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
