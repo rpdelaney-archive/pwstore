@@ -41,12 +41,12 @@ def git_init(cwd):
     else:
         Repo.init(cwd, mkdir=True)
 
-    logger.warning("Initialized a new password store at {}".format(cwd))
+    logger.warning("Initialized a new password store at %s", cwd)
 
 
 def git_add(cwd, filepath):
     """ Stage a file in the pwstore """
-    logger.debug("Staging file in pwstore: {}".format(filepath))
+    logger.debug("Staging file in pwstore: %s", filepath)
     repo = Repo(cwd)
     repo.stage(os.path.basename(filepath))
 
@@ -64,8 +64,9 @@ def git_drop(cwd, target):
     """ Remove a tracked file from a repository & delete from disk """
     if os.path.exists(target):
         basefilename = os.path.basename(target)
-        logger.warning("Dropping record {} from repository {}".format(
-            basefilename, cwd))
+        logger.warning(
+            "Dropping record %s from repository %s", basefilename, cwd
+        )
         porcelain.rm(cwd, [target])
         git_commit(cwd, "Dropped record {} from password store.".format(
             basefilename))
@@ -83,7 +84,7 @@ def symlink(cwd, source, target):
 def save_edata(edata, filepath):
     """ Takes data (presumed to be gpg encrypted) and saves it to a file """
     with open(filepath, 'w+') as myfile:
-        logger.debug("Writing encrypted data to file {}".format(filepath))
+        logger.debug("Writing encrypted data to file %s", filepath)
         myfile.write(str(edata))
 
 
@@ -92,7 +93,7 @@ def get_edata(filepath):
     Retrieve data (presumed to be gpg encrypted) from a file and return it raw
     """
     with open(filepath, 'rb') as myfile:
-        logger.debug("Reading encrypted data from file {}".format(filepath))
+        logger.debug("Reading encrypted data from file %s", filepath)
         edata = myfile.read()
     return edata
 
@@ -104,8 +105,7 @@ def decrypt(gpg, edata):
     """
     data = gpg.decrypt(edata)
     if not data.ok:
-        logger.critical("GPG decryption failed. Status was: {}".format(
-            data.status))
+        logger.critical("GPG decryption failed. Status was: %s", data.status)
         raise RuntimeError
     return data
 
@@ -118,8 +118,7 @@ def encrypt(gpg, data):
     recipient = find_recipient()
     edata = gpg.encrypt(data, recipient)
     if not edata.ok:
-        logger.critical("GPG encryption failed. Status was: {}".format(
-            edata.status))
+        logger.critical("GPG encryption failed. Status was: %s", edata.status)
         raise RuntimeError
     return edata
 
@@ -141,7 +140,7 @@ def find_recipient():
     try:
         rkey = os.environ['PWSTORE_KEY']
         if rkey:
-            logger.debug("Recipient key is: {}".format(rkey))
+            logger.debug("Recipient key is: %s", rkey)
             return rkey
     except KeyError:
         raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
@@ -152,7 +151,7 @@ def find_gpghome():
     try:
         gdir = os.environ['GNUPGHOME']
         if gdir:
-            logger.debug("GNUPGHOME is: {}".format(gdir))
+            logger.debug("GNUPGHOME is: %s", gdir)
             return gdir
     except KeyError:
         pass
