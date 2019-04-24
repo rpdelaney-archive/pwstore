@@ -47,7 +47,7 @@ jobs:
           name: run tests
           command: |
             mkdir test-results
-            pipenv run pytest --junitxml=test-results/junit.xml
+            pipenv run pytest --cov=pwstore --junitxml=test-results/junit.xml
 
       - store_test_results:
           path: test-results
