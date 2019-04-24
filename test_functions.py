@@ -49,7 +49,7 @@ def get_clean_dir():
     return git_file, git_dir
 
 
-class test_is_initialized():
+class TestIsInitialized():
 
     def unit_test_os_path_isdir(self, mocker):
         mocker.patch('os.path.isdir', return_value=False)
@@ -89,7 +89,7 @@ class test_is_initialized():
         assert result is False
 
 
-class test_git_init():
+class TestGitInit():
 
     def unit_test_repo_init_called(self, mocker):
         mocker.patch('pwstore.Repo')
@@ -114,7 +114,7 @@ class test_git_init():
             cwd.cleanup
 
 
-class test_git_add():
+class TestGitAdd():
 
     def unit_test_repo_stage_called(self, mocker):
         mocker.patch('pwstore.Repo')
@@ -138,7 +138,7 @@ class test_git_add():
             git_dir.cleanup
 
 
-class test_git_commit():
+class TestGitCommit():
 
     def unit_test_commit_is_sent_with_encoded_message(self, mocker):
         mocker.patch('pwstore.Repo')
@@ -178,7 +178,7 @@ class test_git_commit():
             git_dir.cleanup
 
 
-class test_git_drop():
+class TestGitDrop():
 
     def unit_test_exists_called_on_target(self, mocker):
         mocker.patch('os.path.exists')
@@ -239,7 +239,7 @@ class test_git_drop():
             git_dir.cleanup
 
 
-class test_symlink():
+class TestSymlink():
 
     def unit_test_os_symlink_called(self, mocker):
         mocker.patch('pwstore.git_commit')
@@ -283,7 +283,7 @@ class test_symlink():
             git_dir.cleanup
 
 
-class test_parse_json():
+class TestParseJson():
 
     def unit_test_json_loads_called(self, mocker):
         mocker.patch('json.loads')
@@ -297,7 +297,7 @@ class test_parse_json():
         assert isinstance(result, dict)
 
 
-class test_get_key():
+class TestGetKey():
 
     def functional_test_get_key(self):
         jsonstring = '{"4": "5", "6": "7"}'
@@ -305,7 +305,7 @@ class test_get_key():
         assert result == '5'
 
 
-class test_update_key():
+class TestUpdateKey():
 
     def functional_test_update_key(self):
         inputjson = '{"4": "5", "6": "7"}'
@@ -320,7 +320,7 @@ class test_update_key():
         assert result == targetjson
 
 
-class test_delete_key():
+class TestDeleteKey():
 
     def functional_test_delete_key(self):
         inputjson = '{"4": "5", "6": "7"}'
@@ -329,7 +329,7 @@ class test_delete_key():
         assert result == targetjson
 
 
-class test_print_friendly():
+class TestPrintFriendly():
 
     def functional_test_print_friendly(self):
         inputjson = '{"4": "5", "6": "7"}'
