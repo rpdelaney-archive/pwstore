@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
 # pylint: disable=no-self-use, missing-docstring, too-few-public-methods
 
 import os
@@ -337,5 +338,4 @@ class TestPrintFriendly():
         result = pwstore.print_friendly(inputjson)
         assert result == targetjson
 
-
-# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
+# EOF
