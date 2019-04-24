@@ -7,12 +7,12 @@
 # See the README file for additional terms and conditions on your use of this
 # software.
 #
-import appdirs
-import click
 import os
 import logging
-import gnupg
 import json
+import appdirs
+import click
+import gnupg
 import dulwich
 from dulwich import porcelain
 from dulwich.repo import Repo
@@ -330,13 +330,10 @@ def cmd_alias(ctx, alias):
 @click.pass_context
 def cmd_copy(ctx, key):
     """ Copy a KEY value to the system clipboard """
-    try:
-        import pyperclip
-        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-        value = get_key(data, key)
-        pyperclip.copy(value)
-    except ImportError:
-        raise RuntimeError("Required library not found: pyperclip")
+    import pyperclip
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+    value = get_key(data, key)
+    pyperclip.copy(value)
 
 
 @main.command('type')
@@ -344,13 +341,10 @@ def cmd_copy(ctx, key):
 @click.pass_context
 def cmd_type(ctx, key):
     """ Type a KEY value at the cursor position """
-    try:
-        import pyautogui
-        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-        value = get_key(data, key)
-        pyautogui.typewrite(value)
-    except ImportError:
-        raise RuntimeError("Required library not found: pyautogui")
+    import pyautogui
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+    value = get_key(data, key)
+    pyautogui.typewrite(value)
 
 
 @main.command('search')
@@ -370,14 +364,11 @@ def cmd_search(ctx):
 @click.pass_context
 def cmd_qrcode(ctx, key):
     """ Display a KEY value as a qrcode """
-    try:
-        import pyqrcode
-        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-        value = get_key(data, key)
-        code = pyqrcode.create(value)
-        print(code.terminal(quiet_zone=1))
-    except ImportError:
-        raise RuntimeError("Required library not found: pyqrcode")
+    import pyqrcode
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+    value = get_key(data, key)
+    code = pyqrcode.create(value)
+    print(code.terminal(quiet_zone=1))
 
 
 @main.command('qrcodei')
@@ -385,20 +376,17 @@ def cmd_qrcode(ctx, key):
 @click.pass_context
 def cmd_qrcodei(ctx, key):
     """ Display a KEY value as a qrcode in a png """
-    try:
-        import pyqrcode
-        import tempfile
-        from PIL import Image
-        data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
-        value = get_key(data, key)
-        code = pyqrcode.create(value)
-        with tempfile.NamedTemporaryFile(
-                prefix='pwstore-', suffix='.png') as f:
-            code.png(f.name, scale=10, quiet_zone=2)
-            img = Image.open(f.name)
-            img.show()
-    except ImportError:
-        raise RuntimeError("Required library not found: pyqrcode")
+    import pyqrcode
+    import tempfile
+    from PIL import Image
+    data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
+    value = get_key(data, key)
+    code = pyqrcode.create(value)
+    with tempfile.NamedTemporaryFile(
+            prefix='pwstore-', suffix='.png') as f:
+        code.png(f.name, scale=10, quiet_zone=2)
+        img = Image.open(f.name)
+        img.show()
 
 
 if __name__ == '__main__':
