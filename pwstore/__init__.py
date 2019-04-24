@@ -213,6 +213,7 @@ CONTEXT_SETTINGS = {'help_option_names': ['-?', '-h', '--help']}
 @click.argument('record')
 @click.pass_context
 def main(ctx, record):
+    """ Main function and app entrypoint """
     gpghome = find_gpghome()
     if not gpghome:
         logger.critical("GNUPGHOME could not be found.")
@@ -240,9 +241,9 @@ def main(ctx, record):
     return 0
 
 
-@main.command()
+@main.command('list')
 @click.pass_context
-def list(ctx):
+def cmd_list(ctx):
     """ List the keys in a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     mydict = parse_json(data)
@@ -250,9 +251,9 @@ def list(ctx):
         print(item)
 
 
-@main.command()
+@main.command('add')
 @click.pass_context
-def add(ctx):
+def cmd_add(ctx):
     """ Create a new record """
     data = '{\n}'
     if os.path.exists(ctx.obj['datafile']):
@@ -265,10 +266,10 @@ def add(ctx):
             os.path.basename(ctx.obj['datafile'])))
 
 
-@main.command()
+@main.command('delete')
 @click.argument('key')
 @click.pass_context
-def delete(ctx, key):
+def cmd_delete(ctx, key):
     """ Delete KEY from a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     newdata = delete_key(data, key)
@@ -277,20 +278,20 @@ def delete(ctx, key):
     git_commit(ctx.obj['pwstore'])
 
 
-@main.command()
+@main.command('get')
 @click.argument('key')
 @click.pass_context
-def get(ctx, key):
+def cmd_get(ctx, key):
     """ Retrieve a KEY value from a record """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print(get_key(data, key))
 
 
-@main.command()
+@main.command('update')
 @click.argument('key')
 @click.argument('value')
 @click.pass_context
-def update(ctx, key, value):
+def cmd_update(ctx, key, value):
     """ Update a record's KEY with VALUE """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     newdata = update_key(data, key, value)
@@ -299,25 +300,24 @@ def update(ctx, key, value):
     git_commit(ctx.obj['pwstore'])
 
 
-@main.command()
+@main.command('select')
 @click.pass_context
-def select(ctx):
+def cmd_select(ctx):
     """ Decrypt a record and print it raw """
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     print_friendly(data)
 
 
-@main.command()
+@main.command('drop')
 @click.pass_context
-def drop(ctx):
+def cmd_drop(ctx):
     """ Delete an entire record from the disk """
     git_drop(ctx.obj['pwstore'], ctx.obj['datafile'])
 
 
-@main.command()
-@click.argument('alias')
+@main.command('alias')
 @click.pass_context
-def alias(ctx, alias):
+def cmd_alias(ctx, alias):
     """ Create a symlink named ALIAS """
     source = ctx.obj['datafile']
     target = os.path.join(ctx.obj['pwstore'], alias + '.gpg')
@@ -325,10 +325,10 @@ def alias(ctx, alias):
     symlink(cwd, source, target)
 
 
-@main.command()
+@main.command('copy')
 @click.argument('key')
 @click.pass_context
-def copy(ctx, key):
+def cmd_copy(ctx, key):
     """ Copy a KEY value to the system clipboard """
     try:
         import pyperclip
@@ -339,10 +339,10 @@ def copy(ctx, key):
         raise RuntimeError("Required library not found: pyperclip")
 
 
-@main.command()
+@main.command('type')
 @click.argument('key')
 @click.pass_context
-def type(ctx, key):
+def cmd_type(ctx, key):
     """ Type a KEY value at the cursor position """
     try:
         import pyautogui
@@ -353,9 +353,9 @@ def type(ctx, key):
         raise RuntimeError("Required library not found: pyautogui")
 
 
-@main.command()
+@main.command('search')
 @click.pass_context
-def search(ctx):
+def cmd_search(ctx):
     """ Find a record in the pwstore by title """
     result = []
     for filename in os.listdir(ctx.obj['pwstore']):
@@ -365,10 +365,10 @@ def search(ctx):
     print('\n'.join(result))
 
 
-@main.command()
+@main.command('qrcode')
 @click.argument('key')
 @click.pass_context
-def qrcode(ctx, key):
+def cmd_qrcode(ctx, key):
     """ Display a KEY value as a qrcode """
     try:
         import pyqrcode
@@ -380,10 +380,10 @@ def qrcode(ctx, key):
         raise RuntimeError("Required library not found: pyqrcode")
 
 
-@main.command()
+@main.command('qrcodei')
 @click.argument('key')
 @click.pass_context
-def qrcodei(ctx, key):
+def cmd_qrcodei(ctx, key):
     """ Display a KEY value as a qrcode in a png """
     try:
         import pyqrcode
