@@ -397,6 +397,7 @@ def cmd_qrcodei(ctx, key):
 
 
 if __name__ == '__main__':
+    # pylint: disable=no-value-for-parameter
     main()
 
 # EOF
