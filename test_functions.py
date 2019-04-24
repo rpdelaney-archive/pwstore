@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
+# pylint: disable=no-self-use, missing-docstring, too-few-public-methods
 
 import os
 import shutil
@@ -48,7 +50,7 @@ def get_clean_dir():
     return git_file, git_dir
 
 
-class test_is_initialized(object):
+class TestIsInitialized():
 
     def unit_test_os_path_isdir(self, mocker):
         mocker.patch('os.path.isdir', return_value=False)
@@ -88,7 +90,7 @@ class test_is_initialized(object):
         assert result is False
 
 
-class test_git_init(object):
+class TestGitInit():
 
     def unit_test_repo_init_called(self, mocker):
         mocker.patch('pwstore.Repo')
@@ -113,7 +115,7 @@ class test_git_init(object):
             cwd.cleanup
 
 
-class test_git_add(object):
+class TestGitAdd():
 
     def unit_test_repo_stage_called(self, mocker):
         mocker.patch('pwstore.Repo')
@@ -137,7 +139,7 @@ class test_git_add(object):
             git_dir.cleanup
 
 
-class test_git_commit(object):
+class TestGitCommit():
 
     def unit_test_commit_is_sent_with_encoded_message(self, mocker):
         mocker.patch('pwstore.Repo')
@@ -177,7 +179,7 @@ class test_git_commit(object):
             git_dir.cleanup
 
 
-class test_git_drop(object):
+class TestGitDrop():
 
     def unit_test_exists_called_on_target(self, mocker):
         mocker.patch('os.path.exists')
@@ -213,22 +215,7 @@ class test_git_drop(object):
         target = '/dir/that/does/not/exist/file'
         os.path.basename.return_value = 'file'
         pwstore.git_drop(cwd, target)
-        pwstore.porcelain.rm.assert_called_once_with(cwd, ['file'])
-
-    def unit_test_os_unlink_called(self, mocker):
-        mocker.patch('os.path.exists')
-        mocker.patch('pwstore.porcelain.rm')
-        mocker.patch('os.unlink')
-        mocker.patch('os.path.basename')
-        mocker.patch('pwstore.git_commit')
-        cwd = '/dir/that/does/not/exist'
-        target = '/dir/that/does/not/exist/file'
-        os.path.basename.return_value = 'file'
-        pwstore.git_drop(cwd, target)
-        os.unlink.assert_called_once_with(
-            os.path.abspath(os.path.join(cwd, target)))
-        os.unlink.assert_called_once_with(
-            '/dir/that/does/not/exist/file')
+        pwstore.porcelain.rm.assert_called_once_with(cwd, [target])
 
     def unit_test_git_commit_called(self, mocker):
         mocker.patch('os.path.exists')
@@ -253,7 +240,7 @@ class test_git_drop(object):
             git_dir.cleanup
 
 
-class test_symlink(object):
+class TestSymlink():
 
     def unit_test_os_symlink_called(self, mocker):
         mocker.patch('pwstore.git_commit')
@@ -297,7 +284,7 @@ class test_symlink(object):
             git_dir.cleanup
 
 
-class test_parse_json(object):
+class TestParseJson():
 
     def unit_test_json_loads_called(self, mocker):
         mocker.patch('json.loads')
@@ -311,7 +298,7 @@ class test_parse_json(object):
         assert isinstance(result, dict)
 
 
-class test_get_key(object):
+class TestGetKey():
 
     def functional_test_get_key(self):
         jsonstring = '{"4": "5", "6": "7"}'
@@ -319,7 +306,7 @@ class test_get_key(object):
         assert result == '5'
 
 
-class test_update_key(object):
+class TestUpdateKey():
 
     def functional_test_update_key(self):
         inputjson = '{"4": "5", "6": "7"}'
@@ -334,7 +321,7 @@ class test_update_key(object):
         assert result == targetjson
 
 
-class test_delete_key(object):
+class TestDeleteKey():
 
     def functional_test_delete_key(self):
         inputjson = '{"4": "5", "6": "7"}'
@@ -343,7 +330,7 @@ class test_delete_key(object):
         assert result == targetjson
 
 
-class test_print_friendly(object):
+class TestPrintFriendly():
 
     def functional_test_print_friendly(self):
         inputjson = '{"4": "5", "6": "7"}'
@@ -351,13 +338,4 @@ class test_print_friendly(object):
         result = pwstore.print_friendly(inputjson)
         assert result == targetjson
 
-
-class test_main(object):
-
-    def functional_test_filenotfound_raised(self, mocker):
-        mocker.patch('pwstore.find_gpghome', return_value=None)
-        with pytest.raises(FileNotFoundError):
-            pwstore.main()
-
-
-# vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
+# EOF
