@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # vim: ft=python expandtab smarttab shiftwidth=4 softtabstop=4
 # pylint: disable=no-self-use, missing-docstring, too-few-public-methods
+# pylint: disable=no-member
 
 import os
 import shutil
