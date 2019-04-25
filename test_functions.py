@@ -305,6 +305,24 @@ class TestSaveEdata():
         myfile.write.assert_called_with(str(edata))
 
 
+class TestGetEdata():
+
+    def unit_test_file_opened(self, mocker):
+        mocker.patch('builtins.open', spec=open)
+        filepath = mocker.MagicMock()
+        pwstore.get_edata(filepath)
+        open.assert_called_once_with(filepath, 'rb')
+
+    def functional_test_data_read(self, mocker):
+        filepath = '/some/file'
+        myfile = mocker.MagicMock(spec=io.TextIOWrapper)
+        myfile.__enter__.return_value = myfile
+        myfile.read.return_value = "foobarbaz"
+        mocker.patch('builtins.open', spec=open, return_value=myfile)
+        result = pwstore.get_edata(filepath)
+        assert result == "foobarbaz"
+
+
 class TestParseJson():
 
     def unit_test_json_loads_called(self, mocker):
