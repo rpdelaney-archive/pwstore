@@ -5,10 +5,10 @@
 import os
 import shutil
 import json
-import pytest
-import pwstore
 import tempfile
+import pytest
 import dulwich
+import pwstore
 
 
 def get_empty_dir():
