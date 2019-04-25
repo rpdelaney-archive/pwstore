@@ -22,7 +22,7 @@ setup(
     description='a command-line password manager',
     long_description=long_description,
 
-    version='0.1',
+    version='0.15',
 
     # The project's main homepage.
     url='https://github.com/rpdelaney/pwstore',
@@ -78,7 +78,7 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
 #       'dev': ['check-manifest'],
-        'test': ['pytest', 'pytest-mock'],
+        'test': ['pytest', 'pytest-mock', 'pytest-cov'],
     },
 
     # If there are data files included in your packages that need to be
