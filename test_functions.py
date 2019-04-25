@@ -65,7 +65,7 @@ class TestIsInitialized():
         try:
             pwstore.is_initialized(cwd)
         finally:
-            mydir.cleanup
+            mydir.cleanup()
         pwstore.Repo.assert_called_once_with(cwd)
 
     def functional_test_nonexistent_dir(self):
@@ -78,7 +78,7 @@ class TestIsInitialized():
         try:
             result = pwstore.is_initialized(cwd.name)
         finally:
-            cwd.cleanup
+            cwd.cleanup()
         assert result is True
 
     def functional_test_noninitialized_dir(self):
@@ -86,7 +86,7 @@ class TestIsInitialized():
         try:
             result = pwstore.is_initialized(cwd.name)
         finally:
-            cwd.cleanup
+            cwd.cleanup()
         assert result is False
 
 
@@ -112,7 +112,7 @@ class TestGitInit():
             pwstore.git_init(cwd.name)
             dulwich.repo.Repo(cwd.name)
         finally:
-            cwd.cleanup
+            cwd.cleanup()
 
 
 class TestGitAdd():
@@ -136,7 +136,7 @@ class TestGitAdd():
             index = repo.open_index()
             assert list(index) == [os.path.basename(git_file.name).encode()]
         finally:
-            git_dir.cleanup
+            git_dir.cleanup()
 
 
 class TestGitCommit():
@@ -176,7 +176,7 @@ class TestGitCommit():
         try:
             pwstore.git_commit(git_dir.name)
         finally:
-            git_dir.cleanup
+            git_dir.cleanup()
 
 
 class TestGitDrop():
@@ -237,7 +237,7 @@ class TestGitDrop():
         try:
             assert not os.path.exists(git_file.name)
         finally:
-            git_dir.cleanup
+            git_dir.cleanup()
 
 
 class TestSymlink():
@@ -281,7 +281,7 @@ class TestSymlink():
             pwstore.symlink(cwd, source, target)
             assert os.path.islink(target)
         finally:
-            git_dir.cleanup
+            git_dir.cleanup()
 
 
 class TestParseJson():
