@@ -7,6 +7,7 @@ import os
 import shutil
 import json
 import tempfile
+import io
 import pytest
 import dulwich
 import pwstore
@@ -283,6 +284,25 @@ class TestSymlink():
             assert os.path.islink(target)
         finally:
             git_dir.cleanup()
+
+
+class TestSaveEdata():
+
+    def unit_test_file_opened(self, mocker):
+        mocker.patch('builtins.open', spec=open)
+        filepath = mocker.MagicMock()
+        edata = b'some.random.data'
+        pwstore.save_edata(edata, filepath)
+        open.assert_called_once_with(filepath, 'w+')
+
+    def unit_test_data_written(self, mocker):
+        filepath = '/some/file'
+        myfile = mocker.MagicMock(spec=io.TextIOWrapper)
+        myfile.__enter__.return_value = myfile
+        mocker.patch('builtins.open', spec=open, return_value=myfile)
+        edata = b'some.random.data'
+        pwstore.save_edata(edata, filepath)
+        myfile.write.assert_called_with(str(edata))
 
 
 class TestParseJson():
