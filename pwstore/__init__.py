@@ -105,19 +105,19 @@ def get_edata(filepath):
     return edata
 
 
-def decrypt(gpg, edata):
+def decrypt(gpg_handler, edata):
     """
     Take a gpg handler and some data (presumed to be gpg encrypted) and return
     the decrypted data
     """
-    data = gpg.decrypt(edata)
+    data = gpg_handler.decrypt(edata)
     if not data.ok:
         LOGGER.critical("GPG decryption failed. Status was: %s", data.status)
         raise RuntimeError
     return data
 
 
-def encrypt(gpg, data):
+def encrypt(gpg_handler, data):
     """
     Take a gpg handler and some data (presumed to be plain text) and return
     encrypted data
@@ -126,20 +126,20 @@ def encrypt(gpg, data):
     if recipient is None:
         raise RuntimeError("Failed to encrypt data. PWSTORE_KEY is not set.")
 
-    edata = gpg.encrypt(data, recipient)
+    edata = gpg_handler.encrypt(data, recipient)
     if not edata.ok:
         LOGGER.critical("GPG encryption failed. Status was: %s", edata.status)
         raise RuntimeError
     return edata
 
 
-def get_data(gpg, filepath):
+def get_data(gpg_handler, filepath):
     """
     Retrieve data (presumed to be gpg encrypted) from a file and return it as a
     decrypted string
     """
     edata = get_edata(filepath)
-    data = decrypt(gpg, edata)
+    data = decrypt(gpg_handler, edata)
     return str(data)
 
 
