@@ -383,4 +383,30 @@ class TestFindPwstore():
         assert result == '/path/to/user/data/dir'
 
 
+class TestFindRecipient():
+
+    def unit_test_environ_get_called(self, mocker):
+        mocker.patch('os.environ.get')
+        pwstore.find_recipient()
+        os.environ.get.assert_called_once_with('PWSTORE_KEY')
+
+    def unit_test_logger_called(self, mocker):
+        mocker.patch('pwstore.LOGGER.debug')
+        mocker.patch('os.environ.get', return_value='pwstore-key')
+        pwstore.find_recipient()
+        pwstore.LOGGER.debug.assert_called_once_with(
+            "Recipient key is: %s", 'pwstore-key'
+        )
+
+    def functional_test_env_var_read(self, mocker):
+        mocker.patch('os.environ.get', return_value='pwstore-key')
+        result = pwstore.find_recipient()
+        assert result == 'pwstore-key'
+
+    def functional_test_env_var_unset(self, mocker):
+        mocker.patch('os.environ.get', return_value=None)
+        result = pwstore.find_recipient()
+        assert result is None
+
+
 # EOF
