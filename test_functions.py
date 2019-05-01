@@ -323,6 +323,43 @@ class TestGetEdata():
         assert result == "foobarbaz"
 
 
+class TestDecrypt():
+
+    @pytest.fixture
+    def gpg_handler_ok(self, mocker):
+        gpg = mocker.MagicMock()
+        data = mocker.MagicMock()
+        data.__str__.return_value = "foobarbaz"
+        data.ok = True
+        gpg.decrypt.return_value = data
+        yield gpg
+
+    @pytest.fixture
+    def gpg_handler_not_ok(self, mocker):
+        gpg = mocker.MagicMock()
+        data = mocker.MagicMock()
+        data.__str__.return_value = "foobarbaz"
+        data.ok = False
+        gpg.decrypt.return_value = data
+        yield gpg
+
+    def unit_test_gpg_decrypt_called(self, mocker):
+        gpg_handler = mocker.MagicMock()
+        edata = b'some.data'
+        pwstore.decrypt(gpg_handler, edata)
+        assert gpg_handler.decrypt.called_once()
+
+    def unit_test_gpg_decrypted_data_read(self, gpg_handler_ok):
+        edata = b'some.data'
+        result = pwstore.decrypt(gpg_handler_ok, edata)
+        assert str(result) == "foobarbaz"
+
+    def functional_test_exception_raised(self, gpg_handler_not_ok):
+        edata = b'some.data'
+        with pytest.raises(RuntimeError):
+            pwstore.decrypt(gpg_handler_not_ok, edata)
+
+
 class TestParseJson():
 
     def unit_test_json_loads_called(self, mocker):
