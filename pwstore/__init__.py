@@ -75,8 +75,9 @@ def git_drop(cwd, target):
             "Dropping record %s from repository %s", basefilename, cwd
         )
         porcelain.rm(cwd, [target])
-        git_commit(cwd, "Dropped record {} from password store.".format(
-            basefilename))
+        git_commit(
+            cwd, "Dropped record {} from password store.".format(basefilename)
+        )
     else:
         LOGGER.critical("Record title does not exist. Nothing was done.")
 
@@ -238,7 +239,7 @@ def main(ctx, record):
         'record': record,
         'gpg': gpg,
         'pwstore': pwstore,
-        'datafile': datafile
+        'datafile': datafile,
     }
 
     # Check that the pwstore has been initialized.
@@ -269,8 +270,12 @@ def cmd_add(ctx):
         edata = encrypt(ctx.obj['gpg'], data)
         save_edata(edata, ctx.obj['datafile'])
         git_add(ctx.obj['pwstore'], ctx.obj['datafile'])
-        git_commit(ctx.obj['pwstore'], "Created empty record {}".format(
-            os.path.basename(ctx.obj['datafile'])))
+        git_commit(
+            ctx.obj['pwstore'],
+            "Created empty record {}".format(
+                os.path.basename(ctx.obj['datafile'])
+            ),
+        )
 
 
 @main.command('delete')
@@ -338,6 +343,7 @@ def cmd_alias(ctx, alias):
 def cmd_copy(ctx, key):
     """ Copy a KEY value to the system clipboard """
     import pyperclip
+
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     value = get_key(data, key)
     pyperclip.copy(value)
@@ -349,6 +355,7 @@ def cmd_copy(ctx, key):
 def cmd_type(ctx, key):
     """ Type a KEY value at the cursor position """
     import pyautogui
+
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     value = get_key(data, key)
     pyautogui.typewrite(value)
@@ -372,6 +379,7 @@ def cmd_search(ctx):
 def cmd_qrcode(ctx, key):
     """ Display a KEY value as a qrcode """
     import pyqrcode
+
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     value = get_key(data, key)
     code = pyqrcode.create(value)
@@ -386,11 +394,11 @@ def cmd_qrcodei(ctx, key):
     import pyqrcode
     import tempfile
     from PIL import Image
+
     data = get_data(ctx.obj['gpg'], ctx.obj['datafile'])
     value = get_key(data, key)
     code = pyqrcode.create(value)
-    with tempfile.NamedTemporaryFile(
-            prefix='pwstore-', suffix='.png') as img:
+    with tempfile.NamedTemporaryFile(prefix='pwstore-', suffix='.png') as img:
         code.png(img.name, scale=10, quiet_zone=2)
         img = Image.open(img.name)
         img.show()

@@ -52,8 +52,7 @@ def get_clean_dir():
     return git_file, git_dir
 
 
-class TestIsInitialized():
-
+class TestIsInitialized:
     def unit_test_os_path_isdir(self, mocker):
         mocker.patch('os.path.isdir', return_value=False)
         cwd = 'dir/that/does/not/exist'
@@ -92,8 +91,7 @@ class TestIsInitialized():
         assert result is False
 
 
-class TestGitInit():
-
+class TestGitInit:
     def unit_test_repo_init_called(self, mocker):
         mocker.patch('pwstore.Repo')
         cwd = 'dir/that/does/not/exist'
@@ -117,8 +115,7 @@ class TestGitInit():
             cwd.cleanup()
 
 
-class TestGitAdd():
-
+class TestGitAdd:
     def unit_test_repo_stage_called(self, mocker):
         mocker.patch('pwstore.Repo')
         repo_object = mocker.MagicMock()
@@ -141,8 +138,7 @@ class TestGitAdd():
             git_dir.cleanup()
 
 
-class TestGitCommit():
-
+class TestGitCommit:
     def unit_test_commit_is_sent_with_encoded_message(self, mocker):
         mocker.patch('pwstore.Repo')
         repo_object = mocker.MagicMock()
@@ -154,7 +150,8 @@ class TestGitCommit():
         repo_object.do_commit.assert_called_once_with(b'mymessage')
 
     def unit_test_raise_exception_if_head_doesnt_match_returned_commit(
-            self, mocker):
+        self, mocker
+    ):
         mocker.patch('pwstore.Repo')
         repo_object = mocker.MagicMock()
         repo_object.commit_id = mocker.MagicMock(return_value='foo')
@@ -181,8 +178,7 @@ class TestGitCommit():
             git_dir.cleanup()
 
 
-class TestGitDrop():
-
+class TestGitDrop:
     def unit_test_exists_called_on_target(self, mocker):
         mocker.patch('os.path.exists')
         mocker.patch('pwstore.porcelain.rm')
@@ -230,8 +226,11 @@ class TestGitDrop():
         os.path.basename.return_value = 'file'
         pwstore.git_drop(cwd, target)
         pwstore.git_commit.assert_called_once_with(
-            cwd, "Dropped record {} from password store.".format(
-                os.path.basename.return_value))
+            cwd,
+            "Dropped record {} from password store.".format(
+                os.path.basename.return_value
+            ),
+        )
 
     def functional_test_file_removed(self):
         git_file, git_dir = get_clean_dir()
@@ -242,8 +241,7 @@ class TestGitDrop():
             git_dir.cleanup()
 
 
-class TestSymlink():
-
+class TestSymlink:
     def unit_test_os_symlink_called(self, mocker):
         mocker.patch('pwstore.git_commit')
         mocker.patch('pwstore.git_add')
@@ -286,8 +284,7 @@ class TestSymlink():
             git_dir.cleanup()
 
 
-class TestSaveEdata():
-
+class TestSaveEdata:
     def unit_test_file_opened(self, mocker):
         mocker.patch('builtins.open', spec=open)
         filepath = mocker.MagicMock()
@@ -305,8 +302,7 @@ class TestSaveEdata():
         myfile.write.assert_called_with(str(edata))
 
 
-class TestGetEdata():
-
+class TestGetEdata:
     def unit_test_file_opened(self, mocker):
         mocker.patch('builtins.open', spec=open)
         filepath = mocker.MagicMock()
@@ -323,8 +319,7 @@ class TestGetEdata():
         assert result == "foobarbaz"
 
 
-class TestDecrypt():
-
+class TestDecrypt:
     @pytest.fixture
     def gpg_handler_ok(self, mocker):
         gpg = mocker.MagicMock()
@@ -360,8 +355,7 @@ class TestDecrypt():
             pwstore.decrypt(gpg_handler_not_ok, edata)
 
 
-class TestParseJson():
-
+class TestParseJson:
     def unit_test_json_loads_called(self, mocker):
         mocker.patch('json.loads')
         jsonstring = '{"4": "5", "6": "7"}'
@@ -374,16 +368,14 @@ class TestParseJson():
         assert isinstance(result, dict)
 
 
-class TestGetKey():
-
+class TestGetKey:
     def functional_test_get_key(self):
         jsonstring = '{"4": "5", "6": "7"}'
         result = pwstore.get_key(jsonstring, "4")
         assert result == '5'
 
 
-class TestUpdateKey():
-
+class TestUpdateKey:
     def functional_test_update_key(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = json.loads('{"4": "5", "6": "8"}')
@@ -397,8 +389,7 @@ class TestUpdateKey():
         assert result == targetjson
 
 
-class TestDeleteKey():
-
+class TestDeleteKey:
     def functional_test_delete_key(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = json.loads('{"4": "5"}')
@@ -406,8 +397,7 @@ class TestDeleteKey():
         assert result == targetjson
 
 
-class TestPrintFriendly():
-
+class TestPrintFriendly:
     def functional_test_print_friendly(self):
         inputjson = '{"4": "5", "6": "7"}'
         targetjson = '{\n    "4": "5",\n    "6": "7"\n}'
@@ -415,8 +405,7 @@ class TestPrintFriendly():
         assert result == targetjson
 
 
-class TestFindPwstore():
-
+class TestFindPwstore:
     def unit_test_environ_get_called(self, mocker):
         mocker.patch('os.environ.get', return_value='/path/to/pwstore')
         mocker.patch('os.path.isdir', return_value=True)
@@ -459,8 +448,7 @@ class TestFindPwstore():
         assert result == '/path/to/user/data/dir'
 
 
-class TestFindRecipient():
-
+class TestFindRecipient:
     def unit_test_environ_get_called(self, mocker):
         mocker.patch('os.environ.get')
         pwstore.find_recipient()
