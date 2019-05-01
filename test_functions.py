@@ -414,4 +414,75 @@ class TestPrintFriendly():
         result = pwstore.print_friendly(inputjson)
         assert result == targetjson
 
+
+class TestFindPwstore():
+
+    def unit_test_environ_get_called(self, mocker):
+        mocker.patch('os.environ.get', return_value='/path/to/pwstore')
+        mocker.patch('os.path.isdir', return_value=True)
+        pwstore.find_pwstore()
+        os.environ.get.assert_called_once_with('PWSTORE_DIR')
+
+    def unit_test_path_isdir_called(self, mocker):
+        mocker.patch('os.environ.get', return_value='/path/to/pwstore')
+        mocker.patch('os.path.isdir', return_value=True)
+        pwstore.find_pwstore()
+        os.path.isdir.assert_called_once_with('/path/to/pwstore')
+
+    def unit_test_appdirs_user_data_dir_called(self, mocker):
+        mocker.patch('os.environ.get')
+        mocker.patch('pwstore.appdirs.user_data_dir')
+        pwstore.find_pwstore()
+        pwstore.appdirs.user_data_dir.assert_called_once_with('pwstore')
+
+    def functional_test_env_var_read(self, mocker):
+        mocker.patch('os.environ.get', return_value='/path/to/pwstore')
+        mocker.patch('os.path.isdir', return_value=True)
+        result = pwstore.find_pwstore()
+        assert result == '/path/to/pwstore'
+
+    def functional_test_env_var_unset(self, mocker):
+        mocker.patch('os.environ.get', return_value=None)
+        mocker.patch(
+            'appdirs.user_data_dir', return_value='/path/to/user/data/dir'
+        )
+        result = pwstore.find_pwstore()
+        assert result == '/path/to/user/data/dir'
+
+    def functional_test_env_var_not_dir(self, mocker):
+        mocker.patch('os.environ.get', return_value='/path/to/pwstore')
+        mocker.patch('os.path.isdir', return_value=False)
+        mocker.patch(
+            'appdirs.user_data_dir', return_value='/path/to/user/data/dir'
+        )
+        result = pwstore.find_pwstore()
+        assert result == '/path/to/user/data/dir'
+
+
+class TestFindRecipient():
+
+    def unit_test_environ_get_called(self, mocker):
+        mocker.patch('os.environ.get')
+        pwstore.find_recipient()
+        os.environ.get.assert_called_once_with('PWSTORE_KEY')
+
+    def unit_test_logger_called(self, mocker):
+        mocker.patch('pwstore.LOGGER.debug')
+        mocker.patch('os.environ.get', return_value='pwstore-key')
+        pwstore.find_recipient()
+        pwstore.LOGGER.debug.assert_called_once_with(
+            "Recipient key is: %s", 'pwstore-key'
+        )
+
+    def functional_test_env_var_read(self, mocker):
+        mocker.patch('os.environ.get', return_value='pwstore-key')
+        result = pwstore.find_recipient()
+        assert result == 'pwstore-key'
+
+    def functional_test_env_var_unset(self, mocker):
+        mocker.patch('os.environ.get', return_value=None)
+        result = pwstore.find_recipient()
+        assert result is None
+
+
 # EOF
