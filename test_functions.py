@@ -340,11 +340,10 @@ class TestGetEdata:
 
 
 class TestDecrypt:
-    def unit_test_gpg_decrypt_called(self, mocker):
-        gpg_handler = mocker.MagicMock()
+    def unit_test_gpg_decrypt_called(self, mocker, gpg_handler_ok):
         edata = b"some.data"
-        pwstore.decrypt(gpg_handler, edata)
-        assert gpg_handler.decrypt.called_once()
+        pwstore.decrypt(gpg_handler_ok, edata)
+        assert gpg_handler_ok.decrypt.called_once()
 
     def unit_test_gpg_decrypted_data_read(self, gpg_handler_ok):
         edata = b"some.data"
