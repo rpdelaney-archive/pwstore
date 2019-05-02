@@ -13,6 +13,26 @@ import dulwich
 import pwstore
 
 
+@pytest.fixture
+def gpg_handler_ok(mocker):
+    gpg = mocker.MagicMock()
+    data = mocker.MagicMock()
+    data.__str__.return_value = "foobarbaz"
+    data.ok = True
+    gpg.decrypt.return_value = data
+    yield gpg
+
+
+@pytest.fixture
+def gpg_handler_not_ok(mocker):
+    gpg = mocker.MagicMock()
+    data = mocker.MagicMock()
+    data.__str__.return_value = "foobarbaz"
+    data.ok = False
+    gpg.decrypt.return_value = data
+    yield gpg
+
+
 def get_empty_dir():
     """ Set up an empty directory (non-initalized git repo) """
     empty_dir = tempfile.TemporaryDirectory()
@@ -320,24 +340,6 @@ class TestGetEdata:
 
 
 class TestDecrypt:
-    @pytest.fixture
-    def gpg_handler_ok(self, mocker):
-        gpg = mocker.MagicMock()
-        data = mocker.MagicMock()
-        data.__str__.return_value = "foobarbaz"
-        data.ok = True
-        gpg.decrypt.return_value = data
-        yield gpg
-
-    @pytest.fixture
-    def gpg_handler_not_ok(self, mocker):
-        gpg = mocker.MagicMock()
-        data = mocker.MagicMock()
-        data.__str__.return_value = "foobarbaz"
-        data.ok = False
-        gpg.decrypt.return_value = data
-        yield gpg
-
     def unit_test_gpg_decrypt_called(self, mocker):
         gpg_handler = mocker.MagicMock()
         edata = b"some.data"
