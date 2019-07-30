@@ -343,7 +343,7 @@ class TestDecrypt:
     def unit_test_gpg_decrypt_called(self, mocker, gpg_handler_ok):
         edata = b"some.data"
         pwstore.decrypt(gpg_handler_ok, edata)
-        assert gpg_handler_ok.decrypt.called_once()
+        assert gpg_handler_ok.decrypt.call_count == 1
 
     def unit_test_gpg_decrypted_data_read(self, gpg_handler_ok):
         edata = b"some.data"
