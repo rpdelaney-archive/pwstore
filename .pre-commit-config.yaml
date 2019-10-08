@@ -4,6 +4,8 @@ repos:
     rev: v2.3.0
     hooks:
       - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=lf]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
       - id: check-added-large-files
@@ -12,6 +14,20 @@ repos:
       - id: check-json
       - id: check-merge-conflict
       - id: detect-private-key
-      - id: flake8
       - id: debug-statements
       - id: check-docstring-first
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.3
+    hooks:
+      - id: flake8
+
+# EOF
