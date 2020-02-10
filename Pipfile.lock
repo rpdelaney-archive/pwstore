@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ffcf344421c027dddb281d2dc65502ff397415d352b7c263d26ea4cef057d880"
+            "sha256": "a4bd60700f4462e3798f2f82f3bb87279733e09acee0bd6e0c82c7e3ad0b9234"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -54,6 +54,12 @@
             "index": "pypi",
             "version": "==0.19.15"
         },
+        "mouseinfo": {
+            "hashes": [
+                "sha256:00ea0c2410c7cada53e6c831fd70dafeb6cbc04b2ab09b099f8e97a8743d35b1"
+            ],
+            "version": "==0.1.2"
+        },
         "pillow": {
             "hashes": [
                 "sha256:00fdeb23820f30e43bba78eb9abb00b7a937a655de7760b2e09101d63708b64e",
@@ -88,10 +94,10 @@
         },
         "pyautogui": {
             "hashes": [
-                "sha256:d9a42733505a18d6aaa4ca93445ac853cb44bf50ea4719a768d52973bfa16d2b"
+                "sha256:e91a25c1cdf826e7d0581775b5fbe47f7e12af79e0eb9dc3e1488ba99f2e0c60"
             ],
             "index": "pypi",
-            "version": "==0.9.42"
+            "version": "==0.9.48"
         },
         "pygetwindow": {
             "hashes": [
@@ -146,6 +152,12 @@
             ],
             "index": "pypi",
             "version": "==0.4.5"
+        },
+        "python3-xlib": {
+            "hashes": [
+                "sha256:dc4245f3ae4aa5949c1d112ee4723901ade37a96721ba9645f2bfa56e5b383f8"
+            ],
+            "version": "==0.15"
         },
         "pytweening": {
             "hashes": [
