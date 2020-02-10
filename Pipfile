@@ -7,7 +7,7 @@ verify_ssl = true
 pytest = "~=5.3.5"
 pytest_mock = "~=1.10"
 pytest-pudb = "==0.7.0"
-pytest-cov = "~=2.6.1"
+pytest-cov = "~=2.8.1"
 
 [packages]
 appdirs = "~=1.4.3"
