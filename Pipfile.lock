@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e4554ffed6c4a61e4a6edaa252deaa69124a8c8096367f0497af9f599a097ed3"
+            "sha256": "4039965fedb27a6b3256f1a99365dc9e9f1cafa6a2d64dcd40e421637071bc52"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -133,11 +133,11 @@
         },
         "python-gnupg": {
             "hashes": [
-                "sha256:45daf020b370bda13a1429c859fcdff0b766c0576844211446f9266cae97fb0e",
-                "sha256:85c231850a0275c9722f06e34b45a22510b83a6a6e88f93b5ae32ba04c95056c"
+                "sha256:3353e59949cd2c15efbf1fca45e347d8a22f4bed0d93e9b89b2657bda19cec05",
+                "sha256:c095a41f310ad7a4fd393406660ac9bd6c175ccaa0f072f9c18f33be8130a27a"
             ],
             "index": "pypi",
-            "version": "==0.4.4"
+            "version": "==0.4.5"
         },
         "pytweening": {
             "hashes": [

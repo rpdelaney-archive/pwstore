@@ -18,7 +18,7 @@ pyautogui = "~=0.9.38"
 pyperclip = "~=1.7.0"
 pypng = "~=0.0.18"
 pyqrcode = "~=1.2.1"
-python-gnupg = "~=0.4.3"
+python-gnupg = "~=0.4.5"
 
 [requires]
 python_version = "3.7"
