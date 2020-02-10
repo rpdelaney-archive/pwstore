@@ -16,7 +16,7 @@ dulwich = "==0.19.15"
 pillow = "~=6.2.0"
 pyautogui = "~=0.9.48"
 pyperclip = "~=1.7.0"
-pypng = "~=0.0.18"
+pypng = "~=0.0.20"
 pyqrcode = "~=1.2.1"
 python-gnupg = "~=0.4.5"
 
