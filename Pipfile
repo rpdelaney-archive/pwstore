@@ -11,7 +11,7 @@ pytest-cov = "~=2.8.1"
 
 [packages]
 appdirs = "~=1.4.3"
-click = "~=7.0"
+click = "~=7.1"
 dulwich = "==0.19.15"
 pillow = "~=7.0.0"
 pyautogui = "~=0.9.48"
