@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "247133b878173278ac3cd7a6d7c41302c04fae4a5c955c13500c14b5a8dfe834"
+            "sha256": "16a41a5c84781bcd8fc7aa2b152e96980fb4c7b099094eacbbfc75cddb6e1a0d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -143,11 +143,11 @@
         },
         "python-gnupg": {
             "hashes": [
-                "sha256:3353e59949cd2c15efbf1fca45e347d8a22f4bed0d93e9b89b2657bda19cec05",
-                "sha256:c095a41f310ad7a4fd393406660ac9bd6c175ccaa0f072f9c18f33be8130a27a"
+                "sha256:3aa0884b3bd414652c2385b9df39e7b87272c2eca1b8fcc3089bc9e58652019a",
+                "sha256:cba3566e8a8fb7bb417d6897a6e17bfc7f9371052e57eb0057783c07d762a679"
             ],
             "index": "pypi",
-            "version": "==0.4.5"
+            "version": "==0.4.6"
         },
         "python3-xlib": {
             "hashes": [
