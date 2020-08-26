@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "~=5.4.3"
-pytest_mock = "~=3.1"
+pytest_mock = "~=3.3"
 pytest-pudb = "==0.7.0"
 pytest-cov = "~=2.10.0"
 
