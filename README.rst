@@ -1,7 +1,8 @@
 pwstore
 ======================
-|PYPI| |CIRCLECI| |LICENSE|
+|MAINTAINED| |PYPI| |CIRCLECI| |LICENSE|
 
+.. |MAINTAINED| image:: https://img.shields.io/maintenance/no/2019?logoColor=informational
 .. |PYPI| image:: https://img.shields.io/pypi/format/pwstore.svg?color=blue&label=pwstore&logo=pwstore&style=flat-square
    :target: https://pypi.org/project/pwstore/
 .. |CIRCLECI| image:: https://img.shields.io/circleci/project/github/rpdelaney/pwstore/master.svg?style=flat-square
